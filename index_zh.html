@@ -146,7 +146,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 <h2>📈 每日营收走势 (全球, 170天)</h2>
 <div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
 
-<h2>🇯🇵 JP vs 全球每日营收 (168天)</h2>
+<h2>🇯🇵 JP vs 全球每周营收 (25周)</h2>
 <div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
 
 <h2>📊 月度汇总 (基于数据计算)</h2>
@@ -382,22 +382,25 @@ new Chart(document.getElementById('revenueChart'), {
   plugins: [eventPlugin]
 });
 
-// ========== JP vs GLOBAL CHART (168 days) ==========
-const sortedJ = [...J].sort((a, b) => a[0].localeCompare(b[0]));
-const jpDates = sortedJ.map(r => shortDate(r[0]));
-const gLookup = {};
-G.forEach(r => { gLookup[r[0]] = r[1]; });
-const jpRevValues = sortedJ.map(r => r[1]);
-const globalRevValues = jpDates.map(sd => { var full = '2026-' + sd.replace('/', '-'); return gLookup[full] || 0; });
-const otherRevValues = globalRevValues.map((g, i) => Math.max(0, g - jpRevValues[i]));
+// ========== JP vs GLOBAL WEEKLY CHART ==========
+const weeklyData=[
+  ["12-29",805518,174335],["01-05",769657,154078],["01-12",750210,126269],["01-19",497570,74552],["01-26",642122,98183],
+  ["02-02",440687,77433],["02-09",1041660,192076],["02-16",592934,115514],["02-23",575962,113591],["03-02",302809,68660],
+  ["03-09",321135,63643],["03-16",305739,52874],["03-23",1395663,238843],["03-30",1463093,235171],["04-06",854723,152185],
+  ["04-13",515370,81993],["04-20",841240,128686],["04-27",919396,128556],["05-04",572542,85703],["05-11",272607,42839],
+  ["05-18",655420,102607],["05-25",457058,70415],["06-01",670472,95814],["06-08",335841,54743],["06-15",139807,997751]
+];
+const weekLabels = weeklyData.map(w => w[0]);
+const weekJP = weeklyData.map(w => w[1]);
+const weekOther = weeklyData.map(w => w[2]);
 
 new Chart(document.getElementById('jpChart'), {
   type: 'bar',
   data: {
-    labels: jpDates,
+    labels: weekLabels,
     datasets: [
-      { label: 'JP 营收', data: jpRevValues, backgroundColor: 'rgba(124,58,237,0.8)', stack: 'stack0' },
-      { label: '其他地区', data: otherRevValues, backgroundColor: 'rgba(0,212,255,0.4)', stack: 'stack0' }
+      { label: 'JP 营收', data: weekJP, backgroundColor: 'rgba(124,58,237,0.8)', stack: 'stack0' },
+      { label: '其他地区', data: weekOther, backgroundColor: 'rgba(0,212,255,0.4)', stack: 'stack0' }
     ]
   },
   options: {
@@ -408,7 +411,7 @@ new Chart(document.getElementById('jpChart'), {
       tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + fmtK(ctx.parsed.y) } }
     },
     scales: {
-      x: { stacked: true, ticks: { color: '#64748b', maxTicksLimit: 17, font: { size: 10 } }, grid: { color: '#25255520' } },
+      x: { stacked: true, ticks: { color: '#64748b', maxTicksLimit: 13, font: { size: 10 } }, grid: { color: '#25255520' } },
       y: { stacked: true, ticks: { color: '#64748b', font: { size: 10 }, callback: v => '$' + (v >= 1000 ? fmtK(v) : v) }, grid: { color: '#25255540' } }
     }
   }
