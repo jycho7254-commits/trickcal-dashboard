@@ -234,8 +234,11 @@ G.forEach(r => {
 const jpMonthlyData = {};
 J.forEach(r => {
   const mk = r[0].slice(0,7);
-  if (!jpMonthlyData[mk]) jpMonthlyData[mk] = {rev:0};
+  if (!jpMonthlyData[mk]) jpMonthlyData[mk] = {rev:0, matchedGlobal:0};
   jpMonthlyData[mk].rev += r[1];
+  // Sum global revenue only for dates where JP data exists
+  const gRow = G.find(g => g[0] === r[0]);
+  if (gRow) jpMonthlyData[mk].matchedGlobal += gRow[1];
 });
 
 const monthlyRows = monthKeys.map((mk,i) => {
@@ -243,7 +246,8 @@ const monthlyRows = monthKeys.map((mk,i) => {
   const prevMk = i>0 ? monthKeys[i-1] : null;
   const prev = prevMk ? monthlyData[prevMk] : null;
   const jpRev = jpMonthlyData[mk] ? jpMonthlyData[mk].rev : 0;
-  const jpShare = m.rev > 0 ? (jpRev/m.rev*100) : 0;
+  const jpMatchedGlobal = jpMonthlyData[mk] ? jpMonthlyData[mk].matchedGlobal : 0;
+  const jpShare = jpMatchedGlobal > 0 ? (jpRev/jpMatchedGlobal*100) : (m.rev > 0 ? (jpRev/m.rev*100) : 0);
   const mom = prev ? ((m.rev - prev.rev)/prev.rev*100) : null;
   return {month:mk, ...m, avgARPPU: m.arppuSum/m.days, jpRev, jpShare, mom};
 });
@@ -388,7 +392,7 @@ const weeklyData=[
   ["02-02",440687,77433],["02-09",1041660,192076],["02-16",592934,115514],["02-23",575962,113591],["03-02",302809,68660],
   ["03-09",321135,63643],["03-16",305739,52874],["03-23",1395663,238843],["03-30",1463093,235171],["04-06",854723,152185],
   ["04-13",515370,81993],["04-20",841240,128686],["04-27",919396,128556],["05-04",572542,85703],["05-11",272607,42839],
-  ["05-18",655420,102607],["05-25",457058,70415],["06-01",670472,95814],["06-08",335841,54743],["06-15",139807,997751]
+  ["05-18",655420,102607],["05-25",457058,70415],["06-01",670472,95814],["06-08",335841,54743],["06-15",139807,21337]
 ];
 const weekLabels = weeklyData.map(w => w[0]);
 const weekJP = weeklyData.map(w => w[1]);
