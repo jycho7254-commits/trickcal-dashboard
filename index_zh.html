@@ -696,70 +696,143 @@ var actionHTML = '<h3>📋 优先执行课题</h3><ul>' +
   '</ul>';
 document.getElementById('actionItems').innerHTML = actionHTML;
 
-// ========== PAYMENT TIER TRANSITION MATRIX ==========
+// ========== PAYMENT TIER TRANSITION MATRIX (JSON-based) ==========
 (function(){
   const tiers = ['未付费','低付费','中付费','高付费','超高付费','鲸鱼'];
-  const matrix = [
-    [78756, 7691, 2417, 405, 88, 2, 89359],
-    [0, 27944, 7001, 683, 96, 0, 35724],
-    [0, 0, 18083, 7217, 695, 4, 25999],
-    [0, 0, 0, 6596, 4329, 20, 10945],
-    [0, 0, 0, 0, 3200, 672, 3872],
-    [0, 0, 0, 0, 0, 290, 290]
-  ];
-  const maxVal = 89359;
+  const regionLabels = {'all':'全部(ALL)','jp':'日本(JP)','sgp':'新加坡(SGP)','va':'越南(VA)'};
+  const regions = ['all','jp','sgp','va'];
+  let currentRegion = 'all';
+  let regionData = null;
 
-  function fmt(n){ return n.toLocaleString(); }
-
-  let html = '<div class="tm-section">' +
-    '<h2>📊 付费阶层迁移矩阵 (3/26 → 7/2)</h2>' +
-    '<p class="tm-subtitle">2026年 3月 26日 → 7月 2日 基准, 166,189名 匹配 · 行=原付费阶层, 列=迁移后付费阶层</p>' +
-    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;font-size:.72rem;color:#94a3b8">' +
+  // Tier criteria badges
+  const criteriaHTML =
     '<span style="background:#252555;padding:2px 8px;border-radius:4px">未付费: ₩0</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px">低付费: ₩1~5,000</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px">中付费: ₩5,000~30,000</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px">高付费: ₩30,000~100,000</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px">超高付费: ₩100,000~500,000</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px;color:#f59e0b">鲸鱼: ₩500,000+</span>' +
-    '</div>' +
-    '<div style="overflow-x:auto"><table class="tm-table"><thead><tr><th></th>';
-  tiers.forEach(t => { html += '<th>' + t + '</th>'; });
-  html += '<th class="total-col">合计</th></tr></thead><tbody>';
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px">低付费: ₩1~10,999 (<P25)</span>' +
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px">中付费: ₩11,000~70,199 (P25~P50)</span>' +
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px">高付费: ₩70,200~308,399 (P50~P75)</span>' +
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px">超高付费: ₩308,400~955,899 (P75~P90)</span>' +
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px;color:#f59e0b">鲸鱼: ₩955,900+ (≥P90)</span>';
 
-  matrix.forEach((row, i) => {
-    html += '<tr><td>' + tiers[i] + '</td>';
-    row.forEach((val, j) => {
-      let cls = '';
-      if(j < 6){
-        if(i === j) cls = 'diag';
-        else if(j > i && val > 0) cls = 'up';
-        else if(val === 0) cls = ' style="color:#25255580"';
-      } else {
-        cls = 'total-col';
-      }
-      html += '<td class="' + cls + '">' + fmt(val) + '</td>';
+  // Region filter buttons
+  function renderButtons(){
+    let btns = '<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">';
+    regions.forEach(r => {
+      const active = r === currentRegion;
+      const bg = active ? '#00d4ff' : '#141432';
+      const color = active ? '#0a0a1a' : '#a0a0c0';
+      const border = active ? '#00d4ff' : '#252555';
+      btns += '<button class="region-btn" data-region="'+r+'" style="background:'+bg+';color:'+color+';border:1px solid '+border+';padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600;transition:all 0.2s">'+regionLabels[r]+'</button>';
     });
-    html += '</tr>';
-  });
+    btns += '</div>';
+    return btns;
+  }
 
-  html += '</tbody></table></div>';
+  // Heatmap cell color logic
+  function getCellStyle(i, j, val, rowTotal){
+    if(val === 0) return 'background:transparent;color:#25255580;';
+    const pct = rowTotal > 0 ? val / rowTotal : 0;
+    if(i === 0 && j === 0) return 'background:rgba(100,116,139,'+Math.min(pct*3,0.7)+');color:#e2e8f0;font-weight:600;'; // 未付费留存: 灰色
+    if(i === j) return 'background:rgba(59,130,246,'+Math.min(pct*3,0.7)+');color:#e2e8f0;font-weight:600;'; // 留存: 蓝色
+    if(j > i) return 'background:rgba(16,185,129,'+Math.min(pct*5,0.6)+');color:#10b981;font-weight:600;'; // 上行: 绿色
+    return 'background:rgba(239,68,68,'+Math.min(pct*5,0.6)+');color:#ef4444;font-weight:600;'; // 下行: 红色
+  }
 
-  // Summary cards
-  const summaries = [
-    {label:'阶层升级迁移', val:'18.80%', color:'#10b981'},
-    {label:'未付费→付费转化', val:'11.87%', color:'#00d4ff'},
-    {label:'低付费中升级比例', val:'21.80%', color:'#10b981'},
-    {label:'中付费中升级比例', val:'30.40%', color:'#10b981'},
-    {label:'高付费中升级比例', val:'39.70%', color:'#10b981'},
-    {label:'超高付费中升级比例', val:'17.40%', color:'#f59e0b'}
-  ];
-  html += '<div class="tm-summary">';
-  summaries.forEach(s => {
-    html += '<div class="tm-summary-card"><div class="num" style="color:'+s.color+'">'+s.val+'</div><div class="lbl">'+s.label+'</div></div>';
-  });
-  html += '</div></div>';
+  // Render heatmap
+  function renderHeatmap(data){
+    const matrix = data.matrix;
+    const matched = data.matched;
 
-  document.getElementById('transitionMatrix').innerHTML = html;
+    // Compute row totals
+    const rowTotals = matrix.map(row => row.reduce((a,b)=>a+b,0));
+    // Compute col totals
+    const colTotals = [0,0,0,0,0,0];
+    matrix.forEach(row => row.forEach((v,j)=> colTotals[j]+=v));
+    const grandTotal = rowTotals.reduce((a,b)=>a+b,0);
+
+    function fmt(n){ return n.toLocaleString(); }
+
+    let html = '<div class="tm-section">' +
+      '<h2>📊 付费阶层迁移矩阵 (6/18 → 7/2)</h2>' +
+      '<p class="tm-subtitle">7/02 检查数据, 付费用户 105,713名 分位数基准 · 行=6/18 付费阶层, 列=7/02 付费阶层 · 匹配: '+fmt(matched)+'名</p>' +
+      renderButtons() +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;font-size:.72rem;color:#94a3b8">' +
+      criteriaHTML +
+      '</div>' +
+      '<div style="overflow-x:auto"><table class="tm-table"><thead><tr><th>6/18 \\ 7/02</th>';
+    tiers.forEach((t,i) => { html += '<th>'+t+'<br><span style="font-size:.65rem;color:#94a3b8;font-weight:400">'+fmt(colTotals[i])+'</span></th>'; });
+    html += '<th class="total-col">合计</th></tr></thead><tbody>';
+
+    matrix.forEach((row, i) => {
+      const rt = rowTotals[i];
+      html += '<tr><td>'+tiers[i]+'<br><span style="font-size:.65rem;color:#94a3b8;font-weight:400">'+fmt(rt)+'</span></td>';
+      row.forEach((val, j) => {
+        const pct = rt > 0 ? (val/rt*100).toFixed(1) : '0.0';
+        const style = getCellStyle(i, j, val, rt);
+        html += '<td style="'+style+'">'+fmt(val)+'<br><span style="font-size:.65rem;opacity:.7">'+pct+'%</span></td>';
+      });
+      html += '<td class="total-col">'+fmt(rt)+'</td>';
+      html += '</tr>';
+    });
+
+    // Column totals row
+    html += '<tr style="background:#1a1a3a80"><td style="font-weight:700">合计</td>';
+    colTotals.forEach(c => { html += '<td style="font-weight:700;color:#00d4ff">'+fmt(c)+'</td>'; });
+    html += '<td class="total-col" style="font-weight:700">'+fmt(grandTotal)+'</td></tr>';
+
+    html += '</tbody></table></div>';
+
+    // Compute summary metrics dynamically
+    let totalUpgradeCount = 0, totalPaidUsers = 0;
+    for(let i=1; i<6; i++){
+      totalPaidUsers += rowTotals[i];
+      for(let j=i+1; j<6; j++){
+        totalUpgradeCount += matrix[i][j];
+      }
+    }
+    const f2pConvert = matched > 0 ? (matrix[0].slice(1).reduce((a,b)=>a+b,0) / matched * 100).toFixed(2) : '0.00';
+    const overallUpgrade = totalPaidUsers > 0 ? (totalUpgradeCount / totalPaidUsers * 100).toFixed(2) : '0.00';
+
+    const summaries = [
+      {label:'付费用户上行迁移', val: overallUpgrade+'%', color:'#10b981'},
+      {label:'未付费→付费转化', val: f2pConvert+'%', color:'#00d4ff'}
+    ];
+    // Per-tier upgrade rates
+    for(let i=1; i<6; i++){
+      const rt = rowTotals[i];
+      const upgraded = matrix[i].slice(i+1).reduce((a,b)=>a+b,0);
+      const rate = rt > 0 ? (upgraded/rt*100).toFixed(1) : '0.0';
+      const color = rate >= 20 ? '#10b981' : (rate >= 10 ? '#f59e0b' : '#ef4444');
+      summaries.push({label: tiers[i]+' 上行比例', val: rate+'%', color: color});
+    }
+
+    html += '<div class="tm-summary">';
+    summaries.forEach(s => {
+      html += '<div class="tm-summary-card"><div class="num" style="color:'+s.color+'">'+s.val+'</div><div class="lbl">'+s.label+'</div></div>';
+    });
+    html += '</div></div>';
+
+    document.getElementById('transitionMatrix').innerHTML = html;
+
+    // Re-attach button click handlers
+    document.querySelectorAll('.region-btn').forEach(btn => {
+      btn.addEventListener('click', function(){
+        currentRegion = this.dataset.region;
+        if(regionData) renderHeatmap(regionData.regions[currentRegion]);
+      });
+    });
+  }
+
+  // Load JSON data
+  fetch('data/region_transition.json')
+    .then(r => r.json())
+    .then(data => {
+      regionData = data;
+      renderHeatmap(data.regions['all']);
+    })
+    .catch(err => {
+      document.getElementById('transitionMatrix').innerHTML =
+        '<div class="tm-section"><h2>📊 付费阶层迁移矩阵</h2><p style="color:#ef4444">数据加载失败: '+err+'</p></div>';
+    });
 })();
 
 // ========== INSPECTION DATA TREND ==========
