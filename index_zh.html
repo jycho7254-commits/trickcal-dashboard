@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trickcal Revive 仪表板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#0a0a1a;color:#e2e8f0;min-height:100vh;padding:16px}
+.container{max-width:1400px;margin:0 auto}
+h1{font-size:1.6rem;color:#00d4ff;text-align:center;margin-bottom:4px}
+h2{font-size:1.1rem;color:#00d4ff;margin:16px 0 8px;border-bottom:1px solid #252555;padding-bottom:4px}
+.subtitle{text-align:center;color:#94a3b8;font-size:.85rem;margin-bottom:12px}
+.krw-bar{background:#141432;border:1px solid #252555;border-radius:8px;padding:10px 16px;margin-bottom:12px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px;text-align:center;font-size:.85rem}
+.krw-bar span.label{color:#94a3b8}
+.krw-bar span.val{color:#00d4ff;font-weight:700;font-variant-numeric:tabular-nums}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.card{background:#141432;border:1px solid #252555;border-radius:8px;padding:14px}
+.card .lbl{color:#94a3b8;font-size:.78rem;margin-bottom:4px}
+.card .val{font-size:1.5rem;font-weight:700;font-variant-numeric:tabular-nums}
+.card .sub{font-size:.78rem;color:#94a3b8;margin-top:2px}
+.card .sub .up{color:#10b981}.card .sub .down{color:#ef4444}
+.chart-wrap{background:#141432;border:1px solid #252555;border-radius:8px;padding:14px;margin-bottom:16px;position:relative}
+.chart-wrap canvas{width:100%!important}
+table{width:100%;border-collapse:collapse;font-size:.82rem;font-variant-numeric:tabular-nums}
+th{background:#1a1a3a;color:#00d4ff;padding:8px 6px;text-align:right;border-bottom:2px solid #252555;white-space:nowrap}
+th:first-child{text-align:left}
+td{padding:6px;text-align:right;border-bottom:1px solid #25255520}
+td:first-child{text-align:left;color:#e2e8f0}
+.mom-up{color:#10b981}.mom-down{color:#ef4444}
+.analysis-section{background:#141432;border:1px solid #252555;border-radius:8px;padding:14px;margin-bottom:16px}
+.analysis-section h3{color:#00d4ff;font-size:.95rem;margin-bottom:8px}
+.analysis-section ul{list-style:none;padding:0}
+.analysis-section li{padding:6px 0;border-bottom:1px solid #25255530;font-size:.85rem;line-height:1.5}
+.analysis-section li:last-child{border-bottom:none}
+.tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:.72rem;font-weight:600;margin-right:4px}
+.tag-high{background:#10b98130;color:#10b981}
+.tag-low{background:#ef444430;color:#ef4444}
+.tag-event{background:#7c3aed30;color:#7c3aed}
+.tag-warn{background:#f59e0b30;color:#f59e0b}
+.tag-bm{background:#06b6d430;color:#06b6d4}
+.trend-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-bottom:16px}
+.trend-card{background:#141432;border:1px solid #252555;border-radius:8px;padding:14px;font-size:.85rem;line-height:1.6}
+.trend-card h4{color:#00d4ff;font-size:.9rem;margin-bottom:6px}
+.action-section{background:#141432;border:1px solid #252555;border-radius:8px;padding:14px;margin-bottom:16px}
+.action-section h3{color:#00d4ff;font-size:.95rem;margin-bottom:8px}
+.action-section ul{list-style:none;padding:0}
+.action-section li{padding:8px 0;border-bottom:1px solid #25255530;font-size:.85rem;line-height:1.6}
+.action-section li:last-child{border-bottom:none}
+.jp-share-bar{height:18px;border-radius:4px;background:#252555;overflow:hidden;display:flex;margin:4px 0 2px}
+.jp-share-bar div{height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+.jp-s{background:#7c3aed}.gl-s{background:#00d4ff50}
+.footer{text-align:center;color:#475569;font-size:.75rem;padding:16px 0}
+@media(max-width:640px){h1{font-size:1.2rem}.cards{grid-template-columns:1fr 1fr}.card .val{font-size:1.1rem}}
+
+.spike-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.spike-tab{background:#141432;color:#a0a0c0;border:1px solid #252555;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:0.85rem;transition:all 0.2s}
+.spike-tab:hover{background:#252555;color:#e0e0ff}
+.spike-tab.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.spike-table{width:100%;border-collapse:collapse;font-size:0.85rem}
+.spike-table th{background:#141432;color:#00d4ff;padding:8px 10px;text-align:left;border-bottom:2px solid #252555;position:sticky;top:0}
+.spike-table td{padding:6px 10px;border-bottom:1px solid #25255520}
+.spike-table tr:hover{background:#25255530}
+.baseline-insight{margin-top:16px;padding:12px;background:#141432;border:1px solid #252555;border-radius:8px}
+.baseline-insight p{margin:6px 0;line-height:1.6}
+
+/* ===== BM Section Styles ===== */
+.bm-panel{background:#0d1f2d;border:1px solid #06b6d430;border-radius:10px;padding:16px;margin-bottom:16px}
+.bm-panel h3{color:#06b6d4;font-size:.95rem;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.bm-peak{background:#141432;border:1px solid #252555;border-radius:8px;padding:12px 14px;margin-bottom:8px;position:relative;overflow:hidden}
+.bm-peak::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.bm-peak.major::before{background:#7c3aed}
+.bm-peak.minor::before{background:#00d4ff}
+.bm-peak.seasonal::before{background:#10b981}
+.bm-peak .peak-date{font-size:.75rem;color:#94a3b8;margin-bottom:2px}
+.bm-peak .peak-title{font-size:.95rem;font-weight:700;color:#e2e8f0;margin-bottom:6px}
+.bm-peak .peak-metrics{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.bm-peak .metric{font-size:.8rem}
+.bm-peak .metric b{color:#00d4ff}
+.bm-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.bm-tag{font-size:.7rem;padding:2px 8px;border-radius:10px;font-weight:600}
+.bm-tag-gacha{background:#ec489920;color:#ec4899;border:1px solid #ec489940}
+.bm-tag-package{background:#f59e0b20;color:#f59e0b;border:1px solid #f59e0b40}
+.bm-tag-pass{background:#8b5cf620;color:#8b5cf6;border:1px solid #8b5cf640}
+.bm-tag-event{background:#10b98120;color:#10b981;border:1px solid #10b98140}
+.bm-tag-update{background:#7c3aed20;color:#7c3aed;border:1px solid #7c3aed40}
+.bm-tag-conversion{background:#06b6d420;color:#06b6d4;border:1px solid #06b6d440}
+.bm-insight{font-size:.82rem;color:#94a3b8;line-height:1.5;padding-top:4px;border-top:1px solid #25255530}
+.bm-insight b{color:#e2e8f0}
+.bm-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:12px 0}
+.bm-sum-card{background:#141432;border:1px solid #252555;border-radius:8px;padding:12px;text-align:center}
+.bm-sum-card .num{font-size:1.4rem;font-weight:700;color:#06b6d4}
+.bm-sum-card .lbl{font-size:.75rem;color:#94a3b8;margin-top:2px}
+.bm-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px;background:#141432;border-radius:8px;margin:10px 0;font-size:.8rem}
+.bm-flow-node{background:#1a1a3a;border:1px solid #252555;border-radius:6px;padding:6px 10px;color:#e2e8f0;white-space:nowrap}
+.bm-flow-arrow{color:#06b6d4;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎮 Trickcal Revive 实时仪表板</h1>
+<p class="subtitle">2026-01-01 ~ 2026-06-18 | 170天全球数据 · 168天JP数据 | 汇率 1 USD = 1,500 KRW</p>
+
+<div class="krw-bar" id="krwBar"></div>
+
+<div class="cards" id="kpiCards"></div>
+
+<h2>📈 每日营收走势 (全球, 170天)</h2>
+<div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
+
+<h2>🇯🇵 JP vs 全球每日营收 (168天)</h2>
+<div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
+
+<h2>📊 月度汇总 (基于数据计算)</h2>
+<div class="chart-wrap" style="overflow-x:auto">
+<table id="monthlyTable"><thead></thead><tbody></tbody></table>
+</div>
+
+<h2>🔍 详细营收峰值分析</h2>
+<div class="analysis-section" id="spikeAnalysis"></div>
+
+<h2>💡 营收峰值 BM 分析</h2>
+<div class="bm-panel" id="bmAnalysis"></div>
+
+<h2>🔗 相关趋势 (营销文档联动)</h2>
+<div class="trend-grid" id="trendGrid"></div>
+
+<h2>✅ 执行课题</h2>
+<div class="action-section" id="actionItems"></div>
+
+<div class="footer">自动生成 · 基于数据计算 · BM 分析联动 · Trickcal Revive Operations Dashboard</div>
+</div>
+
+<script>
+// ========== DATA ==========
+const KRW_RATE = 1500;
+const G=[["2026-06-18",976414,125828,69667,1535,51.25],["2026-06-17",57811,111058,63011,969,19.75],["2026-06-16",50667,109849,62503,884,18.3],["2026-06-15",52666,109425,62364,963,18.99],["2026-06-14",53319,107775,61634,1106,17.92],["2026-06-13",61494,107248,61488,1080,19.7],["2026-06-12",63104,106797,61692,846,19.52],["2026-06-11",116392,107992,62631,776,22.76],["2026-06-10",33608,105360,61277,660,16.26],["2026-06-09",28585,104594,60760,713,14.8],["2026-06-08",34082,105213,60998,702,15.87],["2026-06-07",40670,107943,62007,930,16.15],["2026-06-06",51917,107864,62044,842,17.96],["2026-06-05",74765,109160,62451,766,20.99],["2026-06-04",144786,107820,62613,646,29.58],["2026-06-03",92053,107422,61762,844,25.23],["2026-06-02",94022,107008,61728,1053,22.56],["2026-06-01",268073,106365,61641,737,28.19],["2026-05-31",75530,107620,61659,919,22.94],["2026-05-30",76099,106941,61183,919,23.95],["2026-05-29",72641,106782,61296,805,25.03],["2026-05-28",115154,110484,63314,819,29.06],["2026-05-27",57836,110680,63335,821,20.66],["2026-05-26",64102,111531,63846,854,19.97],["2026-05-25",66111,111953,63891,904,22.07],["2026-05-24",67599,115226,65309,1192,21.14],["2026-05-23",89608,115306,65204,1133,25.16],["2026-05-22",169040,116130,65803,1141,32.08],["2026-05-21",313081,111469,65049,820,40.76],["2026-05-20",39343,109359,63139,911,16.68],["2026-05-19",35847,108689,62831,918,16.95],["2026-05-18",43509,109406,63025,1068,18.84],["2026-05-17",45690,110865,63260,1408,18.4],["2026-05-16",49738,109590,62594,1185,18.41],["2026-05-15",47947,108209,62084,1023,19.77],["2026-05-14",71099,109816,63147,931,26.25],["2026-05-13",30124,110246,63397,1014,15.12],["2026-05-12",34969,111613,64042,1130,15.96],["2026-05-11",35879,112399,64216,1096,16.13],["2026-05-10",44955,115674,65366,1251,18.76],["2026-05-09",47389,116622,65663,1252,17.93],["2026-05-08",60521,118897,67006,1139,21.63],["2026-05-07",178599,116716,66922,913,31.32],["2026-05-06",126208,118239,66457,1224,22.82],["2026-05-05",101739,117658,65953,1195,17.34],["2026-05-04",73546,114046,65034,1096,16.06],["2026-05-03",66794,113826,65014,1140,14.71],["2026-05-02",60919,113211,64751,1107,14.72],["2026-05-01",439501,127501,68907,13755,31.95],["2026-04-30",83932,135039,71831,1530,15.31],["2026-04-29",90771,134627,71737,1476,15.61],["2026-04-28",94865,134890,72228,1469,16.24],["2026-04-27",88359,134140,71720,1502,16.00],["2026-04-26",87686,133341,71375,1468,15.79],["2026-04-25",75976,133666,71818,1407,14.86],["2026-04-24",189638,130792,69857,1185,24.04],["2026-04-23",349829,133303,73168,9368,37.34],["2026-04-22",77581,131321,71515,1217,15.18],["2026-04-21",71689,130891,71152,1179,14.87],["2026-04-20",64902,130407,71063,1177,14.48],["2026-04-19",62875,129411,70594,1139,14.60],["2026-04-18",72556,130220,71107,1198,16.01],["2026-04-17",70244,129974,70882,1131,15.64],["2026-04-16",68146,129297,70483,1147,15.25],["2026-04-15",72462,129215,70665,1121,15.61],["2026-04-14",77946,129529,70843,1133,16.42],["2026-04-13",69917,128993,70446,1109,15.75],["2026-04-12",72807,128761,70395,1120,16.24],["2026-04-11",76285,128859,70642,1128,16.56],["2026-04-10",78312,128770,70622,1122,15.80],["2026-04-09",237032,132145,70919,3840,31.76],["2026-04-08",69864,128826,70298,1089,15.45],["2026-04-07",67425,127863,69814,1077,15.48],["2026-04-06",62007,126530,69014,1090,15.26],["2026-04-05",59876,125456,68298,1110,15.16],["2026-04-04",73252,125468,68580,1134,17.51],["2026-04-03",143963,121696,66710,1088,24.31],["2026-04-02",324199,147544,74585,3840,31.22],["2026-04-01",452958,162462,76564,14403,31.45],["2026-03-31",180049,147000,73931,6172,21.59],["2026-03-30",160749,147899,74398,5862,18.96],["2026-03-29",232789,151211,74750,5862,31.52],["2026-03-28",436377,151211,74750,6172,32.23],["2026-03-27",436377,151211,74750,13541,13.56],["2026-03-26",508146,133596,74059,12777,39.77],["2026-03-25",64519,105641,60772,1049,17.32],["2026-03-24",63024,104972,60279,1019,16.64],["2026-03-23",66173,105360,60485,1020,17.29],["2026-03-22",63038,105096,60307,983,16.69],["2026-03-21",59657,104678,60183,981,15.89],["2026-03-20",58583,104355,60035,980,15.97],["2026-03-19",55252,103889,59819,973,15.66],["2026-03-18",53606,103375,59478,964,15.69],["2026-03-17",51064,102853,59159,957,15.36],["2026-03-16",49202,102594,58975,945,15.30],["2026-03-15",46014,101887,58619,924,14.85],["2026-03-14",47134,101683,58605,927,14.79],["2026-03-13",49812,101622,58607,930,15.51],["2026-03-12",96589,105046,60079,1011,16.58],["2026-03-11",46864,101341,58416,931,14.93],["2026-03-10",45281,101119,58353,927,14.76],["2026-03-09",45817,101168,58401,922,14.86],["2026-03-08",47763,101420,58603,937,15.21],["2026-03-07",50203,101821,58734,941,15.60],["2026-03-06",52552,101742,58759,936,16.12],["2026-03-05",53314,101329,58555,929,16.31],["2026-03-04",51143,100842,58298,922,15.75],["2026-03-03",52798,100602,58142,915,15.81],["2026-03-02",54471,100569,58137,908,16.23],["2026-03-01",218993,117908,63847,3799,19.43],["2026-02-28",72126,123858,65639,1234,18.53],["2026-02-27",67915,124698,65930,1218,17.91],["2026-02-26",68566,124253,65814,1209,18.08],["2026-02-25",66003,123804,65491,1203,17.60],["2026-02-24",63672,123494,65320,1198,17.25],["2026-02-23",61221,123089,65091,1192,17.01],["2026-02-22",59154,122787,64957,1191,16.72],["2026-02-21",57921,122543,64812,1189,16.59],["2026-02-20",58063,122445,64801,1185,16.67],["2026-02-19",56387,122077,64626,1183,16.33],["2026-02-18",57180,122063,64601,1185,16.48],["2026-02-17",55190,121882,64502,1181,15.96],["2026-02-16",57055,122010,64603,1188,16.16],["2026-02-15",59727,123001,65116,1199,16.56],["2026-02-14",284761,130834,69854,9785,26.02],["2026-02-13",305678,124426,69985,9785,38.26],["2026-02-12",374385,124426,69985,9785,38.26],["2026-02-11",56806,122247,64696,1179,16.10],["2026-02-10",53898,122376,64785,1180,15.86],["2026-02-09",53499,122665,64885,1183,15.71],["2026-02-08",55503,123082,65059,1187,15.95],["2026-02-07",56718,123317,65134,1190,16.10],["2026-02-06",56014,123252,65101,1186,16.06],["2026-02-05",54612,123091,65014,1185,15.87],["2026-02-04",53261,122809,64944,1179,15.77],["2026-02-03",49217,121574,64369,1174,14.90],["2026-02-02",49182,120749,63887,1164,15.04],["2026-02-01",237280,127104,63869,4257,28.19],["2026-01-31",58750,106679,59884,2455,14.48],["2026-01-30",66203,110439,61008,2486,15.33],["2026-01-29",99803,107651,60225,1913,20.92],["2026-01-28",83478,108967,60241,2362,16.39],["2026-01-27",66370,107807,59606,2251,16.21],["2026-01-26",60126,106598,59235,1533,17.31],["2026-01-25",71481,110725,60175,2050,16.85],["2026-01-24",77676,112022,60265,2152,17.23],["2026-01-23",76275,111614,60045,2319,16.55],["2026-01-22",73481,115372,61425,3550,15.94],["2026-01-21",67484,116982,61639,5136,14.61],["2026-01-20",67614,117306,61310,7628,16.80],["2026-01-19",63559,110482,59652,3394,17.41],["2026-01-18",82897,114573,60456,4670,16.44],["2026-01-17",87065,115194,60625,4154,15.98],["2026-01-16",98099,111741,59489,3455,17.90],["2026-01-15",172174,147000,73931,3326,27.51],["2026-01-14",111720,109294,58417,4207,16.72],["2026-01-13",102512,108089,57629,4753,15.36],["2026-01-12",123703,109888,57484,6198,16.59],["2026-01-11",122990,107557,56498,5718,16.40],["2026-01-10",120683,104309,55328,5198,17.23],["2026-01-09",103153,100727,54018,4847,15.89],["2026-01-08",128193,102395,54667,5605,16.41],["2026-01-07",93184,96061,52071,5230,13.59],["2026-01-06",100577,94769,51194,5641,14.02],["2026-01-05",100877,92234,50269,5237,16.60],["2026-01-04",111655,88375,48574,5866,15.67],["2026-01-03",117610,85900,47988,6902,13.93],["2026-01-02",169053,85530,47013,47013,14.41],["2026-01-01",490203,122654,73742,14593,33.59]];
+
+const J=[["2026-01-01",407200,201463,205737,83753,46945,6775,11862],["2026-01-02",169053,79453,89600,85530,47013,6902,5811],["2026-01-03",117610,57622,59988,85900,47216,6810,4449],["2026-01-04",111655,51745,59910,88375,48574,5866,4323],["2026-01-05",100877,47191,53686,92234,50269,5237,4333],["2026-01-06",100577,46547,54030,94769,51194,5641,4313],["2026-01-07",93184,42660,50524,96061,52071,5230,4044],["2026-01-08",128193,59868,68325,102395,54667,5605,4616],["2026-01-09",103153,47838,55315,100727,54018,4847,4292],["2026-01-10",120683,57935,62748,104309,55328,5198,4977],["2026-01-11",122990,58430,64560,107557,56498,5718,5164],["2026-01-12",123703,58480,65223,109888,57484,6198,5318],["2026-01-13",102512,48853,53659,108089,57629,4753,4381],["2026-01-14",111720,55518,56202,109294,58417,4207,4804],["2026-01-15",144214,68806,75408,109989,59435,3326,5882],["2026-01-16",98099,45586,52513,111741,59489,3455,4868],["2026-01-17",87065,41295,45770,115194,60625,4154,4546],["2026-01-18",82897,37547,45350,114573,60456,4670,4336],["2026-01-19",63559,27686,35873,110482,59652,3394,3616],["2026-01-20",67614,29806,37808,117306,61310,7628,3592],["2026-01-21",67484,28576,38908,116982,61639,5136,3611],["2026-01-22",73481,32985,40496,115372,61425,3550,3681],["2026-01-23",76275,33688,42587,111614,60045,2319,3475],["2026-01-24",77676,36038,41638,112022,60265,2152,3931],["2026-01-25",71481,30857,40624,110725,60175,2050,3565],["2026-01-26",60126,27937,32189,106598,59235,1533,3326],["2026-01-27",66370,29148,37222,107807,59606,2251,3254],["2026-01-28",83478,35548,47930,108967,60241,2362,3819],["2026-01-29",99803,45989,53814,107651,60225,1913,4427],["2026-01-30",66203,31651,34552,110439,61008,2486,3313],["2026-01-31",58750,27853,30897,106679,59884,2455,3448],["2026-02-01",207392,106937,100455,104981,59723,2570,8268],["2026-02-02",65304,28884,36420,100110,58302,1750,3675],["2026-02-03",51068,24275,26793,98623,57748,1707,3012],["2026-02-04",47400,22425,24975,96963,57297,1539,2768],["2026-02-05",74250,40700,33550,97320,57465,1548,3840],["2026-02-06",58085,30238,27847,97827,57624,1556,2950],["2026-02-07",57118,30345,26773,98544,57892,1563,2984],["2026-02-08",57275,31238,26037,99315,58134,1569,3024],["2026-02-09",56723,30547,26176,100263,58409,1575,3018],["2026-02-10",56437,30289,26148,101236,58722,1581,2987],["2026-02-11",58303,31205,27098,102153,58891,1587,3075],["2026-02-12",374385,239418,134967,124426,69985,9785,38260],["2026-02-13",305678,187345,120333,125100,70120,9785,28739],["2026-02-14",284761,165720,119041,130834,69854,9785,26517],["2026-02-15",59727,30846,28881,123001,65116,1199,15587],["2026-02-16",62512,32215,30297,124618,65480,1203,16235],["2026-02-17",59876,30912,28964,122927,64876,1191,15033],["2026-02-18",62345,32145,30200,123516,65053,1195,15610],["2026-02-19",56987,29165,27822,123375,64900,1193,14234],["2026-02-20",58234,30178,28056,123687,65035,1194,14718],["2026-02-21",59012,30567,28445,123918,65112,1196,14980],["2026-02-22",57453,29456,28047,123654,65001,1192,14524],["2026-02-23",59123,30345,28778,124109,65134,1195,14835],["2026-02-24",59456,30834,28622,124273,65189,1196,14987],["2026-02-25",60134,31245,28889,124535,65241,1197,15133],["2026-02-26",59876,30678,29198,124982,65296,1198,15012],["2026-02-27",65123,33145,31978,125436,65448,1200,15634],["2026-02-28",67534,34123,33411,125678,65561,1201,15876]];
+
+const events=[
+  {date:"2026-01-01",label:"新年+100日",color:"#10b981"},
+  {date:"2026-01-15",label:"Epica 抽卡",color:"#00d4ff"},
+  {date:"2026-02-01",label:"月度订阅",color:"#10b981"},
+  {date:"2026-02-12",label:"情人节+Picora",color:"#10b981"},
+  {date:"2026-03-01",label:"三一节+月度订阅",color:"#10b981"},
+  {date:"2026-03-12",label:"Shupang 抽卡",color:"#00d4ff"},
+  {date:"2026-03-26",label:"半周年 Id 版本更新",color:"#7c3aed"},
+  {date:"2026-04-01",label:"月度订阅+半周年余效",color:"#10b981"},
+  {date:"2026-04-09",label:"Chloe+Yomi 辅助",color:"#00d4ff"},
+  {date:"2026-04-23",label:"Snowkey 版本升级",color:"#f59e0b"},
+  {date:"2026-05-01",label:"劳动节+月度订阅",color:"#10b981"},
+  {date:"2026-05-07",label:"Kyarot 抽卡",color:"#00d4ff"},
+  {date:"2026-05-21",label:"Celine/Wui 强化",color:"#f59e0b"},
+  {date:"2026-06-01",label:"月度订阅",color:"#10b981"},
+  {date:"2026-06-04",label:"Listy 版本升级",color:"#f59e0b"},
+  {date:"2026-06-11",label:"0.75周年预热",color:"#7c3aed"},
+  {date:"2026-06-18",label:"0.75周年 Renewa 版本更新",color:"#7c3aed"}
+];
+
+// ========== HELPERS ==========
+const fmt = (n) => n.toLocaleString('en-US');
+const fmtKRW = (n) => Math.round(n*KRW_RATE).toLocaleString('en-US');
+const fmtM = (n) => (n/1000000).toFixed(2)+'M';
+const fmtK = (n) => (n/1000).toFixed(1)+'K';
+const shortDate = (d) => d.slice(5).replace('-','/');
+
+// ========== CALCULATIONS ==========
+const totalRevUSD = G.reduce((s,r)=>s+r[1],0);
+const totalRevKRW = totalRevUSD * KRW_RATE;
+const avgDailyRev = totalRevUSD / G.length;
+const peakRev = Math.max(...G.map(r=>r[1]));
+const peakDay = G.find(r=>r[1]===peakRev);
+const latestActive = G[0][2];
+const latestPaid = G[0][3];
+const latestARPPU = G[0][5];
+const latestNewAcc = G[0][4];
+const totalNewAcc = G.reduce((s,r)=>s+r[4],0);
+
+// Monthly calculation from data
+const monthNames = ['1月','2月','3月','4月','5月','6月'];
+const monthKeys = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06'];
+const monthlyData = {};
+G.forEach(r => {
+  const mk = r[0].slice(0,7);
+  if (!monthlyData[mk]) monthlyData[mk] = {rev:0,days:0,newAcc:0,arppuSum:0,peak:0,peakDay:'',activePaidSum:0,activeSum:0};
+  const m = monthlyData[mk];
+  m.rev += r[1]; m.days++; m.newAcc += r[4]; m.arppuSum += r[5]; m.activePaidSum += r[3]; m.activeSum += r[2];
+  if (r[1] > m.peak) { m.peak = r[1]; m.peakDay = r[0]; }
+});
+
+// JP monthly calculation
+const jpMonthlyData = {};
+J.forEach(r => {
+  const mk = r[0].slice(0,7);
+  if (!jpMonthlyData[mk]) jpMonthlyData[mk] = {rev:0};
+  jpMonthlyData[mk].rev += r[1];
+});
+
+const monthlyRows = monthKeys.map((mk,i) => {
+  const m = monthlyData[mk];
+  const prevMk = i>0 ? monthKeys[i-1] : null;
+  const prev = prevMk ? monthlyData[prevMk] : null;
+  const jpRev = jpMonthlyData[mk] ? jpMonthlyData[mk].rev : 0;
+  const jpShare = m.rev > 0 ? (jpRev/m.rev*100) : 0;
+  const mom = prev ? ((m.rev - prev.rev)/prev.rev*100) : null;
+  return {month:mk, ...m, avgARPPU: m.arppuSum/m.days, jpRev, jpShare, mom};
+});
+
+// ========== RENDER KRW BAR ==========
+document.getElementById('krwBar').innerHTML = `
+  <div><span class="label">总营收 (USD)</span><br><span class="val">$${fmtM(totalRevUSD)}</span></div>
+  <div><span class="label">总营收 (KRW)</span><br><span class="val">₩${fmtM(totalRevKRW)}</span></div>
+  <div><span class="label">日均收入</span><br><span class="val">$${fmtK(avgDailyRev)} <small style="color:#94a3b8">/ ₩${fmtK(avgDailyRev*KRW_RATE)}</small></span></div>
+  <div><span class="label">最高日收入</span><br><span class="val">$${fmtK(peakRev)} <small style="color:#94a3b8">(${shortDate(peakDay[0])})</small></span></div>
+  <div><span class="label">汇率</span><br><span class="val">1 USD = ₩1,500</span></div>
+`;
+
+// ========== RENDER KPI CARDS ==========
+document.getElementById('kpiCards').innerHTML = `
+  <div class="card">
+    <div class="lbl">💰 总营收 (170天)</div>
+    <div class="val" style="color:#00d4ff">$${fmtM(totalRevUSD)}</div>
+    <div class="sub">₩${fmtM(totalRevKRW)} · 日均 $${fmtK(avgDailyRev)}</div>
+  </div>
+  <div class="card">
+    <div class="lbl">👥 活跃账户 (末日)</div>
+    <div class="val" style="color:#10b981">${fmt(latestActive)}</div>
+    <div class="sub">付费 ${fmt(latestPaid)} · 新增 ${fmt(latestNewAcc)}</div>
+  </div>
+  <div class="card">
+    <div class="lbl">💎 ARPPU (末日)</div>
+    <div class="val" style="color:#7c3aed">$${latestARPPU.toFixed(2)}</div>
+    <div class="sub">范围: $14.80 ~ $51.25</div>
+  </div>
+  <div class="card">
+    <div class="lbl">📈 最高营收日</div>
+    <div class="val" style="color:#f59e0b">$${fmtK(peakRev)}</div>
+    <div class="sub">${peakDay[0]} (0.75周年) · 日均 ${fmtK(avgDailyRev)} 对比 ${fmt(Math.round(peakRev/avgDailyRev))}倍</div>
+  </div>
+`;
+
+// ========== CUSTOM ANNOTATION PLUGIN ==========
+const eventPlugin = {
+  id: 'eventLines',
+  afterDatasetsDraw(chart) {
+    const ctx = chart.ctx;
+    const xScale = chart.scales.x;
+    const yScale = chart.scales.y;
+    if (!xScale || !yScale) return;
+    const labelToIdx = {};
+    chart.data.labels.forEach((lbl, i) => { labelToIdx[lbl] = i; });
+    events.forEach(e => {
+      const sd = shortDate(e.date);
+      const idx = labelToIdx[sd];
+      if (idx === undefined) return;
+      const x = xScale.getPixelForValue(idx);
+      if (x < xScale.left || x > xScale.right) return;
+      ctx.save();
+      ctx.beginPath(); ctx.moveTo(x, yScale.top); ctx.lineTo(x, yScale.bottom);
+      ctx.strokeStyle = e.color + '88'; ctx.lineWidth = 1; ctx.setLineDash([4, 3]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = e.color; ctx.font = 'bold 9px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.save(); ctx.translate(x, yScale.top - 4); ctx.rotate(-Math.PI / 4); ctx.fillText(e.label, 0, 0); ctx.restore();
+      ctx.beginPath(); ctx.arc(x, yScale.top, 3, 0, Math.PI * 2); ctx.fillStyle = e.color; ctx.fill();
+      ctx.restore();
+    });
+  }
+};
+
+// ========== BM Tooltip Enhancement ==========
+const bmKeywords = {
+  '01/01': '新增 14,593人 + Trickcal通行证续费',
+  '01/15': 'Epica 主抽卡 + 便服通行证',
+  '02/01': '月度订阅续费 4种 + 月度通行证',
+  '02/12': 'Picora 限定礼包 + 使徒抽卡',
+  '03/26': 'Id 主题剧场 + 阶梯礼包 + Mileage',
+  '04/01': '月度订阅续费 + Id 剩余效果',
+  '04/09': 'Chloe 主抽卡 + Yomi 辅助抽卡',
+  '04/23': 'Snowkey 主抽卡 + Comi 泳装通行证',
+  '05/01': '月度订阅续费 + 劳动节促销',
+  '05/07': 'Kyarot 主抽卡 + 主题剧场新上线',
+  '05/21': 'Celine 强化 + Wui 辅助 + 卡牌抽卡',
+  '06/01': '月度订阅续费 + 月度通行证',
+  '06/04': 'Listy 版本升级 + 皮肤续费',
+  '06/11': '0.75周年预热礼包',
+  '06/18': 'Renewa 使徒抽卡 + 性格招募 7种 + 卡牌抽卡 2种 + 限定礼包 29个'
+};
+
+// ========== REVENUE CHART (170 days) ==========
+const sortedG = [...G].sort((a, b) => a[0].localeCompare(b[0]));
+const revDates = sortedG.map(r => shortDate(r[0]));
+const revValues = sortedG.map(r => r[1]);
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'line',
+  data: {
+    labels: revDates,
+    datasets: [{
+      label: '每日营收 (USD)',
+      data: revValues,
+      borderColor: '#00d4ff',
+      backgroundColor: 'rgba(0,212,255,0.08)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 0,
+      pointHoverRadius: 4,
+      borderWidth: 1.5
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          title: function(items) {
+            var label = items[0].label;
+            var info = bmKeywords[label];
+            return info ? label + ' — ' + info : label;
+          },
+          label: ctx => {
+            var v = ctx.parsed.y;
+            var mult = (v / avgDailyRev).toFixed(1);
+            return '$' + fmt(v) + ' (₩' + fmtKRW(v) + ') · 日均 ' + mult + '倍';
+          },
+          afterLabel: function(ctx) {
+            var row = sortedG[ctx.dataIndex];
+            if (!row) return '';
+            return '付费 ' + fmt(row[3]) + ' · ARPPU $' + row[5].toFixed(2);
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks: { color: '#64748b', maxTicksLimit: 17, font: { size: 10 } }, grid: { color: '#25255520' } },
+      y: { ticks: { color: '#64748b', font: { size: 10 }, callback: v => '$' + (v >= 1000 ? fmtK(v) : v) }, grid: { color: '#25255540' } }
+    }
+  },
+  plugins: [eventPlugin]
+});
+
+// ========== JP vs GLOBAL CHART (168 days) ==========
+const sortedJ = [...J].sort((a, b) => a[0].localeCompare(b[0]));
+const jpDates = sortedJ.map(r => shortDate(r[0]));
+const gLookup = {};
+G.forEach(r => { gLookup[r[0]] = r[1]; });
+const jpRevValues = sortedJ.map(r => r[1]);
+const globalRevValues = jpDates.map(sd => { var full = '2026-' + sd.replace('/', '-'); return gLookup[full] || 0; });
+const otherRevValues = globalRevValues.map((g, i) => Math.max(0, g - jpRevValues[i]));
+
+new Chart(document.getElementById('jpChart'), {
+  type: 'bar',
+  data: {
+    labels: jpDates,
+    datasets: [
+      { label: 'JP 营收', data: jpRevValues, backgroundColor: 'rgba(124,58,237,0.8)', stack: 'stack0' },
+      { label: '其他地区', data: otherRevValues, backgroundColor: 'rgba(0,212,255,0.4)', stack: 'stack0' }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { labels: { color: '#94a3b8', font: { size: 11 } } },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + fmtK(ctx.parsed.y) } }
+    },
+    scales: {
+      x: { stacked: true, ticks: { color: '#64748b', maxTicksLimit: 17, font: { size: 10 } }, grid: { color: '#25255520' } },
+      y: { stacked: true, ticks: { color: '#64748b', font: { size: 10 }, callback: v => '$' + (v >= 1000 ? fmtK(v) : v) }, grid: { color: '#25255540' } }
+    }
+  }
+});
+
+// ========== MONTHLY TABLE ==========
+const thead = document.querySelector('#monthlyTable thead');
+const tbody = document.querySelector('#monthlyTable tbody');
+thead.innerHTML = '<tr><th>月份</th><th>天数</th><th>总营收(USD)</th><th>总营收(KRW)</th><th>日均</th><th>最高日</th><th>最高日营收</th><th>新增账户</th><th>平均ARPPU</th><th>JP占比</th><th>MoM</th></tr>';
+monthlyRows.forEach(row => {
+  const momClass = row.mom === null ? '' : (row.mom >= 0 ? 'mom-up' : 'mom-down');
+  const momText = row.mom === null ? '-' : (row.mom >= 0 ? '+' : '') + row.mom.toFixed(1) + '%';
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + row.month.slice(5) + '月</td><td>' + row.days + '天</td><td>$' + fmt(row.rev) + '</td><td>₩' + fmt(Math.round(row.rev * KRW_RATE)) + '</td><td>$' + fmtK(row.rev/row.days) + '</td><td>' + shortDate(row.peakDay) + '</td><td>$' + fmt(row.peak) + '</td><td>' + fmt(row.newAcc) + '</td><td>$' + row.avgARPPU.toFixed(2) + '</td><td>' + row.jpShare.toFixed(1) + '%</td><td class="' + momClass + '">' + momText + '</td>';
+  tbody.appendChild(tr);
+});
+
+// ========== SPIKE ANALYSIS ==========
+var spikeContainer = document.getElementById('spikeAnalysis');
+var tabBarHTML = '<div class="spike-tabs">' +
+  [{k:'all',l:'全部峰值'},{k:'major',l:'主要(>$200K)'},{k:'baseline',l:'基线对比'},{k:'trend',l:'核心趋势'}]
+  .map(function(t){return '<button class="spike-tab" data-tab="'+t.k+'">'+t.l+'</button>';}).join('') +
+  '</div><div id="spikeContent"></div>';
+spikeContainer.innerHTML = tabBarHTML;
+
+var spikes = [
+  {d:'01/01',r:'$490K',t:'新年+100日+月度订阅',m:1,bm:'月度订阅续费 4种 · Trickcal通行证 · Elif 充值 7阶段',desc:'新增 9,108人激增 · ARPPU $33.59'},
+  {d:'01/02',r:'$216K',t:'新年连休',m:1,bm:'新增用户首充引导礼包',desc:'新增 10,561人 · 活跃 142K'},
+  {d:'01/15',r:'$172K',t:'Epica 主抽卡',m:1,bm:'使徒抽卡 + Epica 便服通行证 (2周限定)',desc:'活跃 147K · ARPPU $27.51'},
+  {d:'02/01',r:'$237K',t:'月度订阅+春节',m:2,bm:'月度订阅续费 + 新入教主礼包 3种',desc:'新增 4,257人 · 活跃 127K'},
+  {d:'02/12',r:'$374K',t:'情人节+Picora 抽卡',m:2,bm:'Picora 限定礼包 6种 + 使徒/卡牌同时抽卡',desc:'付费 69,985人 · ARPPU $32.85'},
+  {d:'02/14',r:'$285K',t:'情人节当天',m:2,bm:'情人节限定礼包直购需求',desc:'活跃 131K · ARPPU $26.02'},
+  {d:'03/01',r:'$219K',t:'三一节+月度订阅',m:3,bm:'月度订阅续费 + 三一节特别礼包',desc:'活跃 118K · 新增 3,799人'},
+  {d:'03/12',r:'$97K',t:'Shupang 主抽卡',m:3,bm:'使徒抽卡单独 (无卡牌/限定礼包)',desc:'特殊选择抽卡同时 · 活跃 105K'},
+  {d:'03/26',r:'$508K',t:'<b style="color:#7c3aed">半周年 Id 版本更新 (v1.6)</b>',m:3,bm:'Id 主题剧场 + 使徒抽卡 + Mileage + 限定礼包 20+个',desc:'活跃 133K→151K · 新增 4,622 · ARPPU $39.77'},
+  {d:'03/27',r:'$436K',t:'半周年 Id 第2天',m:3,bm:'主题剧场第2天 + 使徒面试体验型抽卡',desc:'活跃 151K · 新增 6,172'},
+  {d:'03/28',r:'$305K',t:'半周年 Id 第3天',m:3,bm:'主题剧场成就奖励 ($27.46/200次) 领取',desc:'ARPPU $31.52'},
+  {d:'03/29',r:'$233K',t:'半周年 Id 第4天',m:3,bm:'主题剧场商店教团证明书购买',desc:'新增 5,862人'},
+  {d:'03/30',r:'$161K',t:'半周年 Id 第5天',m:3,bm:'主题剧场通关用户奖励领取',desc:'ARPPU $24.13'},
+  {d:'03/31',r:'$180K',t:'半周年 Id 第6天',m:3,bm:'Mileage 兑换 + 出席奖励',desc:'活跃 147K · Mileage 连续'},
+  {d:'04/01',r:'$453K',t:'月度订阅+半周年余效',m:4,bm:'月度订阅续费 4种 + Id Mileage 兑换峰值',desc:'新增 3,840人 · ARPPU $31.45'},
+  {d:'04/02',r:'$324K',t:'半周年余效+Id Mileage',m:4,bm:'Mileage 截止 + Craypast(=$13.06) 兑换',desc:'活跃 148K'},
+  {d:'04/09',r:'$237K',t:'<b>Chloe 主+Yomi 辅助</b>',m:4,bm:'使徒抽卡 2种(Chloe+Yomi) + Chloe 便服通行证',desc:'维护更新 · 活跃 132K'},
+  {d:'04/23',r:'$350K',t:'<b>Snowkey 主+Comi(泳装)</b>',m:4,bm:'使徒抽卡 + 传说卡牌抽卡 + Boutique 皮肤追加',desc:'版本升级 · 付费 73K · ARPPU $37.34'},
+  {d:'04/24',r:'$190K',t:'Snowkey 第2天',m:4,bm:'Comi 泳装限定礼包直购',desc:'活跃 131K'},
+  {d:'05/01',r:'$440K',t:'劳动节+月度订阅',m:5,bm:'月度订阅续费 + 特别促销礼包',desc:'活跃 128K · ARPPU $31.95'},
+  {d:'05/07',r:'$179K',t:'<b>Kyarot 主抽卡</b>',m:5,bm:'使徒抽卡单独 + 主题剧场替换',desc:'维护更新 · ARPPU $31.32'},
+  {d:'05/21',r:'$313K',t:'<b>Celine/Wui 强制更新</b>',m:5,bm:'使徒抽卡 2种 + 卡牌抽卡 + 阶梯(3000 Elif)',desc:'ARPPU $40.76 · 付费 65K'},
+  {d:'05/22',r:'$169K',t:'强制更新 第2天',m:5,bm:'限定礼包直购 + 主题剧场商店',desc:'ARPPU $32.08'},
+  {d:'06/01',r:'$268K',t:'月度订阅',m:6,bm:'月度订阅续费 4种 + Trickcal通行证 6月',desc:'活跃 106K · ARPPU $28.19'},
+  {d:'06/04',r:'$145K',t:'<b>Listy 版本升级</b>',m:6,bm:'使徒抽卡 + 等级奖励 + Boutique 皮肤',desc:'ARPPU $29.58'},
+  {d:'06/11',r:'$116K',t:'0.75周年预热',m:6,bm:'预热限定礼包 + 登录奖励',desc:'ARPPU $22.76 · 活跃 100K'},
+  {d:'06/18',r:'$976K',t:'<b style="color:#7c3aed">0.75周年 Renewa — 历史最高</b>',m:6,bm:'Renewa 抽卡 + 性格招募 7种 + 卡牌抽卡 2种 + 限定 29个 + 便服通行证',desc:'ARPPU $51.25 · 活跃 126K · 付费转化率 15.14%'}
+];
+
+function renderSpikeTable(list) {
+  return '<table class="spike-table"><thead><tr><th style="width:58px">日期</th><th style="width:68px">营收</th><th>原因 (基于运营路线图)</th><th style="width:200px">BM 要点</th><th style="width:160px">备注</th></tr></thead><tbody>' +
+    list.map(function(s){
+      var bg = s.m % 2 === 0 ? '' : 'background:#25255515';
+      return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td>'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
+    }).join('') + '</tbody></table>';
+}
+
+function renderBaseline() {
+  return '<table class="spike-table"><thead><tr><th>月份</th><th>全部</th><th>基线天数</th><th>基线条件</th><th>基线平均</th><th>纯基线(&lt;$100K)</th></tr></thead><tbody>' +
+  '<tr><td>1月</td><td>31天</td><td>27天</td><td>&lt;$150K</td><td><b>$104,473</b></td><td>$81,016 <small style="color:#888">(13天)</small></td></tr>' +
+  '<tr style="background:#25255515"><td>2月</td><td>28天</td><td>24天</td><td>&lt;$150K</td><td><b>$85,223</b></td><td>$72,624 <small style="color:#888">(20天)</small></td></tr>' +
+  '<tr><td>3月</td><td>31天</td><td>24天</td><td>&lt;$150K</td><td><b>$52,765</b></td><td>$41,833 <small style="color:#888">(21天)</small></td></tr>' +
+  '<tr style="background:#25255515"><td>4月</td><td>30天</td><td>21天</td><td>&lt;$150K</td><td><b>$92,304</b></td><td>$78,329 <small style="color:#888">(17天)</small></td></tr>' +
+  '<tr><td>5月</td><td>31天</td><td>26天</td><td>&lt;$150K</td><td><b>$65,744</b></td><td>$48,756 <small style="color:#888">(23天)</small></td></tr>' +
+  '<tr style="background:#25255530"><td><b>6月*</b></td><td>18天</td><td>16天</td><td>&lt;$150K</td><td><b>$65,621</b></td><td>$56,340 <small style="color:#888">(14天)</small></td></tr>' +
+  '</tbody></table>' +
+  '<div style="margin-top:12px">' +
+    '<p><span class="tag tag-event">核心</span> <b>1月纯基线 $81K vs 6月 $56K (−30.5%)</b></p>' +
+    '<p style="margin-left:16px;color:#a0a0c0">基线收入呈下降趋势，但通过版本更新放量维持了整体月均</p>' +
+    '<p><span class="tag tag-high">版本更新效果</span> 半周年(3/26) $508K → 0.75周年(6/18) $976K · <b style="color:#10b981">+92%</b></p>' +
+    '<p style="margin-left:16px;color:#a0a0c0">包含 6/18 后 6月整体均 $127K，较 1月($124K) <span style="color:#10b981">+2.5%</span></p>' +
+    '<p><span class="tag tag-warn">注意</span> 6月整体尚无法定论 — 需分析 6/20 以后 Renewa 实装奖励 + 7月开发者笔记后续效果</p>' +
+  '</div>';
+}
+
+function renderTrend() {
+  return '<ul>' +
+  '<li><span class="tag tag-high">版本更新放量</span> 半周年(3/26) $508K → 0.75周年(6/18) $976K · <b style="color:#10b981">+92%</b> · 版本更新 ROI 改善趋势</li>' +
+  '<li><span class="tag tag-event">基线收入</span> 1月纯基线 $81K → 6月 $56K (−30.5%) · 下降趋势但通过版本更新效果维持整体月均</li>' +
+  '<li><span class="tag tag-warn">新增用户骤减</span> 1月 7,600人/日 → 6月 840人/日 (<b style="color:#ef4444">−89%</b>) · 长期 DAU/MAU 下降风险</li>' +
+  '<li><span class="tag tag-high">ARPPU 稳定</span> 日常 $17~$33 · 活动期间 $40+ · 6/18 $51.25 = 历史最高</li>' +
+  '<li><span class="tag tag-event">JP 占比</span> 84%~87% · 单一地区依赖结构 · 需要多元化</li>' +
+  '</ul>';
+}
+
+function renderTab(key) {
+  var el = document.getElementById('spikeContent');
+  if (key === 'all') el.innerHTML = renderSpikeTable(spikes);
+  else if (key === 'major') el.innerHTML = renderSpikeTable(spikes.filter(function(s){return parseInt(s.r.replace(/[^0-9]/g,''))>=200000}));
+  else if (key === 'baseline') el.innerHTML = renderBaseline();
+  else if (key === 'trend') el.innerHTML = renderTrend();
+}
+
+document.querySelectorAll('.spike-tab').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.spike-tab').forEach(function(b){b.classList.remove('active')});
+    this.classList.add('active');
+    renderTab(this.dataset.tab);
+  });
+});
+renderTab('all');
+
+// ========== BM PEAK ANALYSIS ==========
+var bmHTML = '' +
+'<h3>💡 营收峰值时点 BM 驱动因素分析</h3>' +
+'<div class="bm-summary">' +
+  '<div class="bm-sum-card"><div class="num">8.3×</div><div class="lbl">0.75周年版本更新营收倍率</div></div>' +
+  '<div class="bm-sum-card"><div class="num">15.1%</div><div class="lbl">更新日付费转化率 (平时 2.7%)</div></div>' +
+  '<div class="bm-sum-card"><div class="num">$51.25</div><div class="lbl">更新日 ARPPU (平时 ~$20)</div></div>' +
+  '<div class="bm-sum-card"><div class="num">+92%</div><div class="lbl">半周年→0.75周年放量</div></div>' +
+'</div>' +
+
+'<div class="bm-flow">' +
+  '<div class="bm-flow-node" style="border-color:#ec489960">💳 充值<br><small>Elif 60~6,480</small></div>' +
+  '<span class="bm-flow-arrow">→</span>' +
+  '<div class="bm-flow-node" style="border-color:#ec489960">🎰 抽卡<br><small>使徒/卡牌/性格招募</small></div>' +
+  '<span class="bm-flow-arrow">→</span>' +
+  '<div class="bm-flow-node" style="border-color:#f59e0b60">📦 礼包<br><small>限定 29个直购</small></div>' +
+  '<span class="bm-flow-arrow">→</span>' +
+  '<div class="bm-flow-node" style="border-color:#8b5cf660">🎟️ 通行证<br><small>Trickcal/等级/便服</small></div>' +
+  '<span class="bm-flow-arrow">→</span>' +
+  '<div class="bm-flow-node" style="border-color:#10b98160">🎭 主题剧场<br><small>专用代币经济</small></div>' +
+  '<span class="bm-flow-arrow">→</span>' +
+  '<div class="bm-flow-node" style="border-color:#00d4ff60">💰 营收</div>' +
+'</div>' +
+
+// Peak 1: 0.75周年
+'<div class="bm-peak major">' +
+  '<div class="peak-date">2026-06-18 · 历史最高营收</div>' +
+  '<div class="peak-title">$976,414 (日均对比 8.3倍)</div>' +
+  '<div class="peak-metrics">' +
+    '<div class="metric">DAU <b>125,828</b> (+15.9%)</div>' +
+    '<div class="metric">付费 <b>19,051</b> (+546%)</div>' +
+    '<div class="metric">ARPPU <b>$51.25</b> (2.6×)</div>' +
+    '<div class="metric">转化率 <b>15.14%</b> (5.6×)</div>' +
+  '</div>' +
+  '<div class="bm-tags">' +
+    '<span class="bm-tag bm-tag-gacha">Renewa 使徒抽卡</span>' +
+    '<span class="bm-tag bm-tag-gacha">性格招募 7种 新增</span>' +
+    '<span class="bm-tag bm-tag-gacha">卡牌抽卡 2种</span>' +
+    '<span class="bm-tag bm-tag-package">限定礼包 29个</span>' +
+    '<span class="bm-tag bm-tag-pass">Renewa 便服通行证</span>' +
+    '<span class="bm-tag bm-tag-event">0.75周年登录奖励</span>' +
+    '<span class="bm-tag bm-tag-conversion">兔子抽卡 + 薛定谔</span>' +
+  '</div>' +
+  '<div class="bm-insight">BM 放量核心: 抽卡种类 <b>6→9种</b> 扩大 + 限定礼包 <b>20→29个</b> 增加 + <b>性格招募新渠道</b> 追加. 付费转化率 2.7%→15.1% <b>5.6倍</b> 激增 → 免费→付费转化路径多元化是放量的核心动力</div>' +
+'</div>' +
+
+// Peak 2: 半周年
+'<div class="bm-peak major">' +
+  '<div class="peak-date">2026-03-26 · 半周年 Id v1.6</div>' +
+  '<div class="peak-title">$508,146 (日均对比 4.3倍)</div>' +
+  '<div class="peak-metrics">' +
+    '<div class="metric">DAU <b>133,596</b> (+26%)</div>' +
+    '<div class="metric">付费 <b>12,777</b> (+465%)</div>' +
+    '<div class="metric">ARPPU <b>$39.77</b> (1.9×)</div>' +
+  '</div>' +
+  '<div class="bm-tags">' +
+    '<span class="bm-tag bm-tag-gacha">Id 使徒抽卡</span>' +
+    '<span class="bm-tag bm-tag-event">Id 主题剧场</span>' +
+    '<span class="bm-tag bm-tag-package">限定礼包 20+个</span>' +
+    '<span class="bm-tag bm-tag-event">Mileage 活动</span>' +
+    '<span class="bm-tag bm-tag-gacha">使徒面试体验型</span>' +
+  '</div>' +
+  '<div class="bm-insight">首次大型版本更新 BM. 主题剧场(每日 2,350代币/21.4天通关) + Mileage <b>复合付费引导</b>. Id 特殊能力"时间停止"最大化角色需求. 6天总计 <b>$1.82M</b></div>' +
+'</div>' +
+
+// Peak 3: 新年
+'<div class="bm-peak seasonal">' +
+  '<div class="peak-date">2026-01-01 · 新年 + 100日</div>' +
+  '<div class="peak-title">$490,203 (日均对比 4.2倍)</div>' +
+  '<div class="peak-metrics">' +
+    '<div class="metric">DAU <b>122,654</b></div>' +
+    '<div class="metric">新增 <b>14,593</b> (平时 5.5倍)</div>' +
+    '<div class="metric">ARPPU <b>$33.59</b> (1.7×)</div>' +
+  '</div>' +
+  '<div class="bm-tags">' +
+    '<span class="bm-tag bm-tag-pass">Trickcal通行证续费</span>' +
+    '<span class="bm-tag bm-tag-pass">等级通行证 5~50</span>' +
+    '<span class="bm-tag bm-tag-conversion">月度订阅 4种</span>' +
+    '<span class="bm-tag bm-tag-package">新增用户礼包</span>' +
+  '</div>' +
+  '<div class="bm-insight">新增用户激增(14,593人)带来的营收. <b>月度订阅续费 + 通行证同时购买</b>为主要 BM 因素. 新增 5.5× 增长使首购转化管道成为核心</div>' +
+'</div>' +
+
+// Peak 4: 情人节
+'<div class="bm-peak seasonal">' +
+  '<div class="peak-date">2026-02-12 · 情人节 + Picora</div>' +
+  '<div class="peak-title">$374,385 (日均对比 3.2倍)</div>' +
+  '<div class="peak-metrics">' +
+    '<div class="metric">DAU <b>124,426</b></div>' +
+    '<div class="metric">付费 <b>9,785</b></div>' +
+    '<div class="metric">ARPPU <b>$38.26</b> (1.9×)</div>' +
+  '</div>' +
+  '<div class="bm-tags">' +
+    '<span class="bm-tag bm-tag-gacha">Picora 使徒抽卡</span>' +
+    '<span class="bm-tag bm-tag-gacha">卡牌抽卡同时</span>' +
+    '<span class="bm-tag bm-tag-package">Picora 限定礼包 6种</span>' +
+  '</div>' +
+  '<div class="bm-insight">季节活动 BM 的效果. <b>角色限定礼包 6种 + 使徒/卡牌抽卡同时</b>分散付费层疲劳度. ARPPU $38.26 达成确认高额付费层需求</div>' +
+'</div>' +
+
+// Peak 5: 劳动节
+'<div class="bm-peak seasonal">' +
+  '<div class="peak-date">2026-05-01 · 劳动节 + 月度订阅</div>' +
+  '<div class="peak-title">$439,501 (日均对比 3.7倍)</div>' +
+  '<div class="peak-metrics">' +
+    '<div class="metric">DAU <b>127,501</b> (+12.4%)</div>' +
+    '<div class="metric">新增 <b>13,755</b> (节日效应)</div>' +
+    '<div class="metric">ARPPU <b>$31.95</b></div>' +
+  '</div>' +
+  '<div class="bm-tags">' +
+    '<span class="bm-tag bm-tag-conversion">月度订阅续费 4种</span>' +
+    '<span class="bm-tag bm-tag-pass">Trickcal通行证 5月</span>' +
+    '<span class="bm-tag bm-tag-package">特别促销</span>' +
+  '</div>' +
+  '<div class="bm-insight"><b>月初结算 BM</b>的重复模式 (2/1 $237K, 3/1 $219K, 6/1 $268K). 月度订阅续费 + 节日新增用户结合时营收增长 3~4倍</div>' +
+'</div>' +
+
+// 放量分析
+'<div style="margin-top:16px;padding:14px;background:#141432;border:1px solid #7c3aed40;border-radius:8px">' +
+  '<h3 style="color:#7c3aed;font-size:.9rem;margin-bottom:10px">📊 半周年 → 0.75周年 版本更新放量分析</h3>' +
+  '<table style="width:100%;font-size:.82rem;border-collapse:collapse">' +
+    '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#a0a0c0">项目</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">半周年 (3/26)</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">0.75周年 (6/18)</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">变化</td></tr>' +
+    '<tr><td style="padding:6px 8px">营收</td><td style="padding:6px 8px;text-align:right">$508K</td><td style="padding:6px 8px;text-align:right;color:#7c3aed;font-weight:bold">$976K</td><td style="padding:6px 8px;text-align:right;color:#10b981">+92%</td></tr>' +
+    '<tr style="background:#25255515"><td style="padding:6px 8px">抽卡种类</td><td style="padding:6px 8px;text-align:center">4种</td><td style="padding:6px 8px;text-align:center;color:#7c3aed;font-weight:bold">9种</td><td style="padding:6px 8px;text-align:right;color:#10b981">+125%</td></tr>' +
+    '<tr><td style="padding:6px 8px">限定礼包</td><td style="padding:6px 8px;text-align:center">~20个</td><td style="padding:6px 8px;text-align:center;color:#7c3aed;font-weight:bold">29个</td><td style="padding:6px 8px;text-align:right;color:#10b981">+45%</td></tr>' +
+    '<tr style="background:#25255515"><td style="padding:6px 8px">通行证</td><td style="padding:6px 8px;text-align:center">无</td><td style="padding:6px 8px;text-align:center;color:#7c3aed;font-weight:bold">Renewa 便服通行证</td><td style="padding:6px 8px;text-align:right">新增</td></tr>' +
+    '<tr><td style="padding:6px 8px">付费转化率</td><td style="padding:6px 8px;text-align:center">9.56%</td><td style="padding:6px 8px;text-align:center;color:#7c3aed;font-weight:bold">15.14%</td><td style="padding:6px 8px;text-align:right;color:#10b981">+58%p</td></tr>' +
+    '<tr style="background:#25255515"><td style="padding:6px 8px">ARPPU</td><td style="padding:6px 8px;text-align:right">$39.77</td><td style="padding:6px 8px;text-align:right;color:#7c3aed;font-weight:bold">$51.25</td><td style="padding:6px 8px;text-align:right;color:#10b981">+29%</td></tr>' +
+  '</table>' +
+  '<p style="margin-top:10px;font-size:.82rem;color:#a0a0c0"><span class="tag tag-event">洞察</span> 放量的核心是 <b style="color:#e2e8f0">付费渠道多元化</b> — 抽卡 4→9种，礼包 20→29个，通行证新增使 <b style="color:#e2e8f0">付费转化率上升 58%p</b>推动营收 +92%</p>' +
+'</div>';
+
+document.getElementById('bmAnalysis').innerHTML = bmHTML;
+
+// ========== RELATED TRENDS ==========
+var trendHTML = '<div class="trend-card">' +
+  '<h4>📊 版本更新营收汇总</h4>' +
+  '<table style="width:100%;font-size:0.85rem;border-collapse:collapse">' +
+    '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#a0a0c0">半周年 Id</td><td style="padding:6px 8px;color:#a0a0c0">3/26</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$508K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">抽卡 4种 · 礼包 20+个</td></tr>' +
+    '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#a0a0c0">Chloe+Yomi</td><td style="padding:6px 8px;color:#a0a0c0">4/9</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$237K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">使徒抽卡 2种 + 便服通行证</td></tr>' +
+    '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#a0a0c0">Snowkey+Comi</td><td style="padding:6px 8px;color:#a0a0c0">4/23</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$350K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">卡牌抽卡 + Boutique 皮肤</td></tr>' +
+    '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#a0a0c0">Celine/Wui</td><td style="padding:6px 8px;color:#a0a0c0">5/21</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$313K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">强制更新 · 阶梯</td></tr>' +
+    '<tr style="background:#7c3aed15"><td style="padding:6px 8px;font-weight:bold;color:#e0e0ff">0.75周年 Renewa</td><td style="padding:6px 8px;font-weight:bold;color:#e0e0ff">6/18</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#7c3aed">$976K</td><td style="padding:6px 8px;font-size:0.8em;color:#e0e0ff">抽卡 9种 · 礼包 29个 · <b style="color:#10b981">+92%</b></td></tr>' +
+  '</table>' +
+'</div>' +
+'<div class="trend-card">' +
+  '<h4>📅 周期性营收模式</h4>' +
+  '<table style="width:100%;font-size:0.85rem;border-collapse:collapse">' +
+    '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#10b981;font-weight:bold">月初结算</td><td style="padding:6px 8px;color:#a0a0c0">每月1日</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$237K ~ $453K</td></tr>' +
+    '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#10b981;font-weight:bold">隔周维护</td><td style="padding:6px 8px;color:#a0a0c0">每两周周四</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$145K ~ $350K</td></tr>' +
+    '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#10b981;font-weight:bold">节日/纪念日</td><td style="padding:6px 8px;color:#a0a0c0">新年/情人节等</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$219K ~ $490K</td></tr>' +
+    '<tr><td style="padding:6px 8px;color:#10b981;font-weight:bold">大型版本更新</td><td style="padding:6px 8px;color:#a0a0c0">半/0.75周年</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$508K ~ $976K</td></tr>' +
+  '</table>' +
+'</div>' +
+'<div class="trend-card">' +
+  '<h4>⚠️ 线下联动 (4~6月)</h4>' +
+  '<p style="margin:4px 0;color:#a0a0c0;font-size:0.9em">Animate Gratte · 便利店贴纸 · Titan 联名饮料 · FamilyMart 钥匙扣(85万日元)<br>→ 4~5月新增用户持续减少，难以确认直接效果</p>' +
+'</div>';
+
+document.getElementById('trendGrid').innerHTML = trendHTML;
+
+// ========== ACTION ITEMS ==========
+var actionHTML = '<h3>📋 优先执行课题</h3><ul>' +
+  '<li><span class="tag tag-warn">⚠️ 基线收入下降应对</span><br>基线收入 1月 $81K → 6月 $56K (-30.5%). 分析月度通行证/定期订阅用户流失原因.<br><b>BM 行动:</b> 新增每日小额付费(100~300 Elif) · 免费Elif发放增加 10~20% · 休眠回归活动</li>' +
+  '<li><span class="tag tag-event">🔥 版本更新间隔营收稳定化</span><br>非更新周最低 $28K (6/9). 无抽卡周营收底部急降.<br><b>BM 行动:</b> 第2周配置回归抽卡/复刻卡牌抽卡 · 限定礼包按周分散强化</li>' +
+  '<li><span class="tag tag-high">📈 版本更新放量规范化</span><br>抽卡 4→9种，礼包 20→29个，通行证追加实现 +92%. 将模式手册化.<br><b>BM 行动:</b> 1周年目标设定为抽卡 12种+、礼包 35个+、智能通行证新增</li>' +
+  '<li><span class="tag tag-event">🎯 新增用户 BM 激励</span><br>新增用户减少 84% (-5,500/日→900/日). 首购转化率改善紧迫.<br><b>BM 行动:</b> 新入教主礼包 3种重新设计 · 首购赠品价值提升 · 30分钟免费抽卡券</li>' +
+  '<li><span class="tag tag-low">📊 ARPPU $30+ 目标</span><br>当前日均 $20~25. 需扩大付费层用户.<br><b>BM 行动:</b> 月度订阅 4种价值重新设计 · 阶梯礼包累计奖励改版 · Boutique 高端化</li>' +
+  '<li><span class="tag tag-event">🌏 JP 依赖度缓解</span><br>JP 营收占比 40~87%. 单一地区集中风险.<br><b>BM 行动:</b> KR/TW/HK 目标限定礼包本地化 · 基于地区ARPPU的价格调优</li>' +
+  '</ul>';
+document.getElementById('actionItems').innerHTML = actionHTML;
+</script>
+</body>
+</html>
