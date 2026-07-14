@@ -60,7 +60,8 @@ td:first-child{text-align:left;color:#e2e8f0}
 .spike-tab.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
 .spike-table{width:100%;border-collapse:collapse;font-size:0.85rem}
 .spike-table th{background:#141432;color:#00d4ff;padding:8px 10px;text-align:left;border-bottom:2px solid #252555;position:sticky;top:0}
-.spike-table td{padding:6px 10px;border-bottom:1px solid #25255520}
+.spike-table td{padding:6px 10px;border-bottom:1px solid #25255520;line-height:1.45}
+.spike-table td:nth-child(4),.spike-table td:nth-child(5){white-space:pre-line;word-break:break-word;max-width:200px}
 .spike-table tr:hover{background:#25255530}
 .baseline-insight{margin-top:16px;padding:12px;background:#141432;border:1px solid #252555;border-radius:8px}
 .baseline-insight p{margin:6px 0;line-height:1.6}
@@ -472,7 +473,7 @@ var spikes = [
 ];
 
 function renderSpikeTable(list) {
-  return '<table class="spike-table"><thead><tr><th style="width:58px">날짜</th><th style="width:68px">매출</th><th>원인 (운영 로드맵 기반)</th><th style="width:200px">BM 포인트</th><th style="width:160px">비고</th></tr></thead><tbody>' +
+  return '<table class="spike-table"><thead><tr><th style="width:58px">날짜</th><th style="width:68px">매출</th><th>원인 (운영 로드맵 기반)</th><th style="width:180px">BM 포인트</th><th style="width:150px">비고</th></tr></thead><tbody>' +
     list.map(function(s){
       var bg = s.m % 2 === 0 ? '' : 'background:#25255515';
       return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td>'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
