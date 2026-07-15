@@ -8,7 +8,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:system-ui,sans-serif;background:#0a0a1a;color:#e2e8f0;min-height:100vh;padding:16px}
-.container{max-width:1400px;margin:0 auto}
+.container{max-width:calc(100% - 200px);margin-left:200px;margin:0 auto}
 h1{font-size:1.6rem;color:#00d4ff;text-align:center;margin-bottom:4px}
 h2{font-size:1.1rem;color:#00d4ff;margin:16px 0 8px;border-bottom:1px solid #252555;padding-bottom:4px}
 .subtitle{text-align:center;color:#94a3b8;font-size:.85rem;margin-bottom:12px}
@@ -274,9 +274,51 @@ td:first-child{text-align:left;color:#e2e8f0}
 .bm-ch-mom.down{color:#ef4444}
 .bm-ch-mom.flat{color:#a0a0c0}
 @media(max-width:640px){.bm-mix-layout{grid-template-columns:1fr}.bm-ch-cards{grid-template-columns:1fr 1fr}}
+
+/* ===== SIDEBAR NAVIGATION ===== */
+.sidebar{position:fixed;left:0;top:0;height:100vh;width:200px;background:#0e0e25;border-right:1px solid #252555;z-index:1000;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:#252555 transparent}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:#252555;border-radius:2px}
+.sidebar-title{padding:18px 14px 14px;font-size:.95rem;font-weight:700;color:#00d4ff;border-bottom:1px solid #252555;flex-shrink:0;white-space:nowrap}
+.sidebar-tabs{padding:8px 6px;flex:1}
+.sidebar-tab{display:flex;align-items:center;gap:8px;width:100%;padding:10px 14px;background:transparent;color:#e2e8f0;border:none;border-left:3px solid transparent;border-radius:6px;font-size:.85rem;cursor:pointer;text-align:left;transition:all .2s;margin-bottom:2px;font-family:inherit}
+.sidebar-tab:hover{background:#252555}
+.sidebar-tab.active{background:#7c3aed;border-left-color:#00d4ff;color:#fff}
+.sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:1001;background:#0e0e25;border:1px solid #252555;color:#e2e8f0;font-size:1.3rem;padding:6px 10px;border-radius:6px;cursor:pointer}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
+[id^="sec-"],#transitionMatrix,#roiPanel,#checklistPanel,#bmMixPanel,#cohortRetention,#regionComparison,#conversionFunnel,#whaleTracking{scroll-margin-top:16px}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s ease}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-toggle{display:block}
+  .sidebar-overlay.show{display:block}
+  .container{margin-left:0!important;max-width:100%!important}
+}
 </style>
 </head>
 <body>
+<nav id="sidebar" class="sidebar">
+  <div class="sidebar-title">🎮 Trickcal</div>
+  <div class="sidebar-tabs">
+    <button class="sidebar-tab active" data-target="sec-revenue">📈 매출 추이</button>
+    <button class="sidebar-tab" data-target="sec-jp">🇯🇵 JP 비교</button>
+    <button class="sidebar-tab" data-target="sec-monthly">📊 월별 요약</button>
+    <button class="sidebar-tab" data-target="sec-spike">🔍 스파이크 분석</button>
+    <button class="sidebar-tab" data-target="sec-bm">💡 BM 분석</button>
+    <button class="sidebar-tab" data-target="sec-trend">🔗 트렌드</button>
+    <button class="sidebar-tab" data-target="sec-action">✅ 실행 과제</button>
+    <button class="sidebar-tab" data-target="transitionMatrix">📊 이동 매트릭스</button>
+    <button class="sidebar-tab" data-target="roiPanel">📊 ROI 측정</button>
+    <button class="sidebar-tab" data-target="checklistPanel">📋 체크리스트</button>
+    <button class="sidebar-tab" data-target="bmMixPanel">💰 BM 채널</button>
+    <button class="sidebar-tab" data-target="cohortRetention">📊 코호트</button>
+    <button class="sidebar-tab" data-target="regionComparison">🌏 지역 비교</button>
+    <button class="sidebar-tab" data-target="conversionFunnel">🔄 전환 퍼널</button>
+    <button class="sidebar-tab" data-target="whaleTracking">🐋 고래 추적</button>
+  </div>
+</nav>
+<button id="sidebarToggle" class="sidebar-toggle">☰</button>
 <div class="container">
 <h1>🎮 Trickcal Revive 실시간 대시보드</h1>
 <p class="subtitle">2026-01-01 ~ 2026-06-18 | 170일 글로벌 데이터 · 168일 JP 데이터 | 환율 1 USD = 1,500 KRW</p>
@@ -285,27 +327,27 @@ td:first-child{text-align:left;color:#e2e8f0}
 
 <div class="cards" id="kpiCards"></div>
 
-<h2>📈 일별 매출 추이 (글로벌, 170일)</h2>
+<h2 id="sec-revenue">📈 일별 매출 추이 (글로벌, 170일)</h2>
 <div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
 
-<h2>🇯🇵 JP vs 글로벌 주간 매출 (25주)</h2>
+<h2 id="sec-jp">🇯🇵 JP vs 글로벌 주간 매출 (25주)</h2>
 <div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
 
-<h2>📊 월별 요약 (데이터 기반 계산)</h2>
+<h2 id="sec-monthly">📊 월별 요약 (데이터 기반 계산)</h2>
 <div class="chart-wrap" style="overflow-x:auto">
 <table id="monthlyTable"><thead></thead><tbody></tbody></table>
 </div>
 
-<h2>🔍 상세 매출 스파이크 분석</h2>
+<h2 id="sec-spike">🔍 상세 매출 스파이크 분석</h2>
 <div class="analysis-section" id="spikeAnalysis"></div>
 
-<h2>💡 매출 피크 BM 분석</h2>
+<h2 id="sec-bm">💡 매출 피크 BM 분석</h2>
 <div class="bm-panel" id="bmAnalysis"></div>
 
-<h2>🔗 관련 트렌드 (마케팅 문서 연계)</h2>
+<h2 id="sec-trend">🔗 관련 트렌드 (마케팅 문서 연계)</h2>
 <div class="trend-grid" id="trendGrid"></div>
 
-<h2>✅ 실행 과제</h2>
+<h2 id="sec-action">✅ 실행 과제</h2>
 <div class="action-section" id="actionItems"></div>
 
 <div id="transitionMatrix"></div>
@@ -2191,6 +2233,67 @@ function showCellTooltip(td, i, j){
         y: { stacked: true, ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return v+'%'; } }, grid: { color: '#25255530' }, max: 100 }
       }
     }
+  });
+})();
+
+// ========== SIDEBAR NAVIGATION ==========
+(function(){
+  var tabs = document.querySelectorAll('.sidebar-tab');
+  var sidebar = document.getElementById('sidebar');
+  var toggle = document.getElementById('sidebarToggle');
+  var overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+  document.body.appendChild(overlay);
+
+  var sectionMap = [];
+  tabs.forEach(function(tab){
+    var targetId = tab.getAttribute('data-target');
+    var target = document.getElementById(targetId);
+    if(target){ sectionMap.push({tab:tab, target:target, id:targetId}); }
+  });
+
+  function setActiveTab(activeTab){
+    tabs.forEach(function(t){ t.classList.remove('active'); });
+    activeTab.classList.add('active');
+  }
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      var targetId = tab.getAttribute('data-target');
+      var target = document.getElementById(targetId);
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+        setActiveTab(tab);
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    });
+  });
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        var id = entry.target.id;
+        for(var i = 0; i < sectionMap.length; i++){
+          if(sectionMap[i].id === id){
+            setActiveTab(sectionMap[i].tab);
+            sectionMap[i].tab.scrollIntoView({behavior:'smooth', block:'nearest'});
+            break;
+          }
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -70% 0px'});
+
+  sectionMap.forEach(function(s){ observer.observe(s.target); });
+
+  toggle.addEventListener('click', function(){
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+  });
+  overlay.addEventListener('click', function(){
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
   });
 })();
 
