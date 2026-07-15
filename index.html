@@ -145,7 +145,136 @@ td:first-child{text-align:left;color:#e2e8f0}
 .insp-down{color:#ef4444;font-weight:600}
 .tier-trend{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
 @media(max-width:640px){.tier-trend{grid-template-columns:1fr}}
+
+/* ===== Funnel Section Styles ===== */
+.funnel-section{background:#141432;border:1px solid #252555;border-radius:10px;padding:16px;margin-bottom:16px}
+.funnel-section h2{font-size:1.1rem;color:#00d4ff;margin:0 0 4px;border-bottom:none;padding:0}
+.funnel-subtitle{color:#94a3b8;font-size:.8rem;margin-bottom:12px}
+.funnel-container{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0}
+.funnel-step{display:flex;align-items:center;width:100%;gap:10px;padding:4px 0}
+.funnel-label{min-width:90px;font-size:.78rem;color:#a0a0c0;text-align:right;flex-shrink:0}
+.funnel-bar-wrap{flex:1;display:flex;flex-direction:column;gap:2px}
+.funnel-bar{height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:600;color:#e2e8f0;transition:width 0.6s ease;position:relative}
+.funnel-bar .pct{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+.funnel-metrics{display:flex;gap:6px;flex-wrap:wrap;margin-left:4px}
+.funnel-metric{font-size:.72rem;padding:3px 8px;border-radius:4px;background:#0a0a1a;border:1px solid #252555}
+.funnel-metric .m-label{color:#94a3b8}
+.funnel-metric .m-val{color:#e2e8f0;font-weight:600}
+.funnel-metric .m-up{color:#10b981}.funnel-metric .m-down{color:#ef4444}
+.funnel-drop{font-size:.72rem;color:#ef4444;margin-left:8px;min-width:50px;flex-shrink:0}
+.funnel-mom-table{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums;margin-top:10px}
+.funnel-mom-table th{background:#1a1a3a;color:#00d4ff;padding:6px 5px;text-align:center;border-bottom:2px solid #252555;white-space:nowrap;font-size:.72rem}
+.funnel-mom-table th:first-child{text-align:left}
+.funnel-mom-table td{padding:5px;text-align:center;border-bottom:1px solid #25255520;font-size:.75rem}
+.funnel-mom-table td:first-child{text-align:left;color:#e2e8f0}
+.funnel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+
+/* ===== Whale Section Styles ===== */
+.whale-section{background:#141432;border:1px solid #252555;border-radius:10px;padding:16px;margin-bottom:16px}
+.whale-section h2{font-size:1.1rem;color:#00d4ff;margin:0 0 4px;border-bottom:none;padding:0}
+.whale-subtitle{color:#94a3b8;font-size:.8rem;margin-bottom:12px}
+.whale-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.whale-sum-card{background:#0a0a1a;border:1px solid #252555;border-radius:8px;padding:12px;text-align:center}
+.whale-sum-card .num{font-size:1.3rem;font-weight:700;color:#00d4ff}
+.whale-sum-card .lbl{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.whale-sum-card .sub{font-size:.72rem;color:#94a3b8;margin-top:1px}
+.whale-insight{font-size:.82rem;color:#a0a0c0;line-height:1.6;padding:10px 12px;background:#0a0a1a;border:1px solid #252555;border-radius:6px;margin-top:12px}
+.whale-insight b{color:#e2e8f0}
+.whale-table{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
+.whale-table th{background:#1a1a3a;color:#00d4ff;padding:6px 5px;text-align:center;border-bottom:2px solid #252555;white-space:nowrap;font-size:.72rem}
+.whale-table th:first-child{text-align:left}
+.whale-table td{padding:5px;text-align:center;border-bottom:1px solid #25255520;font-size:.75rem}
+.whale-table td:first-child{text-align:left;color:#e2e8f0}
+@media(max-width:640px){
+  .funnel-grid{grid-template-columns:1fr}
+  .funnel-step{flex-wrap:wrap}
+  .funnel-label{min-width:auto;text-align:left;width:100%}
+  .funnel-metrics{margin-left:0;width:100%}
+  .funnel-drop{margin-left:0}
+  .whale-summary{grid-template-columns:1fr 1fr}
+}
+
+/* ===== Cohort Retention Section Styles ===== */
+.cohort-section{background:#141432;border:1px solid #252555;border-radius:10px;padding:16px;margin-bottom:16px}
+.cohort-section h2{font-size:1.1rem;color:#00d4ff;margin:0 0 4px;border-bottom:none;padding:0}
+.cohort-subtitle{color:#94a3b8;font-size:.8rem;margin-bottom:12px}
+.cohort-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.cohort-card{background:#0a0a1a;border:1px solid #252555;border-radius:8px;padding:12px;text-align:center}
+.cohort-card .num{font-size:1.3rem;font-weight:700;color:#00d4ff}
+.cohort-card .lbl{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.cohort-card .sub{font-size:.72rem;color:#94a3b8;margin-top:1px}
+.cohort-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+
+/* ===== Region Comparison Section Styles ===== */
+.region-section{background:#141432;border:1px solid #252555;border-radius:10px;padding:16px;margin-bottom:16px}
+.region-section h2{font-size:1.1rem;color:#00d4ff;margin:0 0 4px;border-bottom:none;padding:0}
+.region-subtitle{color:#94a3b8;font-size:.8rem;margin-bottom:12px}
+.region-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.region-card{background:#0a0a1a;border:1px solid #252555;border-radius:8px;padding:12px;text-align:center}
+.region-card .num{font-size:1.3rem;font-weight:700;color:#00d4ff}
+.region-card .lbl{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.region-card .sub{font-size:.72rem;color:#94a3b8;margin-top:1px}
+.region-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:640px){.cohort-grid,.region-grid{grid-template-columns:1fr}}
 </style>
+
+/* ========== ROI PANEL ========== */
+.roi-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.roi-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
+.roi-chart-wrap{position:relative;height:280px;margin-bottom:16px}
+.roi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.roi-card{background:#0a0a1a;border-radius:8px;padding:14px;border:1px solid #25255540}
+.roi-card .roi-name{color:#00d4ff;font-weight:700;font-size:.95rem}
+.roi-card .roi-date{color:#a0a0c0;font-size:.8rem}
+.roi-card .roi-val{color:#e2e8f0;font-size:.9rem;margin-top:6px}
+.roi-card .roi-peak{color:#10b981;font-size:.82rem;margin-top:4px}
+.roi-card .roi-mult{color:#7c3aed;font-weight:700;font-size:.95rem;margin-top:4px}
+.roi-runway{text-align:center;margin-top:18px;padding:14px;background:#0a0a1a;border-radius:8px;border:1px solid #7c3aed50}
+.roi-runway .countdown{font-size:2rem;font-weight:900;color:#7c3aed}
+.roi-runway .label{color:#a0a0c0;font-size:.85rem;margin-top:4px}
+@media(max-width:640px){.roi-cards{grid-template-columns:1fr 1fr}}
+
+/* ========== CHECKLIST ========== */
+.checklist-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.checklist-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
+.cl-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.cl-tab{background:#0a0a1a;color:#a0a0c0;border:1px solid #25255540;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:.85rem;transition:all .2s}
+.cl-tab.active{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.cl-progress{height:8px;background:#0a0a1a;border-radius:4px;margin-bottom:14px;overflow:hidden}
+.cl-progress-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#00d4ff);border-radius:4px;transition:width .3s}
+.cl-progress-text{color:#a0a0c0;font-size:.8rem;margin-bottom:10px}
+.cl-list{list-style:none;padding:0;margin:0}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#0a0a1a;border-radius:8px;margin-bottom:6px;border:1px solid #25255540;transition:all .2s}
+.cl-item.done{opacity:.55;border-color:#10b98140}
+.cl-item input[type=checkbox]{flex-shrink:0;margin-top:3px;width:16px;height:16px;accent-color:#7c3aed;cursor:pointer}
+.cl-item-label{color:#e2e8f0;font-size:.88rem;flex:1;line-height:1.4}
+.cl-item.done .cl-item-label{text-decoration:line-through;color:#a0a0c0}
+.cl-item-cat{font-size:.7rem;padding:2px 8px;border-radius:4px;color:#fff;flex-shrink:0}
+.cl-add-row{display:flex;gap:8px;margin-top:12px}
+.cl-add-row input{flex:1;background:#0a0a1a;border:1px solid #25255540;border-radius:6px;padding:8px 12px;color:#e2e8f0;font-size:.88rem;outline:none}
+.cl-add-row input:focus{border-color:#7c3aed}
+.cl-add-row select{background:#0a0a1a;border:1px solid #25255540;border-radius:6px;padding:8px 10px;color:#e2e8f0;font-size:.85rem;outline:none}
+.cl-add-row button{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-size:.88rem;white-space:nowrap}
+.cl-add-row button:hover{background:#6d28d9}
+.cl-del{background:none;border:none;color:#ef4444;cursor:pointer;font-size:1rem;padding:0 0 0 4px;opacity:.6}
+.cl-del:hover{opacity:1}
+
+/* ========== BM CHANNEL MIX ========== */
+.bm-mix-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.bm-mix-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
+.bm-mix-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.bm-mix-chart{position:relative;height:280px}
+.bm-ch-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.bm-ch-card{background:#0a0a1a;border-radius:8px;padding:12px;border-left:4px solid #555;transition:all .2s}
+.bm-ch-card:hover{transform:translateY(-2px)}
+.bm-ch-name{color:#e2e8f0;font-size:.88rem;font-weight:600}
+.bm-ch-pct{font-size:1.3rem;font-weight:900;margin:4px 0 2px}
+.bm-ch-rev{color:#a0a0c0;font-size:.78rem}
+.bm-ch-mom{font-size:.78rem;margin-top:2px}
+.bm-ch-mom.up{color:#10b981}
+.bm-ch-mom.down{color:#ef4444}
+.bm-ch-mom.flat{color:#a0a0c0}
+@media(max-width:640px){.bm-mix-layout{grid-template-columns:1fr}.bm-ch-cards{grid-template-columns:1fr 1fr}}
 </head>
 <body>
 <div class="container">
@@ -180,7 +309,20 @@ td:first-child{text-align:left;color:#e2e8f0}
 <div class="action-section" id="actionItems"></div>
 
 <div id="transitionMatrix"></div>
+
+<h2>📊 업데이트 ROI 측정</h2>
+<div class="roi-section" id="roiPanel"></div>
+
+<h2>📋 실행 체크리스트</h2>
+<div class="checklist-section" id="checklistPanel"></div>
+
+<h2>💰 BM 채널별 수익 믹스</h2>
+<div class="bm-mix-section" id="bmMixPanel"></div>
+<div id="cohortRetention"></div>
+<div id="regionComparison"></div>
 <div id="inspectionTrend"></div>
+<div id="conversionFunnel"></div>
+<div id="whaleTracking"></div>
 
 <div class="footer">자동 생성됨 · 데이터 기반 계산 · BM 분석 연동 · Trickcal Revive Operations Dashboard</div>
 </div>
@@ -1090,6 +1232,968 @@ function showCellTooltip(td, i, j){
     }
   });
 })();
+
+// ========== SECTION A: UPDATE ROI PANEL ==========
+(function(){
+  // 1) G 배열에서 날짜→매출 매핑
+  var revMap = {};
+  G.forEach(function(row){ revMap[row[0]] = row[1]; });
+  var dates = G.map(function(r){ return r[0]; }).sort();
+
+  // 2) 기저 매출: 첫 14일 중 이벤트 없는 날 평균
+  var eventDates = {};
+  events.forEach(function(e){ eventDates[e.date] = true; });
+  var first14 = dates.slice(0, 14);
+  var baseDays = first14.filter(function(d){ return !eventDates[d]; });
+  var baseSales = baseDays.length ? baseDays.reduce(function(s,d){ return s + (revMap[d]||0); },0) / baseDays.length : 50000;
+
+  // 3) 각 업데이트 D+1~D+7, D+14 누적 매출 & 피크
+  var roiData = [];
+  events.forEach(function(ev){
+    var idx = dates.indexOf(ev.date);
+    if(idx < 0) return;
+    var cum7 = 0, cum14 = 0, peak = 0, peakDay = '';
+    for(var d=1; d<=14; d++){
+      if(idx+d < dates.length){
+        var v = revMap[dates[idx+d]] || 0;
+        if(d <= 7) cum7 += v;
+        cum14 += v;
+        if(v > peak){ peak = v; peakDay = dates[idx+d]; }
+      }
+    }
+    roiData.push({
+      label: ev.label, date: ev.date, color: ev.color,
+      cum7: cum7, cum14: cum14,
+      peak: peak, peakDay: peakDay,
+      mult7: baseSales > 0 ? (cum7 / (baseSales * 7)).toFixed(2) : '-'
+    });
+  });
+
+  // 4) 차트
+  var labels = roiData.map(function(r){ return r.label.length > 8 ? r.label.substring(0,8)+'…' : r.label; });
+  var barData = roiData.map(function(r){ return r.cum7; });
+  var baseLine = roiData.map(function(){ return baseSales * 7; });
+
+  var html = '<h3>📈 업데이트별 D+7 누적 매출 & 기저 대비</h3>';
+  html += '<div class="roi-chart-wrap"><canvas id="roiChart"></canvas></div>';
+
+  // 카드
+  html += '<div class="roi-cards">';
+  roiData.forEach(function(r){
+    html += '<div class="roi-card">' +
+      '<div class="roi-name" style="color:'+r.color+'">'+r.label+'</div>' +
+      '<div class="roi-date">'+r.date+'</div>' +
+      '<div class="roi-val">D+7: $'+fmt(r.cum7)+'</div>' +
+      '<div class="roi-val">D+14: $'+fmt(r.cum14)+'</div>' +
+      '<div class="roi-peak">피크: '+r.peakDay+' $'+fmt(r.peak)+'</div>' +
+      '<div class="roi-mult">기저 '+r.mult7+'배</div>' +
+    '</div>';
+  });
+  html += '</div>';
+
+  // 런웨이 카운트다운 (1주년 = 2026-07-01 가정)
+  var anni = new Date('2026-07-01');
+  var now = new Date();
+  var diff = Math.max(0, Math.ceil((anni - now) / 86400000));
+  html += '<div class="roi-runway">' +
+    '<div class="countdown">D-'+diff+'</div>' +
+    '<div class="label">1주년 업데이트 예정일까지</div>' +
+  '</div>';
+
+  document.getElementById('roiPanel').innerHTML = html;
+
+  // Chart.js 혼합 차트
+  var ctx = document.getElementById('roiChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'D+7 누적 매출',
+          data: barData,
+          backgroundColor: roiData.map(function(r){ return r.color + '90'; }),
+          borderColor: roiData.map(function(r){ return r.color; }),
+          borderWidth: 1,
+          borderRadius: 4,
+          order: 2
+        },
+        {
+          label: '기저 (7일)',
+          data: baseLine,
+          type: 'line',
+          borderColor: '#ef444480',
+          borderDash: [6,4],
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+          order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#a0a0c0', font: { size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 9 }, maxRotation: 45 }, grid: { color: '#25255520' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return '$'+fmtK(v); } }, grid: { color: '#25255520' } }
+      }
+    }
+  });
+})();
+
+// ========== SECTION D: EXECUTION CHECKLIST ==========
+(function(){
+  var STORAGE_KEY = 'trickcal_checklist_v1';
+  var CATS = ['전체','BM','운영','기획'];
+  var CAT_COLORS = { BM:'#7c3aed', 운영:'#00d4ff', 기획:'#f59e0b' };
+
+  // 기본 과제 (actionItems에서 변환)
+  var defaultItems = [
+    { id:1, text:'기저 매출 하락 대응 — 일일 스몰 과금 추가 · 무료 엘리프 배급 증대 · 휴면 복귀 캠페인', cat:'BM', done:false },
+    { id:2, text:'업데이트 간극 매출 안정화 — 2주차 리턴 가챠/복각 카드픽업 배치', cat:'BM', done:false },
+    { id:3, text:'업데이트 스케일링 정형화 — 가챠 12종+ 패키지 35개+ 스마트패스 신규', cat:'기획', done:false },
+    { id:4, text:'신규 유입 BM 인센티브 — 신입교주 패키지 재설계 · 첫 구매 선물 가치 상향', cat:'BM', done:false },
+    { id:5, text:'ARPPU $30+ 목표 — 월정액 가치 재설계 · 스텝업패키지 누적 보상 개편', cat:'BM', done:false },
+    { id:6, text:'JP 의존도 완화 — KR/TW/HK 타겟 한정패키지 로컬라이징', cat:'운영', done:false }
+  ];
+
+  function load(){
+    try { var s = localStorage.getItem(STORAGE_KEY); if(s) return JSON.parse(s); } catch(e){}
+    return defaultItems;
+  }
+  function save(items){ try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch(e){} }
+
+  var items = load();
+  var activeTab = '전체';
+  var nextId = items.length ? Math.max.apply(null, items.map(function(i){return i.id;})) + 1 : 7;
+
+  function render(){
+    var filtered = activeTab === '전체' ? items : items.filter(function(i){ return i.cat === activeTab; });
+    var doneCount = items.filter(function(i){ return i.done; }).length;
+    var pct = items.length ? Math.round(doneCount/items.length*100) : 0;
+
+    var h = '<h3>📋 실행 체크리스트</h3>';
+    // 탭
+    h += '<div class="cl-tabs">';
+    CATS.forEach(function(c){
+      h += '<button class="cl-tab' + (c===activeTab?' active':'') + '" data-cat="'+c+'">'+c+'</button>';
+    });
+    h += '</div>';
+    // 프로그레스
+    h += '<div class="cl-progress-text">완료 '+doneCount+'/'+items.length+' ('+pct+'%)</div>';
+    h += '<div class="cl-progress"><div class="cl-progress-bar" style="width:'+pct+'%"></div></div>';
+    // 목록
+    h += '<ul class="cl-list">';
+    filtered.forEach(function(it){
+      h += '<li class="cl-item'+(it.done?' done':'')+'" data-id="'+it.id+'">' +
+        '<input type="checkbox" '+(it.done?'checked':'')+' />' +
+        '<span class="cl-item-label">'+it.text+'</span>' +
+        '<span class="cl-item-cat" style="background:'+(CAT_COLORS[it.cat]||'#555')+'">'+it.cat+'</span>' +
+        '<button class="cl-del" data-del="'+it.id+'">×</button>' +
+      '</li>';
+    });
+    h += '</ul>';
+    // 추가
+    h += '<div class="cl-add-row">' +
+      '<input type="text" id="clNewText" placeholder="새 과제 입력..." />' +
+      '<select id="clNewCat">' +
+        '<option value="BM">BM</option><option value="운영">운영</option><option value="기획">기획</option>' +
+      '</select>' +
+      '<button id="clAddBtn">+ 추가</button>' +
+    '</div>';
+
+    document.getElementById('checklistPanel').innerHTML = h;
+
+    // 이벤트 바인딩
+    document.querySelectorAll('.cl-tab').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        activeTab = this.dataset.cat;
+        render();
+      });
+    });
+    document.querySelectorAll('.cl-item input[type=checkbox]').forEach(function(cb){
+      cb.addEventListener('change', function(){
+        var id = parseInt(this.closest('.cl-item').dataset.id);
+        var it = items.find(function(i){ return i.id === id; });
+        if(it){ it.done = !it.done; save(items); render(); }
+      });
+    });
+    document.querySelectorAll('.cl-del').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = parseInt(this.dataset.del);
+        items = items.filter(function(i){ return i.id !== id; });
+        save(items); render();
+      });
+    });
+    var addBtn = document.getElementById('clAddBtn');
+    if(addBtn) addBtn.addEventListener('click', addItem);
+    var newInput = document.getElementById('clNewText');
+    if(newInput) newInput.addEventListener('keydown', function(e){ if(e.key==='Enter') addItem(); });
+  }
+
+  function addItem(){
+    var inp = document.getElementById('clNewText');
+    var sel = document.getElementById('clNewCat');
+    var text = inp.value.trim();
+    if(!text) return;
+    items.push({ id: nextId++, text: text, cat: sel.value, done: false });
+    save(items); render();
+  }
+
+  render();
+})();
+
+// ========== SECTION B: BM CHANNEL MIX ==========
+(function(){
+  var channels = [
+    { name:'가챠', pct:35, color:'#7c3aed', rev:122500, mom:'+3.2%', dir:'up' },
+    { name:'패키지', pct:20, color:'#00d4ff', rev:70000, mom:'+8.5%', dir:'up' },
+    { name:'충전', pct:15, color:'#10b981', rev:52500, mom:'-1.2%', dir:'down' },
+    { name:'월정액', pct:12, color:'#f59e0b', rev:42000, mom:'+1.0%', dir:'up' },
+    { name:'부띠끄', pct:8, color:'#ec4899', rev:28000, mom:'+5.7%', dir:'up' },
+    { name:'패스', pct:5, color:'#06b6d4', rev:17500, mom:'-0.5%', dir:'down' },
+    { name:'인테리어', pct:3, color:'#84cc16', rev:10500, mom:'+2.1%', dir:'up' },
+    { name:'토끼토큰', pct:2, color:'#f97316', rev:7000, mom:'0.0%', dir:'flat' }
+  ];
+
+  var h = '<h3>💰 BM 채널별 수익 믹스 (추정)</h3>';
+  h += '<p style="color:#a0a0c0;font-size:.82rem;margin:0 0 14px">운영 로드맵 기반 추정치 · 총 추정 월매출 $350K</p>';
+  h += '<div class="bm-mix-layout">';
+  h += '<div class="bm-mix-chart"><canvas id="bmMixChart"></canvas></div>';
+  h += '<div class="bm-ch-cards">';
+  channels.forEach(function(ch){
+    h += '<div class="bm-ch-card" style="border-left-color:'+ch.color+'">' +
+      '<div class="bm-ch-name">'+ch.name+'</div>' +
+      '<div class="bm-ch-pct" style="color:'+ch.color+'">'+ch.pct+'%</div>' +
+      '<div class="bm-ch-rev">추정 $'+fmt(ch.rev)+'</div>' +
+      '<div class="bm-ch-mom '+ch.dir+'">MoM '+(ch.dir==='up'?'▲':ch.dir==='down'?'▼':'●')+' '+ch.mom+'</div>' +
+    '</div>';
+  });
+  h += '</div></div>';
+
+  document.getElementById('bmMixPanel').innerHTML = h;
+
+  // Chart.js 도넛 차트
+  var ctx = document.getElementById('bmMixChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: channels.map(function(c){ return c.name; }),
+      datasets: [{
+        data: channels.map(function(c){ return c.pct; }),
+        backgroundColor: channels.map(function(c){ return c.color + 'cc'; }),
+        borderColor: channels.map(function(c){ return c.color; }),
+        borderWidth: 2,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '55%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#a0a0c0', font: { size: 11 }, padding: 12, usePointStyle: true, pointStyleWidth: 10 }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              return ctx.label + ': ' + ctx.parsed + '% ($' + fmt(channels[ctx.dataIndex].rev) + ')';
+            }
+          }
+        }
+    }
+  }
+  });
+})();
+
+// ========== SECTION C: COHORT RETENTION ANALYSIS ==========
+(function(){
+  const inspections = [
+    {date:"2026-03-26", total_users:305690, paid_users:103496},
+    {date:"2026-04-09", total_users:311763, paid_users:111322},
+    {date:"2026-04-23", total_users:305321, paid_users:111300},
+    {date:"2026-05-07", total_users:304712, paid_users:112225},
+    {date:"2026-05-21", total_users:298372, paid_users:111753},
+    {date:"2026-06-04", total_users:275870, paid_users:107961},
+    {date:"2026-06-18", total_users:255790, paid_users:104600}
+  ];
+
+  // --- Summary cards ---
+  const first = inspections[0], last = inspections[inspections.length-1];
+  const totalDrop = ((last.total_users - first.total_users)/first.total_users*100).toFixed(1);
+  const paidChange = ((last.paid_users - first.paid_users)/first.paid_users*100).toFixed(1);
+  const payRateFirst = (first.paid_users/first.total_users*100).toFixed(1);
+  const payRateLast = (last.paid_users/last.total_users*100).toFixed(1);
+
+  let html = '<div class="cohort-section">' +
+    '<h2>📊 코호트 리텐션 분석</h2>' +
+    '<p class="cohort-subtitle">점검 DB 7시점 데이터 기반 코호트 시뮬레이션 · 시점 간격 약 2주</p>';
+
+  html += '<div class="cohort-cards">' +
+    '<div class="cohort-card"><div class="lbl">초기 총유저</div><div class="num">'+first.total_users.toLocaleString()+'</div><div class="sub">'+first.date+'</div></div>' +
+    '<div class="cohort-card"><div class="lbl">최종 총유저</div><div class="num">'+last.total_users.toLocaleString()+'</div><div class="sub">'+last.date+'</div></div>' +
+    '<div class="cohort-card"><div class="lbl">총유저 변화</div><div class="num" style="color:#ef4444">'+totalDrop+'%</div><div class="sub">'+(last.total_users - first.total_users).toLocaleString()+' 명 감소</div></div>' +
+    '<div class="cohort-card"><div class="lbl">과금유저 변화</div><div class="num" style="color:#10b981">'+paidChange+'%</div><div class="sub">103K→'+(last.paid_users/1000).toFixed(0)+'K</div></div>' +
+    '<div class="cohort-card"><div class="lbl">초기 과금율</div><div class="num">'+payRateFirst+'%</div><div class="sub">'+first.date+'</div></div>' +
+    '<div class="cohort-card"><div class="lbl">최종 과금율</div><div class="num">'+payRateLast+'%</div><div class="sub">+'+(payRateLast-payRateFirst).toFixed(1)+'pp</div></div>' +
+    '</div>';
+
+  // --- Cohort retention heatmap (table-based) ---
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">🔥 코호트 리텐션 히트맵 (잔존율 %)</h3>';
+  html += '<p style="color:#94a3b8;font-size:.75rem;margin-bottom:8px">각 코호트(시점) 기준, 이후 시점에서의 유저 수 비율. 시점 간격 ≈ 2주.</p>';
+
+  const labels = inspections.map(d => d.date.slice(5));
+  const numPoints = inspections.length;
+  const intervals = [];
+  for(let i=1; i<numPoints; i++) intervals.push(i + '주 후');
+
+  html += '<div style="overflow-x:auto"><table class="insp-table"><thead><tr><th>코호트</th>';
+  intervals.forEach(l => html += '<th>'+l+'</th>');
+  html += '</tr></thead><tbody>';
+
+  inspections.forEach((d, i) => {
+    html += '<tr><td style="color:#e2e8f0;font-weight:600">'+d.date.slice(5)+'</td>';
+    for(let j = i+1; j < numPoints; j++) {
+      const retention = (inspections[j].total_users / d.total_users * 100);
+      const bg = retention >= 100 ? 'rgba(16,185,129,'+(Math.min((retention-99)*0.5, 0.6))+')'
+                  : retention >= 90 ? 'rgba(245,158,11,'+((retention-89)*0.1)+')'
+                  : 'rgba(239,68,68,'+((90-retention)*0.04)+')';
+      html += '<td style="background:'+bg+';font-weight:600;color:#e2e8f0">'+retention.toFixed(1)+'</td>';
+    }
+    for(let j = numPoints - i - 1; j < numPoints-1; j++) {
+      html += '<td style="color:#475569">—</td>';
+    }
+    html += '</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // --- User trend line chart + flow bar chart ---
+  html += '<div class="cohort-grid">';
+  html += '<div class="chart-wrap"><canvas id="cohortUserChart" height="150"></canvas></div>';
+  html += '<div class="chart-wrap"><canvas id="cohortFlowChart" height="150"></canvas></div>';
+  html += '</div>';
+
+  html += '</div>'; // close cohort-section
+  document.getElementById('cohortRetention').innerHTML = html;
+
+  // --- Chart 1: User trend lines ---
+  const ctx1 = document.getElementById('cohortUserChart').getContext('2d');
+  new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: '총 유저',
+          data: inspections.map(d => d.total_users),
+          borderColor: '#00d4ff',
+          backgroundColor: 'rgba(0,212,255,0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#00d4ff'
+        },
+        {
+          label: '과금 유저',
+          data: inspections.map(d => d.paid_users),
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245,158,11,0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointBackgroundColor: '#f59e0b'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
+        title: { display: true, text: '유저 수 추이 (총유저 / 과금유저)', color: '#00d4ff', font: { size: 11 } }
+      },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 9 }, callback: function(v){ return (v/1000)+'K'; } }, grid: { color: '#25255530' } }
+      }
+    }
+  });
+
+  // --- Chart 2: Estimated new vs churn ---
+  const newUsers = [];
+  const churnUsers = [];
+  for(let i = 1; i < numPoints; i++) {
+    const diff = inspections[i].total_users - inspections[i-1].total_users;
+    const baselineChurn = Math.round(inspections[i-1].total_users * 0.05);
+    if(diff >= 0) {
+      newUsers.push(diff + baselineChurn);
+      churnUsers.push(baselineChurn);
+    } else {
+      newUsers.push(Math.max(0, baselineChurn + diff));
+      churnUsers.push(baselineChurn - diff);
+    }
+  }
+
+  const ctx2 = document.getElementById('cohortFlowChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: labels.slice(1),
+      datasets: [
+        {
+          label: '신규(추정)',
+          data: newUsers,
+          backgroundColor: 'rgba(16,185,129,0.7)',
+          borderRadius: 4
+        },
+        {
+          label: '이탈(추정)',
+          data: churnUsers,
+          backgroundColor: 'rgba(239,68,68,0.7)',
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
+        title: { display: true, text: '신규(추정) vs 이탈(추정) 바 차트', color: '#00d4ff', font: { size: 11 } }
+      },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 9 }, callback: function(v){ return (v/1000)+'K'; } }, grid: { color: '#25255530' } }
+      }
+    }
+  });
+})();
+
+// ========== SECTION E: REGION COMPARISON ==========
+(function(){
+  const inlineFallback = {"regions":{"jp":{"matched":200766,"matrix":[[109608,1060,1198,246,52,6],[0,20792,1190,200,27,3],[0,0,20271,2255,134,4],[0,0,0,20255,2393,64],[0,0,0,0,11508,1583],[0,0,0,0,0,7917]]},"sgp":{"matched":8832,"matrix":[[5190,19,25,7,1,0],[0,782,30,2,0,0],[0,0,797,74,2,0],[0,0,0,910,71,1],[0,0,0,0,497,52],[0,0,0,0,0,372]]},"va":{"matched":19641,"matrix":[[12630,73,89,11,0,0],[0,1936,70,12,0,0],[0,0,1686,147,2,0],[0,0,0,1560,136,3],[0,0,0,0,787,67],[0,0,0,0,0,432]]},"all":{"matched":229239,"matrix":[[127428,1152,1312,264,53,6],[0,23510,1290,214,27,3],[0,0,22754,2476,138,4],[0,0,0,22725,2600,68],[0,0,0,0,12792,1702],[0,0,0,0,0,8721]]}}};
+
+  const tierNames = ['무과금','소과금','중과금','고과금','초고과금','고래'];
+
+  function calcRowTotals(matrix) {
+    return matrix.map(row => row.reduce((s,v) => s+v, 0));
+  }
+
+  function calcTierDistribution(matrix) {
+    const rowTotals = calcRowTotals(matrix);
+    const total = rowTotals.reduce((s,v) => s+v, 0);
+    return rowTotals.map(t => (t/total*100));
+  }
+
+  function calcPaidInfo(matrix) {
+    const rowTotals = calcRowTotals(matrix);
+    const total = rowTotals.reduce((s,v) => s+v, 0);
+    const freeUsers = rowTotals[0];
+    const paidUsers = total - freeUsers;
+    const payRate = (paidUsers/total*100).toFixed(1);
+    return { total, freeUsers, paidUsers, payRate };
+  }
+
+  function render(data) {
+    const regions = data.regions;
+    const regionKeys = ['all','jp','sgp','va'];
+    const regionLabels = {all:'ALL (전체)', jp:'JP (일본)', sgp:'SGP (싱가포르)', va:'VA (베트남)'};
+    const regionColors = {all:'#00d4ff', jp:'#ec4899', sgp:'#10b981', va:'#f59e0b'};
+
+    let html = '<div class="region-section">' +
+      '<h2>🌐 지역별 과금구조 비교</h2>' +
+      '<p class="region-subtitle">4지역(ALL/JP/SGP/VA)의 과금군 분포, 과금율, 유저 수 비교</p>';
+
+    // --- Summary cards ---
+    html += '<div class="region-cards">';
+    regionKeys.forEach(key => {
+      const r = regions[key];
+      const info = calcPaidInfo(r.matrix);
+      html += '<div class="region-card">' +
+        '<div class="lbl">'+regionLabels[key]+'</div>' +
+        '<div class="num" style="color:'+regionColors[key]+'">'+info.payRate+'%</div>' +
+        '<div class="sub">과금율 · '+info.total.toLocaleString()+'명</div></div>';
+    });
+    html += '</div>';
+
+    // --- Radar chart + info grid ---
+    html += '<div class="region-grid">';
+    html += '<div class="chart-wrap"><canvas id="regionRadarChart" height="200"></canvas></div>';
+
+    // --- Region detail cards ---
+    html += '<div>';
+    regionKeys.forEach(key => {
+      const r = regions[key];
+      const info = calcPaidInfo(r.matrix);
+      const dist = calcTierDistribution(r.matrix);
+      html += '<div style="background:#0a0a1a;border:1px solid #252555;border-radius:8px;padding:10px;margin-bottom:8px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+        '<span style="color:'+regionColors[key]+';font-weight:700;font-size:.85rem">'+regionLabels[key]+'</span>' +
+        '<span style="color:#94a3b8;font-size:.72rem">매칭 유저: '+r.matched.toLocaleString()+'</span></div>' +
+        '<div style="display:flex;gap:16px;font-size:.78rem;flex-wrap:wrap">' +
+        '<span style="color:#a0a0c0">과금유저: <b style="color:#e2e8f0">'+info.paidUsers.toLocaleString()+'</b></span>' +
+        '<span style="color:#a0a0c0">무과금: <b style="color:#e2e8f0">'+info.freeUsers.toLocaleString()+'</b></span>' +
+        '</div>' +
+        '<div style="display:flex;gap:4px;margin-top:6px;height:6px;border-radius:3px;overflow:hidden">';
+      dist.forEach((p, i) => {
+        const colors = ['#94a3b8','#06b6d4','#10b981','#f59e0b','#ec4899','#7c3aed'];
+        html += '<div style="width:'+p+'%;background:'+colors[i]+'" title="'+tierNames[i]+': '+p.toFixed(1)+'%"></div>';
+      });
+      html += '</div>';
+      html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;font-size:.65rem">';
+      dist.forEach((p, i) => {
+        const colors = ['#94a3b8','#06b6d4','#10b981','#f59e0b','#ec4899','#7c3aed'];
+        html += '<span style="color:'+colors[i]+'">'+tierNames[i]+' '+p.toFixed(1)+'%</span>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+    html += '</div>';
+
+    // --- Per-region bar chart ---
+    html += '<div class="chart-wrap"><canvas id="regionBarChart" height="120"></canvas></div>';
+
+    html += '</div>';
+    document.getElementById('regionComparison').innerHTML = html;
+
+    // --- Radar Chart ---
+    const radarCtx = document.getElementById('regionRadarChart').getContext('2d');
+    const radarDatasets = regionKeys.map(key => {
+      const dist = calcTierDistribution(regions[key].matrix);
+      return {
+        label: regionLabels[key],
+        data: dist,
+        borderColor: regionColors[key],
+        backgroundColor: regionColors[key] + '20',
+        pointBackgroundColor: regionColors[key],
+        pointRadius: 3,
+        borderWidth: 2
+      };
+    });
+    new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: tierNames,
+        datasets: radarDatasets
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#a0a0c0', font: { size: 9 } } },
+          title: { display: true, text: '지역별 과금군 분포 (레이더)', color: '#00d4ff', font: { size: 11 } }
+        },
+        scales: {
+          r: {
+            ticks: { color: '#a0a0c0', font: { size: 8 }, backdropColor: 'transparent', callback: function(v){ return v+'%'; } },
+            grid: { color: '#25255540' },
+            angleLines: { color: '#25255540' },
+            pointLabels: { color: '#a0a0c0', font: { size: 9 } },
+            suggestedMin: 0
+          }
+        }
+      }
+    });
+
+    // --- Bar Chart ---
+    const barCtx = document.getElementById('regionBarChart').getContext('2d');
+    new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels: regionKeys.map(k => regionLabels[k]),
+        datasets: [
+          {
+            label: '과금율 (%)',
+            data: regionKeys.map(k => parseFloat(calcPaidInfo(regions[k].matrix).payRate)),
+            backgroundColor: regionKeys.map(k => regionColors[k] + 'A0'),
+            borderColor: regionKeys.map(k => regionColors[k]),
+            borderWidth: 1,
+            borderRadius: 4,
+            yAxisID: 'y'
+          },
+          {
+            label: '매칭 유저 수',
+            data: regionKeys.map(k => regions[k].matched),
+            backgroundColor: regionKeys.map(k => regionColors[k] + '40'),
+            borderColor: regionKeys.map(k => regionColors[k]),
+            borderWidth: 1,
+            borderRadius: 4,
+            yAxisID: 'y1'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
+          title: { display: true, text: '지역별 과금율 및 매칭 유저 수', color: '#00d4ff', font: { size: 11 } }
+        },
+        scales: {
+          x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
+          y: {
+            position: 'left',
+            ticks: { color: '#a0a0c0', font: { size: 9 }, callback: function(v){ return v+'%'; } },
+            grid: { color: '#25255530' },
+            title: { display: true, text: '과금율', color: '#a0a0c0', font: { size: 9 } }
+          },
+          y1: {
+            position: 'right',
+            ticks: { color: '#f59e0b', font: { size: 9 }, callback: function(v){ return (v/1000)+'K'; } },
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: '유저 수', color: '#f59e0b', font: { size: 9 } }
+          }
+        }
+      }
+    });
+  }
+
+  // Try fetch, fallback to inline
+  fetch('data/region_transition.json')
+    .then(r => r.json())
+    .catch(() => inlineFallback)
+    .then(data => render(data))
+    .catch(err => {
+      document.getElementById('regionComparison').innerHTML =
+        '<div class="region-section"><h2>🌐 지역별 과금구조 비교</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
+    });
+})();
+
+// ========== SECTION F: CONVERSION FUNNEL ==========
+(function(){
+  // Deduplicated inspection data (7 unique points)
+  var inspections = [
+    {"date":"2026-03-26","label":"03/26 반주년 이드","total_users":305690,"paid_users":103496,"pay_rate":33.86,"total_krw":22822501100,"arppu_krw":220516,"pay_tiers":{"무과금":202194,"소과금":24154,"중과금":19048,"고과금":23268,"초고과금":26003,"고래":11023}},
+    {"date":"2026-04-09","label":"04/09 클로에+요미","total_users":311763,"paid_users":111322,"pay_rate":35.71,"total_krw":28056721800,"arppu_krw":252032,"pay_tiers":{"무과금":200441,"소과금":25670,"중과금":20353,"고과금":23776,"초고과금":27885,"고래":13638}},
+    {"date":"2026-04-23","label":"04/23 스노키","total_users":305321,"paid_users":111300,"pay_rate":36.45,"total_krw":30121931800,"arppu_krw":270637,"pay_tiers":{"무과금":194021,"소과금":24747,"중과금":20517,"고과금":23460,"초고과금":28068,"고래":14508}},
+    {"date":"2026-05-07","label":"05/07 캬롯","total_users":304712,"paid_users":112225,"pay_rate":36.83,"total_krw":32395346700,"arppu_krw":288664,"pay_tiers":{"무과금":192487,"소과금":24262,"중과금":20438,"고과금":23455,"초고과금":28473,"고래":15597}},
+    {"date":"2026-05-21","label":"05/21 셀리네/우이","total_users":298372,"paid_users":111753,"pay_rate":37.45,"total_krw":33083390600,"arppu_krw":296040,"pay_tiers":{"무과금":186619,"소과금":23928,"중과금":20309,"고과금":23353,"초고과금":28382,"고래":15781}},
+    {"date":"2026-06-04","label":"06/04 리스티","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"무과금":167909,"소과금":22173,"중과금":19300,"고과금":22250,"초고과금":27773,"고래":16465}},
+    {"date":"2026-06-18","label":"06/18 0.75주년 리뉴얼","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}}
+  ];
+
+  var latest = inspections[inspections.length - 1];
+  var dau = G[0][2]; // latest DAU from global data
+
+  // Funnel: 전체유저 → DAU → 과금유저 → 중과금이상 → 고래
+  var midHigh = latest.pay_tiers['중과금'] + latest.pay_tiers['고과금'] + latest.pay_tiers['초고과금'] + latest.pay_tiers['고래'];
+  var steps = [
+    { label: '전체 유저', value: latest.total_users, color: '#47556980' },
+    { label: 'DAU (최신)', value: dau, color: '#00d4ff50' },
+    { label: '과금 유저', value: latest.paid_users, color: '#10b98150' },
+    { label: '중과금 이상', value: midHigh, color: '#f59e0b50' },
+    { label: '고래', value: latest.pay_tiers['고래'], color: '#ec489950' }
+  ];
+
+  var maxValue = steps[0].value;
+
+  function pctVal(v) { return (v / steps[0].value * 100).toFixed(1); }
+  function convRate(from, to) { return (to / from * 100).toFixed(1); }
+  function dropRate(from, to) { return ((1 - to / from) * 100).toFixed(1); }
+
+  var html = '<div class="funnel-section">' +
+    '<h2>🔄 전환 퍼널 분석</h2>' +
+    '<p class="funnel-subtitle">점검 DB 기반 유저 전환 퍼널 · 최신 시점: ' + latest.date + ' (' + latest.label + ')</p>';
+
+  // CSS Funnel visualization
+  html += '<div class="funnel-container">';
+  steps.forEach(function(s, i) {
+    var widthPct = Math.max(8, s.value / maxValue * 100);
+    var stepHtml = '<div class="funnel-step">' +
+      '<div class="funnel-label">' + s.label + '</div>' +
+      '<div class="funnel-bar-wrap">' +
+        '<div class="funnel-bar" style="width:' + widthPct + '%;background:' + s.color + '">' +
+          '<span class="pct">' + s.value.toLocaleString() + ' (' + pctVal(s.value) + '%)</span>' +
+        '</div>' +
+      '</div>';
+    if (i > 0) {
+      var cr = convRate(steps[i-1].value, s.value);
+      var dr = dropRate(steps[i-1].value, s.value);
+      stepHtml += '<div class="funnel-metrics">' +
+        '<div class="funnel-metric"><span class="m-label">전환율 </span><span class="m-val">' + cr + '%</span></div>' +
+        '<div class="funnel-metric"><span class="m-label">이탈률 </span><span class="m-val m-down">' + dr + '%</span></div>' +
+      '</div>';
+    }
+    stepHtml += '</div>';
+    html += stepHtml;
+  });
+  html += '</div>';
+
+  // MoM 전환율 변화 테이블 (7시점)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📊 MoM 전환율 변화 (7시점)</h3>';
+  html += '<div style="overflow-x:auto"><table class="funnel-mom-table"><thead><tr>' +
+    '<th>날짜</th><th>전체→과금(PUR)</th><th>과금→중과금+</th><th>중과금+→고래</th><th>과금율(PUR)</th>' +
+    '</tr></thead><tbody>';
+
+  inspections.forEach(function(d, idx) {
+    var mH = d.pay_tiers['중과금'] + d.pay_tiers['고과금'] + d.pay_tiers['초고과금'] + d.pay_tiers['고래'];
+    var purCls = idx > 0 && d.pay_rate > inspections[idx-1].pay_rate ? 'insp-up' : (idx > 0 ? 'insp-down' : '');
+    html += '<tr>' +
+      '<td style="font-size:.7rem">' + d.date.slice(5) + '</td>' +
+      '<td class="' + purCls + '">' + d.pay_rate + '%</td>' +
+      '<td>' + (mH / d.paid_users * 100).toFixed(1) + '%</td>' +
+      '<td>' + (d.pay_tiers['고래'] / mH * 100).toFixed(1) + '%</td>' +
+      '<td style="color:#00d4ff;font-weight:600">' + d.pay_rate + '%</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // PUR + 중과금 비중 미니 차트
+  html += '<div class="funnel-grid">' +
+    '<div>' +
+      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">📈 과금율(PUR) 추이</h3>' +
+      '<div class="chart-wrap" style="margin-bottom:0"><canvas id="funnelPURChart" height="140"></canvas></div>' +
+    '</div>' +
+    '<div>' +
+      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">📈 중과금+ 비중 추이</h3>' +
+      '<div class="chart-wrap" style="margin-bottom:0"><canvas id="funnelMidHighChart" height="140"></canvas></div>' +
+    '</div>' +
+  '</div>';
+
+  html += '</div>';
+  document.getElementById('conversionFunnel').innerHTML = html;
+
+  // PUR line chart
+  var purLabels = inspections.map(function(d){ return d.date.slice(5); });
+  new Chart(document.getElementById('funnelPURChart'), {
+    type: 'line',
+    data: {
+      labels: purLabels,
+      datasets: [{
+        label: '과금율 (%)',
+        data: inspections.map(function(d){ return d.pay_rate; }),
+        borderColor: '#10b981',
+        backgroundColor: '#10b98120',
+        tension: 0.3,
+        pointRadius: 4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 10 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return v+'%'; } }, grid: { color: '#25255530' }, min: 30, max: 45 }
+      }
+    }
+  });
+
+  // 중과금+ 비중 line chart
+  new Chart(document.getElementById('funnelMidHighChart'), {
+    type: 'line',
+    data: {
+      labels: purLabels,
+      datasets: [{
+        label: '중과금+ 비중 (%)',
+        data: inspections.map(function(d){
+          var mh = d.pay_tiers['중과금'] + d.pay_tiers['고과금'] + d.pay_tiers['초고과금'] + d.pay_tiers['고래'];
+          return +(mh / d.paid_users * 100).toFixed(1);
+        }),
+        borderColor: '#f59e0b',
+        backgroundColor: '#f59e0b20',
+        tension: 0.3,
+        pointRadius: 4,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 10 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return v+'%'; } }, grid: { color: '#25255530' } }
+      }
+    }
+  });
+})();
+
+// ========== SECTION G: WHALE TRACKING & PAY TIER CONTRIBUTION ==========
+(function(){
+  var inspections = [
+    {"date":"2026-03-26","total_users":305690,"paid_users":103496,"pay_rate":33.86,"total_krw":22822501100,"arppu_krw":220516,"pay_tiers":{"무과금":202194,"소과금":24154,"중과금":19048,"고과금":23268,"초고과금":26003,"고래":11023}},
+    {"date":"2026-04-09","total_users":311763,"paid_users":111322,"pay_rate":35.71,"total_krw":28056721800,"arppu_krw":252032,"pay_tiers":{"무과금":200441,"소과금":25670,"중과금":20353,"고과금":23776,"초고과금":27885,"고래":13638}},
+    {"date":"2026-04-23","total_users":305321,"paid_users":111300,"pay_rate":36.45,"total_krw":30121931800,"arppu_krw":270637,"pay_tiers":{"무과금":194021,"소과금":24747,"중과금":20517,"고과금":23460,"초고과금":28068,"고래":14508}},
+    {"date":"2026-05-07","total_users":304712,"paid_users":112225,"pay_rate":36.83,"total_krw":32395346700,"arppu_krw":288664,"pay_tiers":{"무과금":192487,"소과금":24262,"중과금":20438,"고과금":23455,"초고과금":28473,"고래":15597}},
+    {"date":"2026-05-21","total_users":298372,"paid_users":111753,"pay_rate":37.45,"total_krw":33083390600,"arppu_krw":296040,"pay_tiers":{"무과금":186619,"소과금":23928,"중과금":20309,"고과금":23353,"초고과금":28382,"고래":15781}},
+    {"date":"2026-06-04","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"무과금":167909,"소과금":22173,"중과금":19300,"고과금":22250,"초고과금":27773,"고래":16465}},
+    {"date":"2026-06-18","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}}
+  ];
+
+  // 가중치: 소과금=1x, 중과금=5x, 고과금=15x, 초고과금=40x, 고래=100x
+  var tierWeights = { '소과금': 1, '중과금': 5, '고과금': 15, '초고과금': 40, '고래': 100 };
+  var tierNames = ['소과금','중과금','고과금','초고과금','고래'];
+  var tierColors = ['#06b6d4','#10b981','#f59e0b','#ec4899','#7c3aed'];
+
+  var first = inspections[0];
+  var last = inspections[inspections.length - 1];
+
+  function pctChg(a,b){ return ((b-a)/a*100).toFixed(1); }
+
+  // 최신 시점 추정 매출 기여도
+  var latestRevContrib = {};
+  var totalWeightedRev = 0;
+  tierNames.forEach(function(t){
+    var c = last.pay_tiers[t] * tierWeights[t];
+    latestRevContrib[t] = c;
+    totalWeightedRev += c;
+  });
+
+  // 고래 = 초고과금 + 고래
+  var whaleUsers = last.pay_tiers['초고과금'] + last.pay_tiers['고래'];
+  var whaleRev = latestRevContrib['초고과금'] + latestRevContrib['고래'];
+  var nonWhaleUsers = last.pay_tiers['소과금'] + last.pay_tiers['중과금'] + last.pay_tiers['고과금'];
+  var nonWhaleRev = latestRevContrib['소과금'] + latestRevContrib['중과금'] + latestRevContrib['고과금'];
+  var whaleRevPct = (whaleRev / totalWeightedRev * 100).toFixed(1);
+  var whaleUserPct = (whaleUsers / last.paid_users * 100).toFixed(1);
+
+  var html = '<div class="whale-section">' +
+    '<h2>🐋 고래 추적 & 과금군 기여도</h2>' +
+    '<p class="whale-subtitle">점검 DB 과금군 분포 + 추정 매출 기여도 · ' + last.date + ' 기준</p>';
+
+  // 요약 카드
+  html += '<div class="whale-summary">' +
+    '<div class="whale-sum-card"><div class="lbl">고래(초고+고래) 수</div><div class="num">' + whaleUsers.toLocaleString() + '</div><div class="sub">' + whaleUserPct + '% (전체 과금 중)</div></div>' +
+    '<div class="whale-sum-card"><div class="lbl">고래 추정 매출 기여</div><div class="num" style="color:#ec4899">' + whaleRevPct + '%</div><div class="sub">' + whaleUserPct + '% 유저가 ' + whaleRevPct + '% 매출</div></div>' +
+    '<div class="whale-sum-card"><div class="lbl">고래 유저 변화</div><div class="num" style="color:#10b981">+' + pctChg(first.pay_tiers['초고과금']+first.pay_tiers['고래'], whaleUsers) + '%</div><div class="sub">' + (first.pay_tiers['초고과금']+first.pay_tiers['고래']).toLocaleString() + ' → ' + whaleUsers.toLocaleString() + '</div></div>' +
+    '<div class="whale-sum-card"><div class="lbl">ARPPU 상승</div><div class="num" style="color:#f59e0b">' + (last.arppu_krw/10000).toFixed(0) + '만</div><div class="sub">+' + pctChg(first.arppu_krw, last.arppu_krw) + '%</div></div>' +
+  '</div>';
+
+  // 과금군별 유저수 vs 매출기여 바 차트
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📊 과금군별 유저 수 vs 추정 매출 기여도</h3>';
+  html += '<div class="chart-wrap"><canvas id="whaleContribChart" height="180"></canvas></div>';
+
+  // 고래 vs 비고래 매출기여 stacked bar (7시점)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">🐋 고래 vs 비고래 매출 기여 추이 (7시점)</h3>';
+  html += '<div class="chart-wrap"><canvas id="whaleTrendChart" height="160"></canvas></div>';
+
+  // 고래 비중 변화 추이 테이블
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📈 고래 비중 변화 추이 (7시점)</h3>';
+  html += '<div style="overflow-x:auto"><table class="whale-table"><thead><tr>' +
+    '<th>날짜</th><th>고래 수</th><th>초고수</th><th>고래 합계</th><th>과금 대비 %</th><th>추정 매출 기여</th><th>고래 MoM Δ</th>' +
+    '</tr></thead><tbody>';
+
+  inspections.forEach(function(d, i){
+    var wTotal = d.pay_tiers['초고과금'] + d.pay_tiers['고래'];
+    var wPct = (wTotal / d.paid_users * 100).toFixed(1);
+    var tw = 0;
+    tierNames.forEach(function(t){ tw += d.pay_tiers[t] * tierWeights[t]; });
+    var wR = d.pay_tiers['초고과금'] * tierWeights['초고과금'] + d.pay_tiers['고래'] * tierWeights['고래'];
+    var wRevPct = (wR / tw * 100).toFixed(1);
+    var mom = i > 0 ? pctChg(inspections[i-1].pay_tiers['고래'], d.pay_tiers['고래']) : '-';
+    var momCls = typeof mom === 'string' ? '' : (parseFloat(mom) >= 0 ? 'insp-up' : 'insp-down');
+    html += '<tr>' +
+      '<td style="font-size:.7rem">' + d.date.slice(5) + '</td>' +
+      '<td style="color:#ec4899;font-weight:600">' + d.pay_tiers['고래'].toLocaleString() + '</td>' +
+      '<td>' + d.pay_tiers['초고과금'].toLocaleString() + '</td>' +
+      '<td style="font-weight:600">' + wTotal.toLocaleString() + '</td>' +
+      '<td>' + wPct + '%</td>' +
+      '<td style="color:#f59e0b;font-weight:600">' + wRevPct + '%</td>' +
+      '<td class="' + momCls + '">' + (mom === '-' ? '-' : (parseFloat(mom)>=0?'+':'') + mom + '%') + '</td>' +
+    '</tr>';
+  });
+  html += '</tbody></table></div>';
+
+  // 이탈 위험 인사이트
+  var whaleDelta = last.pay_tiers['고래'] - first.pay_tiers['고래'];
+  html += '<div class="whale-insight">' +
+    '<b>🔒 이탈 위험 지표:</b> 고래 유저 수 <b>' + first.pay_tiers['고래'].toLocaleString() + ' → ' + last.pay_tiers['고래'].toLocaleString() + '</b> (' +
+    (whaleDelta >= 0 ? '<span style="color:#10b981;font-weight:600">+' + whaleDelta + ' 증가</span>' : '<span style="color:#ef4444;font-weight:600">' + whaleDelta + ' 감소</span>') +
+    ') — 지속적 증가 추세로 <b style="color:#10b981">긍정적</b> 신호. ' +
+    '단, 전체 유저 수는 감소 중이므로 고래 비중 상승은 자연스러운 현상이기도 함. ' +
+    '신규 유저 유입과 고래 리텐션 균형 모니터링 필요.' +
+  '</div>';
+
+  html += '</div>';
+  document.getElementById('whaleTracking').innerHTML = html;
+
+  // Chart 1: 과금군별 유저수 vs 추정 매출기여 (grouped bar)
+  new Chart(document.getElementById('whaleContribChart'), {
+    type: 'bar',
+    data: {
+      labels: tierNames,
+      datasets: [
+        {
+          label: '유저 수',
+          data: tierNames.map(function(t){ return last.pay_tiers[t]; }),
+          backgroundColor: tierColors.map(function(c){ return c + '80'; }),
+          borderColor: tierColors,
+          borderWidth: 1,
+          yAxisID: 'y'
+        },
+        {
+          label: '추정 매출 기여 (가중)',
+          data: tierNames.map(function(t){ return latestRevContrib[t]; }),
+          backgroundColor: tierColors.map(function(c){ return c + '40'; }),
+          borderColor: tierColors,
+          borderWidth: 2,
+          borderDash: [3,3],
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#a0a0c0', font: { size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 10 } }, grid: { color: '#25255530' } },
+        y: {
+          position: 'left',
+          ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return (v/1000).toFixed(0)+'K'; } },
+          grid: { color: '#25255530' },
+          title: { display: true, text: '유저 수', color: '#a0a0c0', font: { size: 10 } }
+        },
+        y1: {
+          position: 'right',
+          ticks: { color: '#f59e0b', font: { size: 10 }, callback: function(v){ return (v/1000000).toFixed(1)+'M'; } },
+          grid: { drawOnChartArea: false },
+          title: { display: true, text: '추정 매출 (가중)', color: '#f59e0b', font: { size: 10 } }
+        }
+      }
+    }
+  });
+
+  // Chart 2: 고래 vs 비고래 매출기여 stacked bar (7시점)
+  var trendLabels = inspections.map(function(d){ return d.date.slice(5); });
+  var whaleRevTrend = [];
+  var nonWhaleRevTrend = [];
+  inspections.forEach(function(d){
+    var tw = 0;
+    tierNames.forEach(function(t){ tw += d.pay_tiers[t] * tierWeights[t]; });
+    var wR = d.pay_tiers['초고과금'] * tierWeights['초고과금'] + d.pay_tiers['고래'] * tierWeights['고래'];
+    whaleRevTrend.push(+(wR / tw * 100).toFixed(1));
+    nonWhaleRevTrend.push(+((tw - wR) / tw * 100).toFixed(1));
+  });
+  new Chart(document.getElementById('whaleTrendChart'), {
+    type: 'bar',
+    data: {
+      labels: trendLabels,
+      datasets: [
+        {
+          label: '비고래 기여 (%)',
+          data: nonWhaleRevTrend,
+          backgroundColor: '#47556980',
+          borderColor: '#475569',
+          borderWidth: 1
+        },
+        {
+          label: '고래 기여 (%)',
+          data: whaleRevTrend,
+          backgroundColor: '#ec489980',
+          borderColor: '#ec4899',
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#a0a0c0', font: { size: 10 } } } },
+      scales: {
+        x: { stacked: true, ticks: { color: '#a0a0c0', font: { size: 10 } }, grid: { color: '#25255530' } },
+        y: { stacked: true, ticks: { color: '#a0a0c0', font: { size: 10 }, callback: function(v){ return v+'%'; } }, grid: { color: '#25255530' }, max: 100 }
+      }
+    }
+  });
+})();
+
 </script>
 </body>
 </html>
