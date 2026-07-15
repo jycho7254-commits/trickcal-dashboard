@@ -114,6 +114,18 @@ td:first-child{text-align:left;color:#e2e8f0}
 .tm-summary-card{background:#141432;border:1px solid #252555;border-radius:8px;padding:12px;text-align:center}
 .tm-summary-card .num{font-size:1.3rem;font-weight:700;color:#00d4ff}
 .tm-summary-card .lbl{font-size:.72rem;color:#94a3b8;margin-top:2px}
+.tm-summary-card{cursor:pointer;transition:all 0.2s}
+.tm-summary-card:hover{border-color:#00d4ff60;box-shadow:0 0 12px #00d4ff20}
+.tm-table td[data-cell]{cursor:pointer;position:relative;transition:filter 0.15s}
+.tm-table td[data-cell]:hover{filter:brightness(1.3)}
+.tm-cell-tooltip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0a0a1a;border:1px solid #00d4ff60;border-radius:8px;padding:10px 14px;font-size:.72rem;color:#a0a0c0;line-height:1.5;z-index:100;min-width:220px;max-width:300px;box-shadow:0 4px 20px #00000060;pointer-events:none;white-space:normal}
+.tm-cell-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#00d4ff60}
+.tm-cell-tooltip .tt-title{color:#00d4ff;font-weight:600;font-size:.78rem;margin-bottom:4px}
+.tm-cell-tooltip .tt-formula{background:#252555;padding:6px 8px;border-radius:4px;margin:4px 0;font-family:monospace;font-size:.7rem;color:#10b981;word-break:break-all}
+.tm-cell-tooltip .tt-result{color:#e2e8f0;font-weight:600}
+.tm-summary-tooltip{background:#0a0a1a;border:1px solid #00d4ff60;border-radius:8px;padding:12px 16px;font-size:.72rem;color:#a0a0c0;line-height:1.6;margin-top:8px;max-width:360px}
+.tm-summary-tooltip .tt-formula{background:#252555;padding:6px 8px;border-radius:4px;margin:4px 0;font-family:monospace;font-size:.7rem;color:#10b981;word-break:break-all}
+.tm-summary-tooltip .tt-result{color:#e2e8f0;font-weight:600}
 
 /* ===== Inspection Trend Styles ===== */
 .insp-section{background:#141432;border:1px solid #252555;border-radius:10px;padding:16px;margin-bottom:16px}
@@ -697,6 +709,47 @@ var actionHTML = '<h3>📋 우선 실행 과제</h3><ul>' +
   '</ul>';
 document.getElementById('actionItems').innerHTML = actionHTML;
 
+// ========== PAYMENT TIER TRANSITION MATRIX GLOBAL HELPERS ==========
+function toggleSummaryTooltip(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const wasVisible = el.style.display !== 'none';
+  // close all other tooltips first
+  document.querySelectorAll('.tm-summary-tooltip').forEach(t => t.style.display='none');
+  el.style.display = wasVisible ? 'none' : 'block';
+}
+function showCellTooltip(td, i, j){
+  // Remove any existing tooltip
+  const existing = td.querySelector('.tm-cell-tooltip');
+  if(existing){ existing.remove(); return; }
+  // Remove all other tooltips
+  document.querySelectorAll('.tm-cell-tooltip').forEach(t => t.remove());
+
+  const tiers = ['무과금','소과금','중과금','고과금','초고과금','고래'];
+  const fromTier = tiers[i], toTier = tiers[j];
+  const val = parseInt(td.querySelector('span') ? td.innerHTML.split('<br>')[0].replace(/,/g,'') : '0');
+  const pctText = td.querySelector('span') ? td.querySelector('span').textContent.replace('%','') : '0';
+  const pct = parseFloat(pctText);
+
+  // Direction
+  let direction, dirColor, dirDesc;
+  if(i === j){ direction='잔류'; dirColor='#3b82f6'; dirDesc='6/18과 7/02에 동일한 과금군에 머무른 유저'; }
+  else if(j > i){ direction='상향 이동 ↑'; dirColor='#10b981'; dirDesc='더 높은 과금군으로 올라간 유저 (긍정 지표)'; }
+  else{ direction='하향 이동 ↓'; dirColor='#ef4444'; dirDesc='더 낮은 과금군으로 내려간 유저 (이탈/감소)'; }
+
+  // Build tooltip HTML
+  const tooltipHTML =
+    '<div class="tm-cell-tooltip">' +
+    '<div class="tt-title">'+fromTier+' → '+toTier+'</div>' +
+    '<div style="margin:4px 0"><span style="color:'+dirColor+';font-weight:600">'+direction+'</span> <span style="font-size:.68rem;color:#94a3b8">'+dirDesc+'</span></div>' +
+    '<div style="margin:4px 0">이동 인원: <b style="color:#e2e8f0">'+val.toLocaleString()+'명</b></div>' +
+    '<div style="margin:4px 0">행 비율: <b style="color:#e2e8f0">'+pct+'%</b> <span style="font-size:.68rem;color:#94a3b8">(6/18 '+fromTier+' 유저 중 '+toTier+'로 이동한 비율)</span></div>' +
+    '<div class="tt-formula">해당 셀 인원('+val.toLocaleString()+') ÷ '+fromTier+' 행 합계 × 100 = '+pct+'%</div>' +
+    '</div>';
+
+  td.insertAdjacentHTML('beforeend', tooltipHTML);
+}
+
 // ========== PAYMENT TIER TRANSITION MATRIX (JSON-based) ==========
 (function(){
   const tiers = ['무과금','소과금','중과금','고과금','초고과금','고래'];
@@ -769,7 +822,7 @@ document.getElementById('actionItems').innerHTML = actionHTML;
       row.forEach((val, j) => {
         const pct = rt > 0 ? (val/rt*100).toFixed(1) : '0.0';
         const style = getCellStyle(i, j, val, rt);
-        html += '<td style="'+style+'">'+fmt(val)+'<br><span style="font-size:.65rem;opacity:.7">'+pct+'%</span></td>';
+        html += '<td data-cell="'+i+'-'+j+'" style="'+style+'" onclick="showCellTooltip(this,'+i+','+j+')">'+fmt(val)+'<br><span style="font-size:.65rem;opacity:.7">'+pct+'%</span></td>';
       });
       html += '<td class="total-col">'+fmt(rt)+'</td>';
       html += '</tr>';
@@ -790,12 +843,23 @@ document.getElementById('actionItems').innerHTML = actionHTML;
         totalUpgradeCount += matrix[i][j];
       }
     }
-    const f2pConvert = matched > 0 ? (matrix[0].slice(1).reduce((a,b)=>a+b,0) / matched * 100).toFixed(2) : '0.00';
+    const f2pConvertCount = matrix[0].slice(1).reduce((a,b)=>a+b,0);
+    const f2pConvert = matched > 0 ? (f2pConvertCount / matched * 100).toFixed(2) : '0.00';
     const overallUpgrade = totalPaidUsers > 0 ? (totalUpgradeCount / totalPaidUsers * 100).toFixed(2) : '0.00';
 
     const summaries = [
-      {label:'과금 유저 상향 이동', val: overallUpgrade+'%', color:'#10b981'},
-      {label:'무과금→결제 전환', val: f2pConvert+'%', color:'#00d4ff'}
+      {label:'과금 유저 상향 이동', val: overallUpgrade+'%', color:'#10b981',
+       desc:'<b style="color:#10b981">과금 유저 중 상위 과금군으로 이동한 비율</b><br>'+
+         '6/18에 이미 결제하던 유저 중 7/02에 더 높은 과금군으로 올라간 비율입니다.<br>'+
+         '<div class="tt-formula">상향 이동 인원('+fmt(totalUpgradeCount)+'명) ÷ 6/18 과금 유저 전체('+fmt(totalPaidUsers)+'명) × 100</div>'+
+         '<span class="tt-result">= '+overallUpgrade+'%</span><br>'+
+         '<span style="font-size:.68rem;color:#94a3b8">대각선 위 셀(초록)의 합 ÷ 과금 유저 행 합계</span>'},
+      {label:'무과금→결제 전환 (PUR)', val: f2pConvert+'%', color:'#00d4ff',
+       desc:'<b style="color:#00d4ff">무과금 유저가 최초로 결제한 비율 (First-Time Purchase Rate)</b><br>'+
+         '6/18에 무과금이던 유저 중 7/02에 결제 과금군으로 전환된 비율입니다.<br>'+
+         '<div class="tt-formula">무과금→결제 인원('+fmt(f2pConvertCount)+'명) ÷ 전체 매칭 유저('+fmt(matched)+'명) × 100</div>'+
+         '<span class="tt-result">= '+f2pConvert+'%</span><br>'+
+         '<span style="font-size:.68rem;color:#94a3b8">매칭: 6/18과 7/02 양쪽 점검 데이터에 모두 존재하는 유저</span>'}
     ];
     // Per-tier upgrade rates
     for(let i=1; i<6; i++){
@@ -803,12 +867,20 @@ document.getElementById('actionItems').innerHTML = actionHTML;
       const upgraded = matrix[i].slice(i+1).reduce((a,b)=>a+b,0);
       const rate = rt > 0 ? (upgraded/rt*100).toFixed(1) : '0.0';
       const color = rate >= 20 ? '#10b981' : (rate >= 10 ? '#f59e0b' : '#ef4444');
-      summaries.push({label: tiers[i]+' 상향 비율', val: rate+'%', color: color});
+      const desc = '<b style="color:'+color+'">'+tiers[i]+' 유저 중 상위 과금군으로 이동</b><br>'+
+        '6/18에 '+tiers[i]+'이던 유저('+fmt(rt)+'명) 중 7/02에 더 높은 과금군으로 올라간 비율입니다.<br>'+
+        '<div class="tt-formula">'+tiers[i]+'→상위 인원('+fmt(upgraded)+'명) ÷ 6/18 '+tiers[i]+' 전체('+fmt(rt)+'명) × 100</div>'+
+        '<span class="tt-result">= '+rate+'%</span>';
+      summaries.push({label: tiers[i]+' 상향 비율', val: rate+'%', color: color, desc: desc});
     }
 
     html += '<div class="tm-summary">';
-    summaries.forEach(s => {
-      html += '<div class="tm-summary-card"><div class="num" style="color:'+s.color+'">'+s.val+'</div><div class="lbl">'+s.label+'</div></div>';
+    summaries.forEach((s, idx) => {
+      const tooltipId = 'tm-tip-'+idx;
+      html += '<div class="tm-summary-card" onclick="toggleSummaryTooltip(\''+tooltipId+'\')">' +
+        '<div class="num" style="color:'+s.color+'">'+s.val+'</div>' +
+        '<div class="lbl">'+s.label+' <span style="font-size:.6rem;color:#00d4ff80">[클릭→설명]</span></div>' +
+        '</div><div id="'+tooltipId+'" class="tm-summary-tooltip" style="display:none">'+s.desc+'</div>';
     });
     html += '</div></div>';
 
@@ -824,16 +896,21 @@ document.getElementById('actionItems').innerHTML = actionHTML;
   }
 
   // Load JSON data
-  fetch('data/region_transition.json')
-    .then(r => r.json())
-    .then(data => {
-      regionData = data;
-      renderHeatmap(data.regions['all']);
-    })
-    .catch(err => {
-      document.getElementById('transitionMatrix').innerHTML =
-        '<div class="tm-section"><h2>📊 과금군 이동 매트릭스</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
-    });
+  (function loadRegionData(){
+    // Try fetch first (for Netlify deployment), fallback to inline data
+    const inlineFallback = {"regions":{"jp":{"matched":200766,"matrix":[[109608,1060,1198,246,52,6],[0,20792,1190,200,27,3],[0,0,20271,2255,134,4],[0,0,0,20255,2393,64],[0,0,0,0,11508,1583],[0,0,0,0,0,7917]]},"sgp":{"matched":8832,"matrix":[[5190,19,25,7,1,0],[0,782,30,2,0,0],[0,0,797,74,2,0],[0,0,0,910,71,1],[0,0,0,0,497,52],[0,0,0,0,0,372]]},"va":{"matched":19641,"matrix":[[12630,73,89,11,0,0],[0,1936,70,12,0,0],[0,0,1686,147,2,0],[0,0,0,1560,136,3],[0,0,0,0,787,67],[0,0,0,0,0,432]]},"all":{"matched":229239,"matrix":[[127428,1152,1312,264,53,6],[0,23510,1290,214,27,3],[0,0,22754,2476,138,4],[0,0,0,22725,2600,68],[0,0,0,0,12792,1702],[0,0,0,0,0,8721]]}}};
+    fetch('data/region_transition.json')
+      .then(r => r.json())
+      .catch(() => inlineFallback)
+      .then(data => {
+        regionData = data;
+        renderHeatmap(data.regions['all']);
+      })
+      .catch(err => {
+        document.getElementById('transitionMatrix').innerHTML =
+          '<div class="tm-section"><h2>📊 과금군 이동 매트릭스</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
+      });
+  })();
 })();
 
 // ========== INSPECTION DATA TREND ==========
