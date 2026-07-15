@@ -7,8 +7,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,sans-serif;background:#0a0a1a;color:#e2e8f0;min-height:100vh;padding:16px}
-.container{max-width:calc(100% - 200px);margin-left:200px;margin:0 auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+body{font-family:system-ui,sans-serif;background:#0a0a1a;color:#e2e8f0;min-height:100vh;padding:0}
+.container{max-width:calc(100% - 220px);margin-left:210px;padding:16px 20px}
 h1{font-size:1.6rem;color:#00d4ff;text-align:center;margin-bottom:4px}
 h2{font-size:1.1rem;color:#00d4ff;margin:16px 0 8px;border-bottom:1px solid #252555;padding-bottom:4px}
 .subtitle{text-align:center;color:#94a3b8;font-size:.85rem;margin-bottom:12px}
@@ -218,7 +219,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 @media(max-width:640px){.cohort-grid,.region-grid{grid-template-columns:1fr}}
 
 /* ========== ROI PANEL ========== */
-.roi-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.roi-section{background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin:16px 0}
 .roi-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
 .roi-chart-wrap{position:relative;height:280px;margin-bottom:16px}
 .roi-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
@@ -234,7 +235,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 @media(max-width:640px){.roi-cards{grid-template-columns:1fr 1fr}}
 
 /* ========== CHECKLIST ========== */
-.checklist-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.checklist-section{background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin:16px 0}
 .checklist-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
 .cl-tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
 .cl-tab{background:#0a0a1a;color:#a0a0c0;border:1px solid #25255540;border-radius:6px;padding:6px 14px;cursor:pointer;font-size:.85rem;transition:all .2s}
@@ -259,7 +260,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 .cl-del:hover{opacity:1}
 
 /* ========== BM CHANNEL MIX ========== */
-.bm-mix-section{background:#141432;border-radius:12px;padding:20px;margin:16px 0}
+.bm-mix-section{background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin:16px 0}
 .bm-mix-section h3{color:#00d4ff;margin:0 0 14px;font-size:1.1rem}
 .bm-mix-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
 .bm-mix-chart{position:relative;height:280px}
@@ -287,7 +288,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 .sidebar-tab.active{background:#7c3aed;border-left-color:#00d4ff;color:#fff}
 .sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:1001;background:#0e0e25;border:1px solid #252555;color:#e2e8f0;font-size:1.3rem;padding:6px 10px;border-radius:6px;cursor:pointer}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
-[id^="sec-"],#transitionMatrix,#roiPanel,#checklistPanel,#bmMixPanel,#cohortRetention,#regionComparison,#conversionFunnel,#whaleTracking{scroll-margin-top:16px}
+[id^="sec-"],#transitionMatrix,#inspectionTrend,#roiPanel,#checklistPanel,#bmMixPanel,#cohortRetention,#regionComparison,#conversionFunnel,#whaleTracking{scroll-margin-top:16px}
 @media(max-width:900px){
   .sidebar{transform:translateX(-100%);transition:transform .3s ease}
   .sidebar.open{transform:translateX(0)}
@@ -299,7 +300,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 </head>
 <body>
 <nav id="sidebar" class="sidebar">
-  <div class="sidebar-title">🎮 Trickcal</div>
+  <div class="sidebar-title">Trickcal</div>
   <div class="sidebar-tabs">
     <button class="sidebar-tab active" data-target="sec-revenue">매출 추이</button>
     <button class="sidebar-tab" data-target="sec-jp">JP 비교</button>
@@ -309,6 +310,7 @@ td:first-child{text-align:left;color:#e2e8f0}
     <button class="sidebar-tab" data-target="sec-trend">트렌드</button>
     <button class="sidebar-tab" data-target="sec-action">실행 과제</button>
     <button class="sidebar-tab" data-target="transitionMatrix">이동 매트릭스</button>
+    <button class="sidebar-tab" data-target="inspectionTrend">점검 트렌드</button>
     <button class="sidebar-tab" data-target="roiPanel">ROI 측정</button>
     <button class="sidebar-tab" data-target="checklistPanel">체크리스트</button>
     <button class="sidebar-tab" data-target="bmMixPanel">BM 채널</button>
@@ -320,45 +322,45 @@ td:first-child{text-align:left;color:#e2e8f0}
 </nav>
 <button id="sidebarToggle" class="sidebar-toggle">☰</button>
 <div class="container">
-<h1>🎮 Trickcal Revive 실시간 대시보드</h1>
+<h1>Trickcal Revive 실시간 대시보드</h1>
 <p class="subtitle">2026-01-01 ~ 2026-06-18 | 170일 글로벌 데이터 · 168일 JP 데이터 | 환율 1 USD = 1,500 KRW</p>
 
 <div class="krw-bar" id="krwBar"></div>
 
 <div class="cards" id="kpiCards"></div>
 
-<h2 id="sec-revenue">📈 일별 매출 추이 (글로벌, 170일)</h2>
+<h2 id="sec-revenue">일별 매출 추이 (글로벌, 170일)</h2>
 <div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
 
-<h2 id="sec-jp">🇯🇵 JP vs 글로벌 주간 매출 (25주)</h2>
+<h2 id="sec-jp">JP vs 글로벌 주간 매출 (25주)</h2>
 <div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
 
-<h2 id="sec-monthly">📊 월별 요약 (데이터 기반 계산)</h2>
+<h2 id="sec-monthly">월별 요약 (데이터 기반 계산)</h2>
 <div class="chart-wrap" style="overflow-x:auto">
 <table id="monthlyTable"><thead></thead><tbody></tbody></table>
 </div>
 
-<h2 id="sec-spike">🔍 상세 매출 스파이크 분석</h2>
+<h2 id="sec-spike">상세 매출 스파이크 분석</h2>
 <div class="analysis-section" id="spikeAnalysis"></div>
 
-<h2 id="sec-bm">💡 매출 피크 BM 분석</h2>
+<h2 id="sec-bm">매출 피크 BM 분석</h2>
 <div class="bm-panel" id="bmAnalysis"></div>
 
-<h2 id="sec-trend">🔗 관련 트렌드 (마케팅 문서 연계)</h2>
+<h2 id="sec-trend">관련 트렌드 (마케팅 문서 연계)</h2>
 <div class="trend-grid" id="trendGrid"></div>
 
-<h2 id="sec-action">✅ 실행 과제</h2>
+<h2 id="sec-action">실행 과제</h2>
 <div class="action-section" id="actionItems"></div>
 
 <div id="transitionMatrix"></div>
 
-<h2>📊 업데이트 ROI 측정</h2>
+<h2 class="sr-only">업데이트 ROI 측정</h2>
 <div class="roi-section" id="roiPanel"></div>
 
-<h2>📋 실행 체크리스트</h2>
+<h2 class="sr-only">실행 체크리스트</h2>
 <div class="checklist-section" id="checklistPanel"></div>
 
-<h2>💰 BM 채널별 수익 믹스</h2>
+<h2 class="sr-only">BM 채널별 수익 믹스</h2>
 <div class="bm-mix-section" id="bmMixPanel"></div>
 <div id="cohortRetention"></div>
 <div id="regionComparison"></div>
@@ -461,22 +463,22 @@ document.getElementById('krwBar').innerHTML = `
 // ========== RENDER KPI CARDS ==========
 document.getElementById('kpiCards').innerHTML = `
   <div class="card">
-    <div class="lbl">💰 총 매출 (170일)</div>
+    <div class="lbl">총 매출 (170일)</div>
     <div class="val" style="color:#00d4ff">$${fmtM(totalRevUSD)}</div>
     <div class="sub">₩${fmtM(totalRevKRW)} · 일평균 $${fmtK(avgDailyRev)}</div>
   </div>
   <div class="card">
-    <div class="lbl">👥 활성 계정 (최종일)</div>
+    <div class="lbl">활성 계정 (최종일)</div>
     <div class="val" style="color:#10b981">${fmt(latestActive)}</div>
     <div class="sub">유료 ${fmt(latestPaid)} · 신규 ${fmt(latestNewAcc)}</div>
   </div>
   <div class="card">
-    <div class="lbl">💎 ARPPU (최종일)</div>
+    <div class="lbl">ARPPU (최종일)</div>
     <div class="val" style="color:#7c3aed">$${latestARPPU.toFixed(2)}</div>
     <div class="sub">범위: $14.80 ~ $51.25</div>
   </div>
   <div class="card">
-    <div class="lbl">📈 최고 매출일</div>
+    <div class="lbl">최고 매출일</div>
     <div class="val" style="color:#f59e0b">$${fmtK(peakRev)}</div>
     <div class="sub">${peakDay[0]} (0.75주년) · 일평균 ${fmtK(avgDailyRev)} 대비 ${fmt(Math.round(peakRev/avgDailyRev))}배</div>
   </div>
@@ -669,23 +671,22 @@ var spikes = [
 ];
 
 function renderSpikeTable(list) {
-  return '<table class="spike-table"><thead><tr><th style="width:58px">날짜</th><th style="width:68px">매출</th><th>원인 (운영 로드맵 기반)</th><th style="width:180px">BM 포인트</th><th style="width:150px">비고</th></tr></thead><tbody>' +
+  return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th style="width:58px">날짜</th><th style="width:68px">매출</th><th>원인 (운영 로드맵 기반)</th><th style="width:180px">BM 포인트</th><th style="width:150px">비고</th></tr></thead><tbody>' +
     list.map(function(s){
       var bg = s.m % 2 === 0 ? '' : 'background:#25255515';
       return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td>'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
-    }).join('') + '</tbody></table>';
+    }).join('') + '</tbody></table></div>';
 }
 
 function renderBaseline() {
-  return '<table class="spike-table"><thead><tr><th>월</th><th>전체</th><th>기저 일수</th><th>기저 조건</th><th>기저 평균</th><th>순수 기저(&lt;$100K)</th></tr></thead><tbody>' +
+  return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th>월</th><th>전체</th><th>기저 일수</th><th>기저 조건</th><th>기저 평균</th><th>순수 기저(&lt;$100K)</th></tr></thead><tbody>' +
   '<tr><td>1월</td><td>31일</td><td>27일</td><td>&lt;$150K</td><td><b>$104,473</b></td><td>$81,016 <small style="color:#888">(13일)</small></td></tr>' +
   '<tr style="background:#25255515"><td>2월</td><td>28일</td><td>24일</td><td>&lt;$150K</td><td><b>$85,223</b></td><td>$72,624 <small style="color:#888">(20일)</small></td></tr>' +
   '<tr><td>3월</td><td>31일</td><td>24일</td><td>&lt;$150K</td><td><b>$52,765</b></td><td>$41,833 <small style="color:#888">(21일)</small></td></tr>' +
   '<tr style="background:#25255515"><td>4월</td><td>30일</td><td>21일</td><td>&lt;$150K</td><td><b>$92,304</b></td><td>$78,329 <small style="color:#888">(17일)</small></td></tr>' +
   '<tr><td>5월</td><td>31일</td><td>26일</td><td>&lt;$150K</td><td><b>$65,744</b></td><td>$48,756 <small style="color:#888">(23일)</small></td></tr>' +
   '<tr style="background:#25255530"><td><b>6월*</b></td><td>18일</td><td>16일</td><td>&lt;$150K</td><td><b>$65,621</b></td><td>$56,340 <small style="color:#888">(14일)</small></td></tr>' +
-  '</tbody></table>' +
-  '<div style="margin-top:12px">' +
+  '</tbody></table></div>' +
     '<p><span class="tag tag-event">핵심</span> <b>1월 순수 기저 $81K vs 6월 $56K (−30.5%)</b></p>' +
     '<p style="margin-left:16px;color:#a0a0c0">기저 매출 감소 추세지만, 업데이트 스케일링으로 전체 월평균은 유지</p>' +
     '<p><span class="tag tag-high">업데이트 효과</span> 반주년(3/26) $508K → 0.75주년(6/18) $976K · <b style="color:#10b981">+92%</b></p>' +
@@ -723,7 +724,7 @@ renderTab('all');
 
 // ========== BM PEAK ANALYSIS ==========
 var bmHTML = '' +
-'<h3>💡 매출 피크 시점별 BM 구동 요인 분석</h3>' +
+'<h3>매출 피크 시점별 BM 구동 요인 분석</h3>' +
 '<div class="bm-summary">' +
   '<div class="bm-sum-card"><div class="num">8.3×</div><div class="lbl">0.75주년 업데이트 매출 배율</div></div>' +
   '<div class="bm-sum-card"><div class="num">15.1%</div><div class="lbl">업데이트일 유료전환율 (평소 2.7%)</div></div>' +
@@ -732,17 +733,17 @@ var bmHTML = '' +
 '</div>' +
 
 '<div class="bm-flow">' +
-  '<div class="bm-flow-node" style="border-color:#ec489960">💳 충전<br><small>엘리프 60~6,480</small></div>' +
+  '<div class="bm-flow-node" style="border-color:#ec489960">충전<br><small>엘리프 60~6,480</small></div>' +
   '<span class="bm-flow-arrow">→</span>' +
-  '<div class="bm-flow-node" style="border-color:#ec489960">🎰 가챠<br><small>사도/카드/성격모집</small></div>' +
+  '<div class="bm-flow-node" style="border-color:#ec489960">가챠<br><small>사도/카드/성격모집</small></div>' +
   '<span class="bm-flow-arrow">→</span>' +
-  '<div class="bm-flow-node" style="border-color:#f59e0b60">📦 패키지<br><small>한정 29개 직구</small></div>' +
+  '<div class="bm-flow-node" style="border-color:#f59e0b60">패키지<br><small>한정 29개 직구</small></div>' +
   '<span class="bm-flow-arrow">→</span>' +
-  '<div class="bm-flow-node" style="border-color:#8b5cf660">🎟️ 패스<br><small>트릭컬/레벨/사복</small></div>' +
+  '<div class="bm-flow-node" style="border-color:#8b5cf660">패스<br><small>트릭컬/레벨/사복</small></div>' +
   '<span class="bm-flow-arrow">→</span>' +
-  '<div class="bm-flow-node" style="border-color:#10b98160">🎭 테마극장<br><small>전용재화 경제</small></div>' +
+  '<div class="bm-flow-node" style="border-color:#10b98160">테마극장<br><small>전용재화 경제</small></div>' +
   '<span class="bm-flow-arrow">→</span>' +
-  '<div class="bm-flow-node" style="border-color:#00d4ff60">💰 매출</div>' +
+  '<div class="bm-flow-node" style="border-color:#00d4ff60">매출</div>' +
 '</div>' +
 
 // Peak 1: 0.75주년
@@ -840,7 +841,7 @@ var bmHTML = '' +
 
 // 스케일링 분석
 '<div style="margin-top:16px;padding:14px;background:#141432;border:1px solid #7c3aed40;border-radius:8px">' +
-  '<h3 style="color:#7c3aed;font-size:.9rem;margin-bottom:10px">📊 반주년 → 0.75주년 업데이트 스케일링 분석</h3>' +
+  '<h3 style="color:#7c3aed;font-size:.9rem;margin-bottom:10px">반주년 → 0.75주년 업데이트 스케일링 분석</h3>' +
   '<table style="width:100%;font-size:.82rem;border-collapse:collapse">' +
     '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#a0a0c0">항목</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">반주년 (3/26)</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">0.75주년 (6/18)</td><td style="padding:6px 8px;color:#a0a0c0;text-align:center">변화</td></tr>' +
     '<tr><td style="padding:6px 8px">매출</td><td style="padding:6px 8px;text-align:right">$508K</td><td style="padding:6px 8px;text-align:right;color:#7c3aed;font-weight:bold">$976K</td><td style="padding:6px 8px;text-align:right;color:#10b981">+92%</td></tr>' +
@@ -857,7 +858,7 @@ document.getElementById('bmAnalysis').innerHTML = bmHTML;
 
 // ========== RELATED TRENDS ==========
 var trendHTML = '<div class="trend-card">' +
-  '<h4>📊 업데이트별 매출 요약</h4>' +
+  '<h4>업데이트별 매출 요약</h4>' +
   '<table style="width:100%;font-size:0.85rem;border-collapse:collapse">' +
     '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#a0a0c0">반주년 이드</td><td style="padding:6px 8px;color:#a0a0c0">3/26</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$508K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">가챠 4종 · 패키지 20+개</td></tr>' +
     '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#a0a0c0">클로에+요미</td><td style="padding:6px 8px;color:#a0a0c0">4/9</td><td style="padding:6px 8px;text-align:right;font-weight:bold;color:#00d4ff">$237K</td><td style="padding:6px 8px;color:#a0a0c0;font-size:0.8em">사도픽업 2종 + 사복패스</td></tr>' +
@@ -867,7 +868,7 @@ var trendHTML = '<div class="trend-card">' +
   '</table>' +
 '</div>' +
 '<div class="trend-card">' +
-  '<h4>📅 주기적 매출 패턴</h4>' +
+  '<h4>주기적 매출 패턴</h4>' +
   '<table style="width:100%;font-size:0.85rem;border-collapse:collapse">' +
     '<tr style="border-bottom:1px solid #252555"><td style="padding:6px 8px;color:#10b981;font-weight:bold">월초 결제</td><td style="padding:6px 8px;color:#a0a0c0">매월 1일</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$237K ~ $453K</td></tr>' +
     '<tr style="border-bottom:1px solid #25255520"><td style="padding:6px 8px;color:#10b981;font-weight:bold">격주 점검</td><td style="padding:6px 8px;color:#a0a0c0">2주마다 목</td><td style="padding:6px 8px;text-align:right;color:#00d4ff">$145K ~ $350K</td></tr>' +
@@ -876,20 +877,20 @@ var trendHTML = '<div class="trend-card">' +
   '</table>' +
 '</div>' +
 '<div class="trend-card">' +
-  '<h4>⚠️ 오프라인 콜라보 (4~6월)</h4>' +
+  '<h4>오프라인 콜라보 (4~6월)</h4>' +
   '<p style="margin:4px 0;color:#a0a0c0;font-size:0.9em">Animate Gratte · 편의점 스티커 · 타이탄 콜라보 음료 · 패밀리마트 키홀더(85만엔)<br>→ 4~5월 신규 유입 감소 지속으로 직접적 효과 확인 어려움</p>' +
 '</div>';
 
 document.getElementById('trendGrid').innerHTML = trendHTML;
 
 // ========== ACTION ITEMS ==========
-var actionHTML = '<h3>📋 우선 실행 과제</h3><ul>' +
-  '<li><span class="tag tag-warn">⚠️ 기저 매출 하락 대응</span><br>기저 매출 1월 $81K → 6월 $56K (-30.5%). 월간 패스/정기 결제 기반 유저 이탈 원인 분석.<br><b>BM 액션:</b> 일일 스몰 과금(100~300엘리프) 추가 · 무료 엘리프 배급 10~20% 증대 · 휴면 복귀 캠페인</li>' +
-  '<li><span class="tag tag-event">🔥 업데이트 간극 매출 안정화</span><br>비업데이트 주 최저 $28K (6/9). 가챠 없는 주는 매출 바닥 급락.<br><b>BM 액션:</b> 2주차에 리턴 가챠/복각 카드픽업 배치 · 한정패키지 주차 분산 강화</li>' +
-  '<li><span class="tag tag-high">📈 업데이트 스케일링 정형화</span><br>가챠 4→9종, 패키지 20→29개, 패스 추가로 +92% 달성. 패턴 매뉴얼화.<br><b>BM 액션:</b> 1주년 대비 가챠 12종+ 패키지 35개+ 스마트패스 신규 목표 설정</li>' +
-  '<li><span class="tag tag-event">🎯 신규 유입 BM 인센티브</span><br>신규 84% 감소 (-5,500/일→900/일). 첫 구매 전환율 개선 시급.<br><b>BM 액션:</b> 신입교주 패키지 3종 재설계 · 첫 구매 선물 가치 상향 · 30분 무료 가챠 티켓</li>' +
-  '<li><span class="tag tag-low">📊 ARPPU $30+ 목표</span><br>현재 일평균 $20~25. 프리미엄 과금층 확대 필요.<br><b>BM 액션:</b> 월정액 4종 가치 재설계 · 스텝업패키지 누적 보상 개편 · 부띠끄 프리미엄화</li>' +
-  '<li><span class="tag tag-event">🌏 JP 의존도 완화</span><br>JP 매출 비중 40~87%. 단일 리전 집중 리스크.<br><b>BM 액션:</b> KR/TW/HK 타겟 한정패키지 로컬라이징 · 리전별 ARPPU 기반 가격 튜닝</li>' +
+var actionHTML = '<h3>우선 실행 과제</h3><ul>' +
+  '<li><span class="tag tag-warn">기저 매출 하락 대응</span><br>기저 매출 1월 $81K → 6월 $56K (-30.5%). 월간 패스/정기 결제 기반 유저 이탈 원인 분석.<br><b>BM 액션:</b> 일일 스몰 과금(100~300엘리프) 추가 · 무료 엘리프 배급 10~20% 증대 · 휴면 복귀 캠페인</li>' +
+  '<li><span class="tag tag-event">업데이트 간극 매출 안정화</span><br>비업데이트 주 최저 $28K (6/9). 가챠 없는 주는 매출 바닥 급락.<br><b>BM 액션:</b> 2주차에 리턴 가챠/복각 카드픽업 배치 · 한정패키지 주차 분산 강화</li>' +
+  '<li><span class="tag tag-high">업데이트 스케일링 정형화</span><br>가챠 4→9종, 패키지 20→29개, 패스 추가로 +92% 달성. 패턴 매뉴얼화.<br><b>BM 액션:</b> 1주년 대비 가챠 12종+ 패키지 35개+ 스마트패스 신규 목표 설정</li>' +
+  '<li><span class="tag tag-event">신규 유입 BM 인센티브</span><br>신규 84% 감소 (-5,500/일→900/일). 첫 구매 전환율 개선 시급.<br><b>BM 액션:</b> 신입교주 패키지 3종 재설계 · 첫 구매 선물 가치 상향 · 30분 무료 가챠 티켓</li>' +
+  '<li><span class="tag tag-low">ARPPU $30+ 목표</span><br>현재 일평균 $20~25. 프리미엄 과금층 확대 필요.<br><b>BM 액션:</b> 월정액 4종 가치 재설계 · 스텝업패키지 누적 보상 개편 · 부띠끄 프리미엄화</li>' +
+  '<li><span class="tag tag-event">JP 의존도 완화</span><br>JP 매출 비중 40~87%. 단일 리전 집중 리스크.<br><b>BM 액션:</b> KR/TW/HK 타겟 한정패키지 로컬라이징 · 리전별 ARPPU 기반 가격 튜닝</li>' +
   '</ul>';
 document.getElementById('actionItems').innerHTML = actionHTML;
 
@@ -945,7 +946,7 @@ function showCellTooltip(td, i, j){
   // Tier criteria badges
   const criteriaHTML =
     '<span style="background:#252555;padding:2px 8px;border-radius:4px">무과금: ₩0</span>' +
-    '<span style="background:#252555;padding:2px 8px;border-radius:4px">소과금: ₩1~10,999 (<P25)</span>' +
+    '<span style="background:#252555;padding:2px 8px;border-radius:4px">소과금: ₩1~10,999 (&lt;P25)</span>' +
     '<span style="background:#252555;padding:2px 8px;border-radius:4px">중과금: ₩11,000~70,199 (P25~P50)</span>' +
     '<span style="background:#252555;padding:2px 8px;border-radius:4px">고과금: ₩70,200~308,399 (P50~P75)</span>' +
     '<span style="background:#252555;padding:2px 8px;border-radius:4px">초고과금: ₩308,400~955,899 (P75~P90)</span>' +
@@ -990,7 +991,7 @@ function showCellTooltip(td, i, j){
     function fmt(n){ return n.toLocaleString(); }
 
     let html = '<div class="tm-section">' +
-      '<h2>📊 과금군 이동 매트릭스 (6/18 → 7/2)</h2>' +
+      '<h2>과금군 이동 매트릭스 (6/18 → 7/2)</h2>' +
       '<p class="tm-subtitle">7/02 점검 데이터, 유료 유저 105,713명 분위수 기준 · 행=6/18 과금군, 열=7/02 과금군 · 매칭: '+fmt(matched)+'명</p>' +
       renderButtons() +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 12px;font-size:.72rem;color:#94a3b8">' +
@@ -1092,7 +1093,7 @@ function showCellTooltip(td, i, j){
       })
       .catch(err => {
         document.getElementById('transitionMatrix').innerHTML =
-          '<div class="tm-section"><h2>📊 과금군 이동 매트릭스</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
+          '<div class="tm-section"><h2>과금군 이동 매트릭스</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
       });
   })();
 })();
@@ -1120,7 +1121,7 @@ function showCellTooltip(td, i, j){
   const arppuDelta = pctChange(first.arppu_krw, last.arppu_krw);
 
   let html = '<div class="insp-section">' +
-    '<h2>🔍 점검 데이터 트렌드 (DB Dump 기반)</h2>' +
+    '<h2>점검 데이터 트렌드 (DB Dump 기반)</h2>' +
     '<p class="insp-subtitle">7회 점검 시점 DB 스냅샷 기반 추이 · 2026년 3/26 ~ 6/18</p>';
 
   // Summary cards
@@ -1155,7 +1156,7 @@ function showCellTooltip(td, i, j){
   html += '</tbody></table></div>';
 
   // Tier trend table + chart side by side
-  html += '<h2 style="margin-top:16px">📊 과금군별 트렌드</h2>';
+  html += '<h2 style="margin-top:16px">과금군별 트렌드</h2>';
   html += '<div class="tier-trend">';
 
   // Tier distribution table
@@ -1177,7 +1178,7 @@ function showCellTooltip(td, i, j){
   html += '</div>'; // close tier-trend
 
   // Line chart for trends
-  html += '<h2 style="margin-top:16px">📈 유저·ARPPU 트렌드 차트</h2>';
+  html += '<h2 style="margin-top:16px">유저·ARPPU 트렌드 차트</h2>';
   html += '<div class="chart-wrap"><canvas id="inspTrendChart" height="120"></canvas></div>';
 
   html += '</div>'; // close insp-section
@@ -1316,7 +1317,7 @@ function showCellTooltip(td, i, j){
   var barData = roiData.map(function(r){ return r.cum7; });
   var baseLine = roiData.map(function(){ return baseSales * 7; });
 
-  var html = '<h3>📈 업데이트별 D+7 누적 매출 & 기저 대비</h3>';
+  var html = '<h3>업데이트별 D+7 누적 매출 & 기저 대비</h3>';
   html += '<div class="roi-chart-wrap"><canvas id="roiChart"></canvas></div>';
 
   // 카드
@@ -1415,7 +1416,7 @@ function showCellTooltip(td, i, j){
     var doneCount = items.filter(function(i){ return i.done; }).length;
     var pct = items.length ? Math.round(doneCount/items.length*100) : 0;
 
-    var h = '<h3>📋 실행 체크리스트</h3>';
+    var h = '<h3>실행 체크리스트</h3>';
     // 탭
     h += '<div class="cl-tabs">';
     CATS.forEach(function(c){
@@ -1499,7 +1500,7 @@ function showCellTooltip(td, i, j){
     { name:'토끼토큰', pct:2, color:'#f97316', rev:7000, mom:'0.0%', dir:'flat' }
   ];
 
-  var h = '<h3>💰 BM 채널별 수익 믹스 (추정)</h3>';
+  var h = '<h3>BM 채널별 수익 믹스 (추정)</h3>';
   h += '<p style="color:#a0a0c0;font-size:.82rem;margin:0 0 14px">운영 로드맵 기반 추정치 · 총 추정 월매출 $350K</p>';
   h += '<div class="bm-mix-layout">';
   h += '<div class="bm-mix-chart"><canvas id="bmMixChart"></canvas></div>';
@@ -1570,7 +1571,7 @@ function showCellTooltip(td, i, j){
   const payRateLast = (last.paid_users/last.total_users*100).toFixed(1);
 
   let html = '<div class="cohort-section">' +
-    '<h2>📊 코호트 리텐션 분석</h2>' +
+    '<h2>코호트 리텐션 분석</h2>' +
     '<p class="cohort-subtitle">점검 DB 7시점 데이터 기반 코호트 시뮬레이션 · 시점 간격 약 2주</p>';
 
   html += '<div class="cohort-cards">' +
@@ -1583,7 +1584,7 @@ function showCellTooltip(td, i, j){
     '</div>';
 
   // --- Cohort retention heatmap (table-based) ---
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">🔥 코호트 리텐션 히트맵 (잔존율 %)</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">코호트 리텐션 히트맵 (잔존율 %)</h3>';
   html += '<p style="color:#94a3b8;font-size:.75rem;margin-bottom:8px">각 코호트(시점) 기준, 이후 시점에서의 유저 수 비율. 시점 간격 ≈ 2주.</p>';
 
   const labels = inspections.map(d => d.date.slice(5));
@@ -1743,7 +1744,7 @@ function showCellTooltip(td, i, j){
     const regionColors = {all:'#00d4ff', jp:'#ec4899', sgp:'#10b981', va:'#f59e0b'};
 
     let html = '<div class="region-section">' +
-      '<h2>🌐 지역별 과금구조 비교</h2>' +
+      '<h2>지역별 과금구조 비교</h2>' +
       '<p class="region-subtitle">4지역(ALL/JP/SGP/VA)의 과금군 분포, 과금율, 유저 수 비교</p>';
 
     // --- Summary cards ---
@@ -1895,7 +1896,7 @@ function showCellTooltip(td, i, j){
     .then(data => render(data))
     .catch(err => {
       document.getElementById('regionComparison').innerHTML =
-        '<div class="region-section"><h2>🌐 지역별 과금구조 비교</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
+        '<div class="region-section"><h2>지역별 과금구조 비교</h2><p style="color:#ef4444">데이터를 불러오지 못했습니다: '+err+'</p></div>';
     });
 })();
 
@@ -1932,7 +1933,7 @@ function showCellTooltip(td, i, j){
   function dropRate(from, to) { return ((1 - to / from) * 100).toFixed(1); }
 
   var html = '<div class="funnel-section">' +
-    '<h2>🔄 전환 퍼널 분석</h2>' +
+    '<h2>전환 퍼널 분석</h2>' +
     '<p class="funnel-subtitle">점검 DB 기반 유저 전환 퍼널 · 최신 시점: ' + latest.date + ' (' + latest.label + ')</p>';
 
   // CSS Funnel visualization
@@ -1960,7 +1961,7 @@ function showCellTooltip(td, i, j){
   html += '</div>';
 
   // MoM 전환율 변화 테이블 (7시점)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📊 MoM 전환율 변화 (7시점)</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">MoM 전환율 변화 (7시점)</h3>';
   html += '<div style="overflow-x:auto"><table class="funnel-mom-table"><thead><tr>' +
     '<th>날짜</th><th>전체→과금(PUR)</th><th>과금→중과금+</th><th>중과금+→고래</th><th>과금율(PUR)</th>' +
     '</tr></thead><tbody>';
@@ -1981,11 +1982,11 @@ function showCellTooltip(td, i, j){
   // PUR + 중과금 비중 미니 차트
   html += '<div class="funnel-grid">' +
     '<div>' +
-      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">📈 과금율(PUR) 추이</h3>' +
+      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">과금율(PUR) 추이</h3>' +
       '<div class="chart-wrap" style="margin-bottom:0"><canvas id="funnelPURChart" height="140"></canvas></div>' +
     '</div>' +
     '<div>' +
-      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">📈 중과금+ 비중 추이</h3>' +
+      '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">중과금+ 비중 추이</h3>' +
       '<div class="chart-wrap" style="margin-bottom:0"><canvas id="funnelMidHighChart" height="140"></canvas></div>' +
     '</div>' +
   '</div>';
@@ -2088,7 +2089,7 @@ function showCellTooltip(td, i, j){
   var whaleUserPct = (whaleUsers / last.paid_users * 100).toFixed(1);
 
   var html = '<div class="whale-section">' +
-    '<h2>🐋 고래 추적 & 과금군 기여도</h2>' +
+    '<h2>고래 추적 & 과금군 기여도</h2>' +
     '<p class="whale-subtitle">점검 DB 과금군 분포 + 추정 매출 기여도 · ' + last.date + ' 기준</p>';
 
   // 요약 카드
@@ -2100,15 +2101,15 @@ function showCellTooltip(td, i, j){
   '</div>';
 
   // 과금군별 유저수 vs 매출기여 바 차트
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📊 과금군별 유저 수 vs 추정 매출 기여도</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">과금군별 유저 수 vs 추정 매출 기여도</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleContribChart" height="180"></canvas></div>';
 
   // 고래 vs 비고래 매출기여 stacked bar (7시점)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">🐋 고래 vs 비고래 매출 기여 추이 (7시점)</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 vs 비고래 매출 기여 추이 (7시점)</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleTrendChart" height="160"></canvas></div>';
 
   // 고래 비중 변화 추이 테이블
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">📈 고래 비중 변화 추이 (7시점)</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 비중 변화 추이 (7시점)</h3>';
   html += '<div style="overflow-x:auto"><table class="whale-table"><thead><tr>' +
     '<th>날짜</th><th>고래 수</th><th>초고수</th><th>고래 합계</th><th>과금 대비 %</th><th>추정 매출 기여</th><th>고래 MoM Δ</th>' +
     '</tr></thead><tbody>';
@@ -2137,7 +2138,7 @@ function showCellTooltip(td, i, j){
   // 이탈 위험 인사이트
   var whaleDelta = last.pay_tiers['고래'] - first.pay_tiers['고래'];
   html += '<div class="whale-insight">' +
-    '<b>🔒 이탈 위험 지표:</b> 고래 유저 수 <b>' + first.pay_tiers['고래'].toLocaleString() + ' → ' + last.pay_tiers['고래'].toLocaleString() + '</b> (' +
+    '<b>이탈 위험 지표:</b> 고래 유저 수 <b>' + first.pay_tiers['고래'].toLocaleString() + ' → ' + last.pay_tiers['고래'].toLocaleString() + '</b> (' +
     (whaleDelta >= 0 ? '<span style="color:#10b981;font-weight:600">+' + whaleDelta + ' 증가</span>' : '<span style="color:#ef4444;font-weight:600">' + whaleDelta + ' 감소</span>') +
     ') — 지속적 증가 추세로 <b style="color:#10b981">긍정적</b> 신호. ' +
     '단, 전체 유저 수는 감소 중이므로 고래 비중 상승은 자연스러운 현상이기도 함. ' +
