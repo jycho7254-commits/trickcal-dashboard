@@ -288,7 +288,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 .sidebar-tab.active{background:#7c3aed;border-left-color:#00d4ff;color:#fff}
 .sidebar-toggle{display:none;position:fixed;top:10px;left:10px;z-index:1001;background:#0e0e25;border:1px solid #252555;color:#e2e8f0;font-size:1.3rem;padding:6px 10px;border-radius:6px;cursor:pointer}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
-[id^="sec-"],#transitionMatrix,#inspectionTrend,#roiPanel,#checklistPanel,#bmMixPanel,#cohortRetention,#regionComparison,#conversionFunnel,#whaleTracking{scroll-margin-top:16px}
+[id^="sec-"],#transitionMatrix,#inspectionTrend,#roiPanel,#checklistPanel,#bmMixPanel,#cohortRetention,#ltvAnalysis,#regionComparison,#conversionFunnel,#whaleTracking{scroll-margin-top:16px}
 @media(max-width:900px){
   .sidebar{transform:translateX(-100%);transition:transform .3s ease}
   .sidebar.open{transform:translateX(0)}
@@ -315,6 +315,7 @@ td:first-child{text-align:left;color:#e2e8f0}
     <button class="sidebar-tab" data-target="checklistPanel">체크리스트</button>
     <button class="sidebar-tab" data-target="bmMixPanel">BM 채널</button>
     <button class="sidebar-tab" data-target="cohortRetention">코호트</button>
+    <button class="sidebar-tab" data-target="ltvAnalysis">LTV</button>
     <button class="sidebar-tab" data-target="regionComparison">지역 비교</button>
     <button class="sidebar-tab" data-target="conversionFunnel">전환 퍼널</button>
     <button class="sidebar-tab" data-target="whaleTracking">고래 추적</button>
@@ -363,6 +364,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 <h2 class="sr-only">BM 채널별 수익 믹스</h2>
 <div class="bm-mix-section" id="bmMixPanel"></div>
 <div id="cohortRetention"></div>
+<div id="ltvAnalysis"></div>
 <div id="regionComparison"></div>
 <div id="inspectionTrend"></div>
 <div id="conversionFunnel"></div>
@@ -1711,6 +1713,143 @@ function showCellTooltip(td, i, j){
     }
   });
 })();
+
+// ========== SECTION D2: LTV ANALYSIS ==========
+(function(){
+  var inspections = [
+    {"date":"2026-03-26","label":"03/26 반주년 이드","total_users":305690,"paid_users":103496,"pay_rate":33.86,"total_krw":22822501100,"arppu_krw":220516,"pay_tiers":{"무과금":202194,"소과금":24154,"중과금":19048,"고과금":23268,"초고과금":26003,"고래":11023}},
+    {"date":"2026-04-09","label":"04/09 클로에+요미","total_users":311763,"paid_users":111322,"pay_rate":35.71,"total_krw":28056721800,"arppu_krw":252032,"pay_tiers":{"무과금":200441,"소과금":25670,"중과금":20353,"고과금":23776,"초고과금":27885,"고래":13638}},
+    {"date":"2026-04-23","label":"04/23 스노키","total_users":305321,"paid_users":111300,"pay_rate":36.45,"total_krw":30121931800,"arppu_krw":270637,"pay_tiers":{"무과금":194021,"소과금":24747,"중과금":20517,"고과금":23460,"초고과금":28068,"고래":14508}},
+    {"date":"2026-05-07","label":"05/07 캬롯","total_users":304712,"paid_users":112225,"pay_rate":36.83,"total_krw":32395346700,"arppu_krw":288664,"pay_tiers":{"무과금":192487,"소과금":24262,"중과금":20438,"고과금":23455,"초고과금":28473,"고래":15597}},
+    {"date":"2026-05-21","label":"05/21 셀리네/우이","total_users":298372,"paid_users":111753,"pay_rate":37.45,"total_krw":33083390600,"arppu_krw":296040,"pay_tiers":{"무과금":186619,"소과금":23928,"중과금":20309,"고과금":23353,"초고과금":28382,"고래":15781}},
+    {"date":"2026-06-04","label":"06/04 리스티","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"무과금":167909,"소과금":22173,"중과금":19300,"고과금":22250,"초고과금":27773,"고래":16465}},
+    {"date":"2026-06-18","label":"06/18 0.75주년 리뉴얼","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}}
+  ];
+
+  var ltvData = inspections.map(function(d) {
+    return {
+      label: d.label,
+      ltv: Math.round(d.total_krw / d.total_users),
+      arppu: d.arppu_krw,
+      total_krw: d.total_krw,
+      total_users: d.total_users,
+      paid_users: d.paid_users,
+      pay_rate: d.pay_rate
+    };
+  });
+
+  var latest = ltvData[ltvData.length - 1];
+  var initial = ltvData[0];
+  var ltvChange = ((latest.ltv - initial.ltv) / initial.ltv * 100).toFixed(1);
+
+  var fmt = function(v) { return '₩' + Math.round(v).toLocaleString(); };
+  var labels = ltvData.map(function(d) { return d.label.replace(/\d{2}\/(\d{2})\s/, '$1 '); });
+
+  var h = '';
+  h += '<div class="ltv-section" style="background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin-bottom:20px">';
+  h += '<h2 style="color:#00d4ff;font-size:16px;margin:0 0 14px 0">LTV (Life-Time Value) 분석</h2>';
+
+  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">최신 LTV</div>';
+  h += '<div style="color:#00d4ff;font-size:18px;font-weight:700">'+fmt(latest.ltv)+'</div></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">초기 LTV</div>';
+  h += '<div style="color:#a0a0c0;font-size:18px;font-weight:700">'+fmt(initial.ltv)+'</div></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">LTV 변화율</div>';
+  var changeColor = parseFloat(ltvChange) >= 0 ? '#10b981' : '#ef4444';
+  var changeIcon = parseFloat(ltvChange) >= 0 ? '▲' : '▼';
+  h += '<div style="color:'+changeColor+';font-size:18px;font-weight:700">'+changeIcon+' '+Math.abs(ltvChange)+'%</div></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">최신 ARPPU</div>';
+  h += '<div style="color:#f59e0b;font-size:18px;font-weight:700">'+fmt(latest.arppu)+'</div></div>';
+  h += '</div>';
+
+  h += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px"><canvas id="ltvTrendChart"></canvas></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px"><canvas id="ltvVsArppuChart"></canvas></div>';
+  h += '</div>';
+
+  h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">';
+  h += '<thead><tr style="background:#1a1a3e;color:#00d4ff">';
+  h += '<th style="padding:8px 10px;text-align:left;border-bottom:2px solid #252555">시점</th>';
+  h += '<th style="padding:8px 10px;text-align:right;border-bottom:2px solid #252555">LTV (₩)</th>';
+  h += '<th style="padding:8px 10px;text-align:right;border-bottom:2px solid #252555">ARPPU (₩)</th>';
+  h += '<th style="padding:8px 10px;text-align:right;border-bottom:2px solid #252555">과금줨(%)</th>';
+  h += '<th style="padding:8px 10px;text-align:right;border-bottom:2px solid #252555">총매출 (억)</th>';
+  h += '<th style="padding:8px 10px;text-align:right;border-bottom:2px solid #252555">전체유저</th>';
+  h += '</tr></thead><tbody>';
+  for (var i = 0; i < ltvData.length; i++) {
+    var row = ltvData[i];
+    var bgColor = i % 2 === 0 ? 'transparent' : '#1a1a3e40';
+    var ltvCol = i === ltvData.length - 1 ? '#00d4ff' : '#e0e0f0';
+    var fw = i === ltvData.length - 1 ? '700' : '400';
+    h += '<tr style="background:'+bgColor+'">';
+    h += '<td style="padding:6px 10px;color:#e0e0f0;border-bottom:1px solid #25255530">'+row.label+'</td>';
+    h += '<td style="padding:6px 10px;text-align:right;color:'+ltvCol+';font-weight:'+fw+';border-bottom:1px solid #25255530">'+fmt(row.ltv)+'</td>';
+    h += '<td style="padding:6px 10px;text-align:right;color:#f59e0b;border-bottom:1px solid #25255530">'+fmt(row.arppu)+'</td>';
+    h += '<td style="padding:6px 10px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+row.pay_rate.toFixed(2)+'</td>';
+    h += '<td style="padding:6px 10px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+(row.total_krw/100000000).toFixed(1)+'</td>';
+    h += '<td style="padding:6px 10px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+row.total_users.toLocaleString()+'</td>';
+    h += '</tr>';
+  }
+  h += '</tbody></table></div></div>';
+
+  document.getElementById('ltvAnalysis').innerHTML = h;
+
+  new Chart(document.getElementById('ltvTrendChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'LTV (₩)',
+        data: ltvData.map(function(d){ return d.ltv; }),
+        borderColor: '#00d4ff',
+        backgroundColor: '#00d4ff20',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#00d4ff'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
+        title: { display: true, text: 'LTV 추이 (7시점)', color: '#00d4ff', font: { size: 11 } }
+      },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 9 }, callback: function(v){ return (v/1000).toFixed(0)+'K'; } }, grid: { color: '#25255530' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('ltvVsArppuChart'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'LTV (₩)', data: ltvData.map(function(d){ return d.ltv; }), backgroundColor: '#00d4ff60', borderColor: '#00d4ff', borderWidth: 1 },
+        { label: 'ARPPU (₩)', data: ltvData.map(function(d){ return d.arppu; }), backgroundColor: '#f59e0b60', borderColor: '#f59e0b', borderWidth: 1 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
+        title: { display: true, text: 'ARPPU vs LTV 비교', color: '#00d4ff', font: { size: 11 } }
+      },
+      scales: {
+        x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
+        y: { ticks: { color: '#a0a0c0', font: { size: 9 }, callback: function(v){ return (v/1000).toFixed(0)+'K'; } }, grid: { color: '#25255530' } }
+      }
+    }
+  });
+})();
+
+
 
 // ========== SECTION E: REGION COMPARISON ==========
 (function(){
