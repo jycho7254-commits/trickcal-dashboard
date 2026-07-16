@@ -618,8 +618,8 @@ const latestNewAcc = G[0][4];
 const totalNewAcc = G.reduce((s,r)=>s+r[4],0);
 
 // Monthly calculation from data
-const monthNames = ['1월','2월','3월','4월','5월','6월'];
-const monthKeys = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06'];
+const monthNames = ['1월','2월','3월','4월','5월','6월','7월'];
+const monthKeys = ['2026-01','2026-02','2026-03','2026-04','2026-05','2026-06','2026-07'];
 const monthlyData = {};
 G.forEach(r => {
   const mk = r[0].slice(0,7);
@@ -885,20 +885,21 @@ function renderBaseline() {
   '<tr><td>3월</td><td>31일</td><td>24일</td><td>&lt;$150K</td><td><b>$52,765</b></td><td>$41,833 <small style="color:#888">(21일)</small></td></tr>' +
   '<tr style="background:#25255515"><td>4월</td><td>30일</td><td>21일</td><td>&lt;$150K</td><td><b>$92,304</b></td><td>$78,329 <small style="color:#888">(17일)</small></td></tr>' +
   '<tr><td>5월</td><td>31일</td><td>26일</td><td>&lt;$150K</td><td><b>$65,744</b></td><td>$48,756 <small style="color:#888">(23일)</small></td></tr>' +
-  '<tr style="background:#25255530"><td><b>6월*</b></td><td>18일</td><td>16일</td><td>&lt;$150K</td><td><b>$65,621</b></td><td>$56,340 <small style="color:#888">(14일)</small></td></tr>' +
+  '<tr><td>6월</td><td>30일</td><td>18일</td><td>&lt;$150K</td><td><b>$74,225</b></td><td>$56,759 <small style="color:#888">(14일)</small></td></tr>' +
+  '<tr style="background:#25255515"><td><b>7월*</b></td><td>15일</td><td>13일</td><td>&lt;$150K</td><td><b>$87,102</b></td><td>$78,428 <small style="color:#888">(10일)</small></td></tr>' +
   '</tbody></table></div>' +
-    '<p><span class="tag tag-event">핵심</span> <b>1월 순수 기저 $81K vs 6월 $56K (−30.5%)</b></p>' +
-    '<p style="margin-left:16px;color:#a0a0c0">기저 매출 감소 추세지만, 업데이트 스케일링으로 전체 월평균은 유지</p>' +
+    '<p><span class="tag tag-event">핵심</span> <b>1월 순수 기저 $80K vs 6월 $57K (−29.4%)</b></p>' +
+    '<p style="margin-left:16px;color:#a0a0c0">기저 매출 감소 추세이나, 업데이트 스케일링으로 전체 월평균은 유지</p>' +
     '<p><span class="tag tag-high">업데이트 효과</span> 반주년(3/26) $508K → 0.75주년(6/18) $988K · <b style="color:#10b981">+92%</b></p>' +
     '<p style="margin-left:16px;color:#a0a0c0">6/18 포함 시 6월 전체평균 $167K로 1월($122K) 대비 <span style="color:#10b981">+37%</span></p>' +
-    '<p><span class="tag tag-warn">주의</span> 6/19~7/2 후속 효과: 7월 15일 기준 일평균 $138K · 기저($57K) 대비 <span style="color:#10b981">+142%</span>로 리뉴아 잔여 효과 확인</p>'
+    '<p><span class="tag tag-warn">주의</span> 6/19~7/15 후속 효과: 7월 15일 기준 일평균 $138K · 기저($87K) 대비 <span style="color:#10b981">+58%</span>로 리뉴아 잔여 효과 확인</p>'
   '</div>';
 }
 
 function renderTrend() {
   return '<ul>' +
   '<li><span class="tag tag-high">업데이트 스케일링</span> 반주년(3/26) $508K → 0.75주년(6/18) $988K · <b style="color:#10b981">+92%</b> · 업데이트 ROI 개선 추세</li>' +
-  '<li><span class="tag tag-event">기저 매출</span> 1월 순수 기저 $81K → 6월 $56K (−30.5%) · 감소 추세이나 업데이트 효과로 전체 월평균 유지</li>' +
+  '<li><span class="tag tag-event">기저 매출</span> 1월 순수 기저 $80K → 6월 $57K (−29.4%) · 감소 추세이나 업데이트 효과로 전체 월평균 유지</li>' +
   '<li><span class="tag tag-warn">신규 유입 급감</span> 1월 7,600명/일 → 6월 840명/일 (<b style="color:#ef4444">−89%</b>) · 장기 DAU/MAU 하락 리스크</li>' +
   '<li><span class="tag tag-high">ARPPU 안정</span> 일상 $17~$33 · 이벤트 시 $40+ 달성 · 6/18 $51.25 = 역대 최고</li>' +
   '<li><span class="tag tag-event">JP 비중</span> 84%~87% · 단일 리전 의존 구조 · 다변화 필요</li>' +
