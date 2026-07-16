@@ -1953,7 +1953,8 @@ function showCellTooltip(td, i, j){
 
   var h = '';
   h += '<div class="ltv-section" style="background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin-bottom:20px">';
-  h += '<h2 style="color:#00d4ff;font-size:16px;margin:0 0 14px 0">LTV (Life-Time Value) 분석</h2>';
+  h += '<h2 style="color:#00d4ff;font-size:16px;margin:0 0 4px 0">LTV (Life-Time Value) 분석</h2>';
+  h += '<p style="color:#a0a0c0;font-size:10px;margin:0 0 14px 0">LTV = 누적총매출 ÷ 전체유저 (서비스시작~점검시점 누적 평균) · ARPPU = 과금유저별 평균 과금액</p>';
 
   h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">';
   h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
@@ -2000,7 +2001,106 @@ function showCellTooltip(td, i, j){
     h += '<td style="padding:6px 10px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+row.total_users.toLocaleString()+'</td>';
     h += '</tr>';
   }
-  h += '</tbody></table></div></div>';
+  h += '</tbody></table></div>';
+
+  // ===== 이탈률 + 걸어나간 LTV 서브섹션 =====
+  var churnData = [
+    {date:'04/09',active:190063,churnRate:11.5,paidChurn:4.5,paidLost:3655,walkawayLTV:486},
+    {date:'04/23',active:233878,churnRate:20.3,paidChurn:10.3,paidLost:10042,walkawayLTV:1108},
+    {date:'05/07',active:213329,churnRate:27.2,paidChurn:15.0,paidLost:14108,walkawayLTV:1718},
+    {date:'05/22',active:177307,churnRate:18.9,paidChurn:10.5,paidLost:8905,walkawayLTV:1255},
+    {date:'06/04',active:180205,churnRate:15.5,paidChurn:7.5,paidLost:6449,walkawayLTV:859},
+    {date:'06/18',active:171620,churnRate:12.5,paidChurn:6.7,paidLost:5666,walkawayLTV:905},
+    {date:'07/02',active:170454,churnRate:9.6,paidChurn:4.5,paidLost:3800,walkawayLTV:564}
+  ];
+
+  var tierChurn = {
+    '04/09':[16.7,6.2,3.3,2.4,1.9,2.3],
+    '05/07':[36.7,20.8,12.4,7.8,4.7,1.9],
+    '06/18':[18.1,9.7,5.6,3.6,2.2,1.5],
+    '07/02':[14.7,6.8,3.5,2.1,1.5,1.2]
+  };
+
+  var signalChurn = [
+    {signal:'출석 7일 이하',normal:58.0,renewal:48.2},
+    {signal:'출석 8~30일',normal:36.8,renewal:32.4},
+    {signal:'출석 31일+',normal:7.1,renewal:5.0},
+    {signal:'관심사도 미등록',normal:25.2,renewal:21.0},
+    {signal:'관심사도 1개+',normal:11.3,renewal:8.6}
+  ];
+
+  h += '<div style="background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin-top:16px">';
+  h += '<h3 style="color:#ef4444;font-size:14px;margin:0 0 12px 0">이탈률 &amp; 걸어나간 LTV 분석</h3>';
+  h += '<p style="color:#a0a0c0;font-size:10px;margin:0 0 12px 0">활성=14일내 접속, 이탈=2주 뒤 14일내 미접속 · 걸어나간 LTV = 이탈 결제자의 누적결제 합(백만원)</p>';
+
+  h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">최신 이탈률 (07/02)</div>';
+  h += '<div style="color:#10b981;font-size:18px;font-weight:700">9.6%</div>';
+  h += '<div style="color:#a0a0c0;font-size:10px">반주년(04/09) 11.5% → 0.75주년 전 -1.9%p</div></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">결제자 이탈률 (07/02)</div>';
+  h += '<div style="color:#10b981;font-size:18px;font-weight:700">4.5%</div>';
+  h += '<div style="color:#a0a0c0;font-size:10px">반주년 4.5% → 유지 안정</div></div>';
+  h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">총 걸어나간 LTV</div>';
+  h += '<div style="color:#ef4444;font-size:18px;font-weight:700">₩68.95억</div>';
+  h += '<div style="color:#a0a0c0;font-size:10px">7시점 누적 이탈 결제자 LTV</div></div>';
+  h += '</div>';
+
+  h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px">';
+  h += '<thead><tr style="background:#1a1a3e;color:#ef4444">';
+  h += '<th style="padding:6px 8px;text-align:left;border-bottom:2px solid #252555">시점</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">활성 n</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">전체 이탈률</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">결제자 이탈률</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">이탈 결제자</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">걸어나간 LTV(억)</th>';
+  h += '</tr></thead><tbody>';
+  for (var ci = 0; ci < churnData.length; ci++) {
+    var cd = churnData[ci];
+    var crBg = ci % 2 === 0 ? 'transparent' : '#1a1a3e40';
+    var churnColor = cd.churnRate <= 12 ? '#10b981' : cd.churnRate <= 20 ? '#f59e0b' : '#ef4444';
+    h += '<tr style="background:'+crBg+'">';
+    h += '<td style="padding:5px 8px;color:#e0e0f0;border-bottom:1px solid #25255530">'+cd.date+'</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+cd.active.toLocaleString()+'</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:'+churnColor+';font-weight:600;border-bottom:1px solid #25255530">'+cd.churnRate+'%</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#f59e0b;border-bottom:1px solid #25255530">'+cd.paidChurn+'%</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+cd.paidLost.toLocaleString()+'</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#ef4444;border-bottom:1px solid #25255530">₩'+cd.walkawayLTV+'</td>';
+    h += '</tr>';
+  }
+  h += '</tbody></table></div>';
+
+  // 행동 시그널별 이탈률
+  h += '<h4 style="color:#f59e0b;font-size:12px;margin:16px 0 8px 0">행동 시그널별 이탈률 (평상시 vs 0.75주년)</h4>';
+  h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px">';
+  h += '<thead><tr style="background:#1a1a3e;color:#f59e0b">';
+  h += '<th style="padding:6px 8px;text-align:left;border-bottom:2px solid #252555">시그널</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">평상시 이탈률</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">0.75주년 이탈률</th>';
+  h += '<th style="padding:6px 8px;text-align:right;border-bottom:2px solid #252555">변화</th>';
+  h += '</tr></thead><tbody>';
+  for (var si = 0; si < signalChurn.length; si++) {
+    var sc = signalChurn[si];
+    var scBg = si % 2 === 0 ? 'transparent' : '#1a1a3e40';
+    var scDiff = sc.normal - sc.renewal;
+    var scColor = scDiff >= 0 ? '#10b981' : '#ef4444';
+    h += '<tr style="background:'+scBg+'">';
+    h += '<td style="padding:5px 8px;color:#e0e0f0;border-bottom:1px solid #25255530">'+sc.signal+'</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#a0a0c0;border-bottom:1px solid #25255530">'+sc.normal+'%</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:#10b981;border-bottom:1px solid #25255530">'+sc.renewal+'%</td>';
+    h += '<td style="padding:5px 8px;text-align:right;color:'+scColor+';font-weight:600;border-bottom:1px solid #25255530">'+scDiff.toFixed(1)+'%p</td>';
+    h += '</tr>';
+  }
+  h += '</tbody></table></div>';
+
+  h += '<div style="background:#25255520;border:1px solid #252555;border-radius:8px;padding:10px;margin-top:12px">';
+  h += '<p style="color:#a0a0c0;font-size:10px;margin:0"><span style="color:#10b981;font-weight:600">인사이트:</span> 출석 7일 이하 유저가 이탈의 58% 차지. 0.75주년 업데이트로 전체 이탈률 11.5%→9.6% 개선. 고래 이탈률 1.2%로 가장 안정적. 출석 31일+ 유저는 5% 이탈로 핵심 리텐션.</p>';
+  h += '</div>';
+  h += '</div>';
+
+  h += '</div>';
 
   document.getElementById('ltvAnalysis').innerHTML = h;
 
