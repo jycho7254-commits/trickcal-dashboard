@@ -592,7 +592,10 @@ const events=[
   {date:"2026-06-01",label:"월결제",color:"#10b981"},
   {date:"2026-06-04",label:"리스티 버전업",color:"#f59e0b"},
   {date:"2026-06-11",label:"0.75주년 예열",color:"#7c3aed"},
-  {date:"2026-06-18",label:"0.75주년 리뉴아 업데이트",color:"#7c3aed"}
+  {date:"2026-06-18",label:"0.75주년 리뉴아 업데이트",color:"#7c3aed"},
+  {date:"2026-07-01",label:"월결제",color:"#10b981"},
+  {date:"2026-07-16",label:"티그 사도픽업",color:"#f59e0b"},
+  {date:"2026-07-23",label:"롤렛 사도픽업",color:"#f59e0b"}
 ];
 
 // ========== HELPERS ==========
@@ -1082,12 +1085,13 @@ document.getElementById('trendGrid').innerHTML = trendHTML;
 
 // ========== ACTION ITEMS ==========
 var actionHTML = '<h3>우선 실행 과제</h3><ul>' +
-  '<li><span class="tag tag-warn">기저 매출 하락 대응</span><br>기저 매출 1월 $81K → 6월 $56K (-30.5%). 월간 패스/정기 결제 기반 유저 이탈 원인 분석.<br><b>BM 액션:</b> 일일 스몰 과금(100~300엘리프) 추가 · 무료 엘리프 배급 10~20% 증대 · 휴면 복귀 캠페인</li>' +
+  '<li><span class="tag tag-warn">기저 매출 하락 대응</span><br>기저 매출 1월 $81K → 6월 $57K (-30.5%). 월간 패스/정기 결제 기반 유저 이탈 원인 분석.<br><b>BM 액션:</b> 일일 스몰 과금(100~300엘리프) 추가 · 무료 엘리프 배급 10~20% 증대 · 휴면 복귀 캠페인</li>' +
   '<li><span class="tag tag-event">업데이트 간극 매출 안정화</span><br>비업데이트 주 최저 $28K (6/9). 가챠 없는 주는 매출 바닥 급락.<br><b>BM 액션:</b> 2주차에 리턴 가챠/복각 카드픽업 배치 · 한정패키지 주차 분산 강화</li>' +
-  '<li><span class="tag tag-high">업데이트 스케일링 정형화</span><br>가챠 4→9종, 패키지 20→29개, 패스 추가로 +92% 달성. 패턴 매뉴얼화.<br><b>BM 액션:</b> 1주년 대비 가챠 12종+ 패키지 35개+ 스마트패스 신규 목표 설정</li>' +
+  '<li><span class="tag tag-high">업데이트 스케일링 정형화</span><br>가챠 4→9종, 패키지 20→29개, 패스 추가로 $988K 달성. 패턴 매뉴얼화.<br><b>BM 액션:</b> 1주년 대비 가챠 12종+ 패키지 35개+ 스마트패스 신규 목표 설정</li>' +
+  '<li><span class="tag tag-high">리뉴아 잔여 효과 유지</span><br>7월 15일 기준 일평균 $138K · 기저($57K) 대비 +142%. 7/16 티그 픽업으로 유지 전망.<br><b>BM 액션:</b> 7/23 롤렛 픽업 · 8월 아야(엘다인) 픽업 이어지는 스케줄링으로 안정화</li>' +
   '<li><span class="tag tag-event">신규 유입 BM 인센티브</span><br>신규 84% 감소 (-5,500/일→900/일). 첫 구매 전환율 개선 시급.<br><b>BM 액션:</b> 신입교주 패키지 3종 재설계 · 첫 구매 선물 가치 상향 · 30분 무료 가챠 티켓</li>' +
-  '<li><span class="tag tag-low">ARPPU $30+ 목표</span><br>현재 일평균 $20~25. 프리미엄 과금층 확대 필요.<br><b>BM 액션:</b> 월정액 4종 가치 재설계 · 스텝업패키지 누적 보상 개편 · 부띠끄 프리미엄화</li>' +
-  '<li><span class="tag tag-event">JP 의존도 완화</span><br>JP 매출 비중 40~87%. 단일 리전 집중 리스크.<br><b>BM 액션:</b> KR/TW/HK 타겟 한정패키지 로컬라이징 · 리전별 ARPPU 기반 가격 튜닝</li>' +
+  '<li><span class="tag tag-low">ARPPU $30+ 목표</span><br>리뉴아 이후 ARPPU $276.60 (점검기준). 일일 기준 $20~25에서 상승 중.<br><b>BM 액션:</b> 월정액 4종 가치 재설계 · 스텝업패키지 누적 보상 개편 · 부띠끄 프리미엄화</li>' +
+  '<li><span class="tag tag-event">JP 의존도 완화</span><br>JP 매출 비중 40~87%. 단일 리전 집중 리스크.<br><b>BM 액션:</b> KR/TW/HK 타겟 한정패키지 로컬라이징 · 리전별 ARPPU 기반 가격 튜닝</li>'
   '</ul>';
 document.getElementById('actionItems').innerHTML = actionHTML;
 
