@@ -317,14 +317,14 @@ td:first-child{text-align:left;color:#e2e8f0}
 </nav>
 <div class="container">
 <h1>Trickcal Revive 实时仪表板</h1>
-<p class="subtitle">2026-01-01 ~ 2026-06-18 | 170日 Global 数据 · 168日 JP 数据 | 汇率 1 USD = 1,500 KRW</p>
+<p class="subtitle">2026-01-01 ~ 2026-07-15 | 196日 Global 数据 · 194日 JP 数据 | 汇率 1 USD = 1,500 KRW</p>
 
 <div class="krw-bar" id="krwBar"></div>
 
 <div class="cards" id="kpiCards"></div>
 
 
-<div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">每日 收入趋势 (Global, 170日)</h2>
+<div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">每日 收入趋势 (Global, 196日)</h2>
 <div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
 
 </div><div class="page" id="page-sec-jp"><h2 id="sec-jp">JP vs Global 周收入 (25周)</h2>
@@ -657,7 +657,7 @@ document.getElementById('krwBar').innerHTML = `
 // ========== RENDER KPI CARDS ==========
 document.getElementById('kpiCards').innerHTML = `
   <div class="card">
-    <div class="lbl">总收入 (170日)</div>
+    <div class="lbl">总收入 (196日)</div>
     <div class="val" style="color:#00d4ff">$${fmtM(totalRevUSD)}</div>
     <div class="sub">₩${fmtM(totalRevKRW)} · 日均 $${fmtK(avgDailyRev)}</div>
   </div>
@@ -1321,7 +1321,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="insp-section">' +
     '<h2>维护 数据 趋势 (DB Dump 基于)</h2>' +
-    '<p class="insp-subtitle">7次 维护 时间点 DB 快照 基于 趋势 · 2026년 3/26 ~ 6/18</p>';
+    '<p class="insp-subtitle">10次 维护 时间点 DB 快照 基于 趋势 · 2026년 3/26 ~ 7/30</p>';
 
   // Summary cards
   html += '<div class="insp-cards">' +
