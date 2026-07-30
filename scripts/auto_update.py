@@ -11,11 +11,11 @@ Does NOT:
 """
 import openpyxl, csv, json, os, sys, pathlib, subprocess, datetime
 
-DASHBOARD_DIR = pathlib.Path("C:/Users/user/Desktop/trickcal_dashboard")
+DASHBOARD_DIR = pathlib.Path("C:/Users/user/Desktop/AI_종합정리/트릭컬_TAPD/trickcal_dashboard")
 DATA_DIR = DASHBOARD_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 XLSX_PATH = pathlib.Path("C:/Users/user/Desktop/전달문서/통합 문서1.xlsx")
-INSPECTION_BASE = pathlib.Path("C:/Users/user/Desktop/트릭컬 종합 문서/8_점검데이터")
+INSPECTION_BASE = pathlib.Path("C:/Users/user/Desktop/AI_종합정리/트릭컬_문서/트릭컬 종합 문서/8_점검데이터")
 
 def extract_revenue():
     if not XLSX_PATH.exists():

@@ -657,9 +657,9 @@ document.getElementById('krwBar').innerHTML = `
 // ========== RENDER KPI CARDS ==========
 document.getElementById('kpiCards').innerHTML = `
   <div class="card">
-    <div class="lbl">총 收入 (170日)</div>
+    <div class="lbl">总收入 (170日)</div>
     <div class="val" style="color:#00d4ff">$${fmtM(totalRevUSD)}</div>
-    <div class="sub">₩${fmtM(totalRevKRW)} · 일平均 $${fmtK(avgDailyRev)}</div>
+    <div class="sub">₩${fmtM(totalRevKRW)} · 日均 $${fmtK(avgDailyRev)}</div>
   </div>
   <div class="card">
     <div class="lbl">活跃账户 (最终日)</div>
@@ -674,7 +674,7 @@ document.getElementById('kpiCards').innerHTML = `
   <div class="card">
     <div class="lbl">最高收入日</div>
     <div class="val" style="color:#f59e0b">$${fmtK(peakRev)}</div>
-    <div class="sub">${peakDay[0]} (0.75周年) · 일平均 ${fmtK(avgDailyRev)} 对比 ${fmt(Math.round(peakRev/avgDailyRev))}倍</div>
+    <div class="sub">${peakDay[0]} (0.75周年) · 日均 ${fmtK(avgDailyRev)} 对比 ${fmt(Math.round(peakRev/avgDailyRev))}倍</div>
   </div>
 `;
 
@@ -761,7 +761,7 @@ new Chart(document.getElementById('revenueChart'), {
           label: ctx => {
             var v = ctx.parsed.y;
             var mult = (v / avgDailyRev).toFixed(1);
-            return '$' + fmt(v) + ' (₩' + fmtKRW(v) + ') · 일平均 ' + mult + '倍';
+            return '$' + fmt(v) + ' (₩' + fmtKRW(v) + ') · 日均 ' + mult + '倍';
           },
           afterLabel: function(ctx) {
             var row = sortedG[ctx.dataIndex];
@@ -817,7 +817,7 @@ new Chart(document.getElementById('jpChart'), {
 // ========== MONTHLY TABLE ==========
 const thead = document.querySelector('#monthlyTable thead');
 const tbody = document.querySelector('#monthlyTable tbody');
-thead.innerHTML = '<tr><th>월</th><th>天数</th><th>总收入 (USD)</th><th>总收入 (KRW)</th><th>일平均</th><th>峰值日</th><th>峰值日 收入</th><th>新增账户</th><th>平均 ARPPU</th><th>JP 占比</th><th>MoM</th></tr>';
+thead.innerHTML = '<tr><th>月</th><th>天数</th><th>总收入 (USD)</th><th>总收入 (KRW)</th><th>日均</th><th>峰值日</th><th>峰值日 收入</th><th>新增账户</th><th>平均 ARPPU</th><th>JP 占比</th><th>MoM</th></tr>';
 monthlyRows.forEach(row => {
   const momClass = row.mom === null ? '' : (row.mom >= 0 ? 'mom-up' : 'mom-down');
   const momText = row.mom === null ? '-' : (row.mom >= 0 ? '+' : '') + row.mom.toFixed(1) + '%';
@@ -859,7 +859,7 @@ var spikes = [
   {d:'05/21',r:'$313K',t:'<b>셀리네/우이 强制更新</b>',m:5,bm:'圣徒卡池 2种 + 卡牌卡池 + 阶梯(3000엘리프)',desc:'ARPPU $40.76 · 付费 65K'},
   {d:'05/22',r:'$169K',t:'强制更新 第2天',m:5,bm:'限定礼包 直购 + 主题剧场 商店',desc:'ARPPU $32.08'},
   {d:'06/01',r:'$268K',t:'月度订阅',m:6,bm:'月订阅 续期 4种 + 트릭컬通行证 6月',desc:'活跃 106K · ARPPU $28.19'},
-  {d:'06/04',r:'$145K',t:'<b>리스티 版本升级</b>',m:6,bm:'圣徒卡池 + 等级업 奖励 + 부띠끄 皮肤',desc:'ARPPU $29.58'},
+  {d:'06/04',r:'$145K',t:'<b>리스티 版本升级</b>',m:6,bm:'圣徒卡池 + 等级提升 奖励 + 부띠끄 皮肤',desc:'ARPPU $29.58'},
   {d:'06/11',r:'$116K',t:'0.75周年 预热',m:6,bm:'预热 限定礼包 + 登录奖励',desc:'ARPPU $22.76 · 活跃 100K'},
   {d:'06/18',r:'$988K',t:'<b style="color:#7c3aed">0.75周年 丽纽雅 — 历史 最高</b>',m:6,bm:'丽纽雅 卡池 + 性格募集 7种 + 卡牌卡池 2种 + 限定 29个 + 便服通行证',desc:'ARPPU $51.25 · 活跃 126K · 付费转化率 15.14%'}
 ];
@@ -873,7 +873,7 @@ function renderSpikeTable(list) {
 }
 
 function renderBaseline() {
-  return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th>월</th><th>全部</th><th>基准 天数</th><th>基准 条件</th><th>基准 平均</th><th>纯 基准(&lt;$100K)</th></tr></thead><tbody>' +
+  return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th>月</th><th>全部</th><th>基准 天数</th><th>基准 条件</th><th>基准 平均</th><th>纯 基准(&lt;$100K)</th></tr></thead><tbody>' +
   '<tr><td>1月</td><td>31日</td><td>27日</td><td>&lt;$150K</td><td><b>$104,473</b></td><td>$81,016 <small style="color:#888">(13日)</small></td></tr>' +
   '<tr style="background:#25255515"><td>2月</td><td>28日</td><td>24日</td><td>&lt;$150K</td><td><b>$85,223</b></td><td>$72,624 <small style="color:#888">(20日)</small></td></tr>' +
   '<tr><td>3月</td><td>31日</td><td>24日</td><td>&lt;$150K</td><td><b>$52,765</b></td><td>$41,833 <small style="color:#888">(21日)</small></td></tr>' +
@@ -883,17 +883,17 @@ function renderBaseline() {
   '<tr style="background:#25255515"><td><b>7月*</b></td><td>15日</td><td>13日</td><td>&lt;$150K</td><td><b>$87,102</b></td><td>$78,428 <small style="color:#888">(10日)</small></td></tr>' +
   '</tbody></table></div>' +
     '<p><span class="tag tag-event">核心</span> <b>1月 纯 基准 $80K vs 6月 $57K (−29.4%)</b></p>' +
-    '<p style="margin-left:16px;color:#a0a0c0">基准收入 减少 趋势이나, 更新 缩放으로 整体月均은 维持</p>' +
+    '<p style="margin-left:16px;color:#a0a0c0">基准收入 减少 趋势，但 更新 缩放 整体月均 维持</p>' +
     '<p><span class="tag tag-high">更新 效果</span> 半周年(3/26) $508K → 0.75周年(6/18) $988K · <b style="color:#10b981">+92%</b></p>' +
     '<p style="margin-left:16px;color:#a0a0c0">6/18 包含 시 6月 整体平均 $167K로 1月($122K) 对比 <span style="color:#10b981">+37%</span></p>' +
-    '<p><span class="tag tag-warn">注意</span> 6/19~7/15 后续 效果: 7月 15日 基准 일平均 $138K · 基准($87K) 对比 <span style="color:#10b981">+58%</span>로 丽纽雅 剩余 效果 确认</p>'
+    '<p><span class="tag tag-warn">注意</span> 6/19~7/15 后续 效果: 7月 15日 基准 日均 $138K · 基准($87K) 对比 <span style="color:#10b981">+58%</span>로 丽纽雅 剩余 效果 确认</p>'
   '</div>';
 }
 
 function renderTrend() {
   return '<ul>' +
   '<li><span class="tag tag-high">更新 缩放</span> 半周年(3/26) $508K → 0.75周年(6/18) $988K · <b style="color:#10b981">+92%</b> · 更新 ROI 改善 趋势</li>' +
-  '<li><span class="tag tag-event">基准收入</span> 1月 纯 基准 $80K → 6月 $57K (−29.4%) · 减少 趋势이나 更新 效果로 整体月均 维持</li>' +
+  '<li><span class="tag tag-event">基准收入</span> 1月 纯 基准 $80K → 6月 $57K (−29.4%) · 减少 趋势 更新 效果 整体月均 维持</li>' +
   '<li><span class="tag tag-warn">新增 流入 骤降</span> 1月 7,600名/일 → 6月 840名/일 (<b style="color:#ef4444">−89%</b>) · 长期 DAU/MAU 下降 风险</li>' +
   '<li><span class="tag tag-high">ARPPU 稳定</span> 日常 $17~$33 · 活动 시 $40+ 达成 · 6/18 $51.25 = 历史 最高</li>' +
   '<li><span class="tag tag-event">JP 占比</span> 84%~87% · 单一 区域 依赖 结构 · 多元化 需要</li>' +
@@ -944,7 +944,7 @@ var bmHTML = '' +
 // Peak 1: 0.75周年
 '<div class="bm-peak major">' +
   '<div class="peak-date">2026-06-18 · 历史 最高 收入</div>' +
-  '<div class="peak-title">$988,433 (일平均 对比 8.4倍)</div>' +
+  '<div class="peak-title">$988,433 (日均 对比 8.4倍)</div>' +
   '<div class="peak-metrics">' +
     '<div class="metric">DAU <b>125,828</b> (+15.9%)</div>' +
     '<div class="metric">付费 <b>19,051</b> (+546%)</div>' +
@@ -966,7 +966,7 @@ var bmHTML = '' +
 // Peak 2: 半周年
 '<div class="bm-peak major">' +
   '<div class="peak-date">2026-03-26 · 半周年 이드 v1.6</div>' +
-  '<div class="peak-title">$508,146 (일平均 对比 4.3倍)</div>' +
+  '<div class="peak-title">$508,146 (日均 对比 4.3倍)</div>' +
   '<div class="peak-metrics">' +
     '<div class="metric">DAU <b>133,596</b> (+26%)</div>' +
     '<div class="metric">付费 <b>12,777</b> (+465%)</div>' +
@@ -979,13 +979,13 @@ var bmHTML = '' +
     '<span class="bm-tag bm-tag-event">里程 活动</span>' +
     '<span class="bm-tag bm-tag-gacha">圣徒面试 体验型</span>' +
   '</div>' +
-  '<div class="bm-insight">首次 大型 更新 BM. 主题剧场(每日 2,350货币/21.4日 完走) + 里程로 <b>复合 付费 诱导</b>. 이드 特殊 能力 "时间 停止"로 角色 需求 最大化. 6日간 총 <b>$1.82M</b> 创造</div>' +
+  '<div class="bm-insight">首次 大型 更新 BM. 主题剧场(每日 2,350货币/21.4日 完走) + 里程로 <b>复合 付费 诱导</b>. 이드 特殊 能力 "时间 停止"로 角色 需求 最大化. 6日간 总 <b>$1.82M</b> 创造</div>' +
 '</div>' +
 
 // Peak 3: 新年
 '<div class="bm-peak seasonal">' +
   '<div class="peak-date">2026-01-01 · 新年 + 100日</div>' +
-  '<div class="peak-title">$490,203 (일平均 对比 4.2倍)</div>' +
+  '<div class="peak-title">$490,203 (日均 对比 4.2倍)</div>' +
   '<div class="peak-metrics">' +
     '<div class="metric">DAU <b>122,654</b></div>' +
     '<div class="metric">新增 <b>14,593</b> (平时 5.5倍)</div>' +
@@ -997,13 +997,13 @@ var bmHTML = '' +
     '<span class="bm-tag bm-tag-conversion">月订阅 4种</span>' +
     '<span class="bm-tag bm-tag-package">新增 流入 礼包</span>' +
   '</div>' +
-  '<div class="bm-insight">新增 流入 激增(14,593名)에 의한 收入. <b>月订阅 续期 + 通行证 同时 购买</b>가 主要 BM 因素. 新增 5.5× 增加로 首 购买 转化 管道이 核心</div>' +
+  '<div class="bm-insight">新增 流入 激增(14,593名)에 的 收入. <b>月订阅 续期 + 通行证 同时 购买</b>가 主要 BM 因素. 新增 5.5× 增加로 首 购买 转化 管道이 核心</div>' +
 '</div>' +
 
 // Peak 4: 情人节
 '<div class="bm-peak seasonal">' +
   '<div class="peak-date">2026-02-12 · 情人节 + 피코라</div>' +
-  '<div class="peak-title">$374,385 (일平均 对比 3.2倍)</div>' +
+  '<div class="peak-title">$374,385 (日均 对比 3.2倍)</div>' +
   '<div class="peak-metrics">' +
     '<div class="metric">DAU <b>124,426</b></div>' +
     '<div class="metric">付费 <b>9,785</b></div>' +
@@ -1014,13 +1014,13 @@ var bmHTML = '' +
     '<span class="bm-tag bm-tag-gacha">卡牌卡池 同时</span>' +
     '<span class="bm-tag bm-tag-package">피코라 限定礼包 6种</span>' +
   '</div>' +
-  '<div class="bm-insight">赛季 活动 BM의 效果. <b>角色 限定礼包 6种 + 圣徒/卡牌 卡池 同时</b>로 付费层 疲劳度 分散. ARPPU $38.26 达成으로 高额 付费层 需求 确认</div>' +
+  '<div class="bm-insight">赛季 活动 BM의 效果. <b>角色 限定礼包 6种 + 圣徒/卡牌 卡池 同时</b>로 付费层 疲劳度 分散. ARPPU $38.26 达成 高额 付费层 需求 确认</div>' +
 '</div>' +
 
 // Peak 5: 劳动节
 '<div class="bm-peak seasonal">' +
   '<div class="peak-date">2026-05-01 · 劳动节 + 月度订阅</div>' +
-  '<div class="peak-title">$439,501 (일平均 对比 3.7倍)</div>' +
+  '<div class="peak-title">$439,501 (日均 对比 3.7倍)</div>' +
   '<div class="peak-metrics">' +
     '<div class="metric">DAU <b>127,501</b> (+12.4%)</div>' +
     '<div class="metric">新增 <b>13,755</b> (节日 效果)</div>' +
@@ -1073,19 +1073,19 @@ var trendHTML = '<div class="trend-card">' +
 '</div>' +
 '<div class="trend-card">' +
   '<h4>线下 联名 (4~6月)</h4>' +
-  '<p style="margin:4px 0;color:#a0a0c0;font-size:0.9em">Animate Gratte · 便利店 贴纸 · 泰坦 联名 饮料 · FamilyMart 钥匙扣(85万日元)<br>→ 4~5月 新增 流入 减少 지속으로 直接的 效果 确认 困难</p>' +
+  '<p style="margin:4px 0;color:#a0a0c0;font-size:0.9em">Animate Gratte · 便利店 贴纸 · 泰坦 联名 饮料 · FamilyMart 钥匙扣(85万日元)<br>→ 4~5月 新增 流入 减少 持续， 直接的 效果 确认 困难</p>' +
 '</div>';
 
 document.getElementById('trendGrid').innerHTML = trendHTML;
 
 // ========== ACTION ITEMS ==========
 var actionHTML = '<h3>优先 执行课题</h3><ul>' +
-  '<li><span class="tag tag-warn">基准收入 下降 应对</span><br>基准收入 1月 $81K → 6月 $57K (-30.5%). 月度 通行证/定期 支付 基于 用户 流失 原因 分析.<br><b>BM 行动:</b> 每日 小额 付费(100~300엘리프) 追加 · 免费 엘리프 倍급 10~20% 提升 · 休眠 回归 活动</li>' +
+  '<li><span class="tag tag-warn">基准收入 下降 应对</span><br>基准收入 1月 $81K → 6月 $57K (-30.5%). 月度 通行证/定期 支付 基于 用户 流失 原因 分析.<br><b>BM 行动:</b> 每日 小额 付费(100~300엘리프) 追加 · 免费 엘리프 免费补给 10~20% 提升 · 休眠 回归 活动</li>' +
   '<li><span class="tag tag-event">更新 间隔 收入 稳定화</span><br>非更新 주 最低 $28K (6/9). 抽卡 没有的 的 收入 底部 暴跌.<br><b>BM 行动:</b> 2周次에 回归 抽卡/复刻 卡牌卡池 复刻 · 限定礼包 周次 分散 强化</li>' +
   '<li><span class="tag tag-high">更新 缩放 标准化</span><br>抽卡 4→9种, 礼包 20→29个, 通行证 追加로 $988K 达成. 模式 手册化.<br><b>BM 行动:</b> 1周年 对比 抽卡 12种+ 礼包 35个+ 智能通行证 新增 目标 设置</li>' +
-  '<li><span class="tag tag-high">丽纽雅 剩余 效果 维持</span><br>7月 15日 基准 일平均 $138K · 基准($57K) 对比 +142%. 7/16 티그 卡池으로 维持 展望.<br><b>BM 行动:</b> 7/23 롤렛 卡池 · 8月 아야(艾尔丹) 卡池 连接的 排期으로 稳定화</li>' +
+  '<li><span class="tag tag-high">丽纽雅 剩余 效果 维持</span><br>7月 15日 基准 日均 $138K · 基准($57K) 对比 +142%. 7/16 티그 卡池 维持 展望.<br><b>BM 行动:</b> 7/23 롤렛 卡池 · 8月 阿雅(艾尔丹) 卡池 连接的 排期 稳定화</li>' +
   '<li><span class="tag tag-event">新增 流入 BM 激励</span><br>新增 84% 减少 (-5,500/일→900/일). 首 购买 转化率 改善 紧迫.<br><b>BM 行动:</b> 신입교주 礼包 3种 重新设计 · 首 购买 礼物 价值 上调 · 30분 免费 抽卡 券</li>' +
-  '<li><span class="tag tag-low">ARPPU $30+ 目标</span><br>丽纽雅 之后 ARPPU $276.60 (维护基准). 每日 基准 $20~25에서 上升 중.<br><b>BM 行动:</b> 月订阅 4种 价值 重新设计 · 阶梯礼包 累计 奖励 改版 · 부띠끄 高端化</li>' +
+  '<li><span class="tag tag-low">ARPPU $30+ 目标</span><br>丽纽雅 之后 ARPPU $276.60 (维护基准). 每日 基准 $20~25 上升 중.<br><b>BM 行动:</b> 月订阅 4种 价值 重新设计 · 阶梯礼包 累计 奖励 改版 · 부띠끄 高端化</li>' +
   '<li><span class="tag tag-event">JP 依赖度 缓解</span><br>JP 收入 占比 40~87%. 单一 区域 集中 风险.<br><b>BM 行动:</b> KR/TW/HK 目标 限定礼包 本地化 · 区域별 ARPPU 基于 价格 调优</li>'
   '</ul>';
 document.getElementById('actionItems').innerHTML = actionHTML;
@@ -1115,8 +1115,8 @@ function showCellTooltip(td, i, j){
   // Direction
   let direction, dirColor, dirDesc;
   if(i === j){ direction='留存'; dirColor='#3b82f6'; dirDesc='6/18과 7/02에 相同한 付费分层에 停留的 用户'; }
-  else if(j > i){ direction='上调 迁移 ↑'; dirColor='#10b981'; dirDesc='较高的 付费分层으로 上升的 用户 (正面 指标)'; }
-  else{ direction='下降 迁移 ↓'; dirColor='#ef4444'; dirDesc='更低的 付费分层으로 下降的 用户 (流失/减少)'; }
+  else if(j > i){ direction='上调 迁移 ↑'; dirColor='#10b981'; dirDesc='较高的 付费分层 上升的 用户 (正面 指标)'; }
+  else{ direction='下降 迁移 ↓'; dirColor='#ef4444'; dirDesc='更低的 付费分层 下降的 用户 (流失/减少)'; }
 
   // Build tooltip HTML
   const tooltipHTML =
@@ -1124,7 +1124,7 @@ function showCellTooltip(td, i, j){
     '<div class="tt-title">'+fromTier+' → '+toTier+'</div>' +
     '<div style="margin:4px 0"><span style="color:'+dirColor+';font-weight:600">'+direction+'</span> <span style="font-size:.68rem;color:#94a3b8">'+dirDesc+'</span></div>' +
     '<div style="margin:4px 0">迁移 人数: <b style="color:#e2e8f0">'+val.toLocaleString()+'명</b></div>' +
-    '<div style="margin:4px 0">행 比例: <b style="color:#e2e8f0">'+pct+'%</b> <span style="font-size:.68rem;color:#94a3b8">(6/18 '+fromTier+' 用户 중 '+toTier+'로 迁移한 比例)</span></div>' +
+    '<div style="margin:4px 0">행 比例: <b style="color:#e2e8f0">'+pct+'%</b> <span style="font-size:.68rem;color:#94a3b8">(6/18 '+fromTier+' 用户 중 '+toTier+'로 迁移的 比例)</span></div>' +
     '<div class="tt-formula">该 셀 人数('+val.toLocaleString()+') ÷ '+fromTier+' 행 合计 × 100 = '+pct+'%</div>' +
     '</div>';
 
@@ -1230,14 +1230,14 @@ function showCellTooltip(td, i, j){
 
     const summaries = [
       {label:'付费 用户 上调 迁移', val: overallUpgrade+'%', color:'#10b981',
-       desc:'<b style="color:#10b981">付费 用户 중 头部 付费分层으로 迁移한 比例</b><br>'+
-         '6/18에 已经 支付的 用户 중 7/02에 较高的 付费分层으로 上升的 比例.<br>'+
+       desc:'<b style="color:#10b981">付费 用户 중 头部 付费分层 迁移的 比例</b><br>'+
+         '6/18에 已经 支付的 用户 중 7/02에 较高的 付费分层 上升的 比例.<br>'+
          '<div class="tt-formula">上调 迁移 人数('+fmt(totalUpgradeCount)+'명) ÷ 6/18 付费 用户 全部('+fmt(totalPaidUsers)+'명) × 100</div>'+
          '<span class="tt-result">= '+overallUpgrade+'%</span><br>'+
          '<span style="font-size:.68rem;color:#94a3b8">对角线 위 셀(绿色)의 合计 ÷ 付费 用户 행 合计</span>'},
       {label:'免费→支付 转化 (PUR)', val: f2pConvert+'%', color:'#00d4ff',
        desc:'<b style="color:#00d4ff">免费 用户가 首次로 支付한 比例 (First-Time Purchase Rate)</b><br>'+
-         '6/18에 免费이던 用户 중 7/02에 支付 付费分层으로 转化된 比例.<br>'+
+         '6/18에 免费的 用户 중 7/02에 支付 付费分层 转化된 比例.<br>'+
          '<div class="tt-formula">免费→支付 人数('+fmt(f2pConvertCount)+'명) ÷ 全部 匹配 用户('+fmt(matched)+'명) × 100</div>'+
          '<span class="tt-result">= '+f2pConvert+'%</span><br>'+
          '<span style="font-size:.68rem;color:#94a3b8">匹配: 6/18과 7/02 两侧 维护 数据에 全部 存在的 用户</span>'}
@@ -1248,8 +1248,8 @@ function showCellTooltip(td, i, j){
       const upgraded = matrix[i].slice(i+1).reduce((a,b)=>a+b,0);
       const rate = rt > 0 ? (upgraded/rt*100).toFixed(1) : '0.0';
       const color = rate >= 20 ? '#10b981' : (rate >= 10 ? '#f59e0b' : '#ef4444');
-      const desc = '<b style="color:'+color+'">'+tiers[i]+' 用户 중 头部 付费分层으로 迁移</b><br>'+
-        '6/18에 '+tiers[i]+'이던 用户('+fmt(rt)+'명) 중 7/02에 较高的 付费分层으로 上升的 比例.<br>'+
+      const desc = '<b style="color:'+color+'">'+tiers[i]+' 用户 중 头部 付费分层 迁移</b><br>'+
+        '6/18에 '+tiers[i]+'的 用户('+fmt(rt)+'명) 중 7/02에 较高的 付费分层 上升的 比例.<br>'+
         '<div class="tt-formula">'+tiers[i]+'→头部 人数('+fmt(upgraded)+'명) ÷ 6/18 '+tiers[i]+' 全部('+fmt(rt)+'명) × 100</div>'+
         '<span class="tt-result">= '+rate+'%</span>';
       summaries.push({label: tiers[i]+' 上调 比例', val: rate+'%', color: color, desc: desc});
@@ -1306,7 +1306,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-04","label":"06/04 리스티","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"total_usd":23288169,"arppu_krw":323564,"arppu_usd":215.71,"avg_cash":706,"avg_free_cash":13699,"total_hero_gacha":322357263,"total_card_gacha":90171986,"avg_playtime_hrs":488.1,"pay_tiers":{"免费":167909,"低付费":22173,"中等付费":19300,"高付费":22250,"超高付费":27773,"鲸鱼":16465}},
     {"date":"2026-06-18","label":"06/18 0.75周年 丽纽雅","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"total_usd":23718052,"arppu_krw":340125,"arppu_usd":226.75,"avg_cash":817,"avg_free_cash":15176,"total_hero_gacha":317356820,"total_card_gacha":94320635,"avg_playtime_hrs":527.1,"pay_tiers":{"免费":151190,"低付费":20704,"中等付费":18504,"高付费":21519,"超高付费":27224,"鲸鱼":16649}},
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"total_usd":27759549,"arppu_krw":393890,"arppu_usd":262.59,"avg_cash":1252,"avg_free_cash":11988,"total_hero_gacha":364587597,"total_card_gacha":102232857,"avg_playtime_hrs":579.9,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
-    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}}
+    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
+    {"date":"2026-07-30","label":"07/30 丽纽雅 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}}
   ];
 
   const first = inspections[0];
@@ -1324,17 +1325,17 @@ function showCellTooltip(td, i, j){
 
   // Summary cards
   html += '<div class="insp-cards">' +
-    '<div class="insp-card"><div class="lbl">총 用户</div><div class="num">'+last.total_users.toLocaleString()+'</div><div class="sub"><span class="'+(usersDelta<0?'insp-down':'insp-up')+'">'+usersDelta+'%</span> (305K→'+(last.total_users/1000).toFixed(0)+'K)</div></div>' +
+    '<div class="insp-card"><div class="lbl">总 用户</div><div class="num">'+last.total_users.toLocaleString()+'</div><div class="sub"><span class="'+(usersDelta<0?'insp-down':'insp-up')+'">'+usersDelta+'%</span> (305K→'+(last.total_users/1000).toFixed(0)+'K)</div></div>' +
     '<div class="insp-card"><div class="lbl">付费率</div><div class="num">'+last.pay_rate+'%</div><div class="sub"><span class="insp-up">+'+payRateDelta+'pp</span> (33.9%→40.9%)</div></div>' +
     '<div class="insp-card"><div class="lbl">ARPPU (KRW)</div><div class="num">'+(last.arppu_krw/10000).toFixed(1)+'만</div><div class="sub"><span class="insp-up">+'+arppuDelta+'%</span> (22→34万)</div></div>' +
-    '<div class="insp-card"><div class="lbl">총 累计 付费</div><div class="num">'+fmtKRW(last.total_krw)+'</div><div class="sub"><span class="insp-up">$'+(last.total_usd/1e6).toFixed(1)+'M</span></div></div>' +
+    '<div class="insp-card"><div class="lbl">总 累计 付费</div><div class="num">'+fmtKRW(last.total_krw)+'</div><div class="sub"><span class="insp-up">$'+(last.total_usd/1e6).toFixed(1)+'M</span></div></div>' +
     '<div class="insp-card"><div class="lbl">鲸鱼 수</div><div class="num">'+last.pay_tiers['鲸鱼'].toLocaleString()+'</div><div class="sub"><span class="insp-up">+'+pctChange(first.pay_tiers['鲸鱼'], last.pay_tiers['鲸鱼'])+'%</span> (11K→16.6K)</div></div>' +
     '<div class="insp-card"><div class="lbl">平均 游玩时间</div><div class="num">'+last.avg_playtime_hrs+'h</div><div class="sub"><span class="insp-up">+'+pctChange(first.avg_playtime_hrs, last.avg_playtime_hrs)+'%</span></div></div>' +
     '</div>';
 
   // Main data table
   html += '<div style="overflow-x:auto"><table class="insp-table"><thead><tr>' +
-    '<th>日期</th><th>标签</th><th>총 用户</th><th>付费 用户</th><th>付费率</th><th>총 付费(KRW)</th><th>ARPPU(KRW)</th><th>平均 游玩</th><th>鲸鱼 수</th>' +
+    '<th>日期</th><th>标签</th><th>总 用户</th><th>付费 用户</th><th>付费率</th><th>总 付费(KRW)</th><th>ARPPU(KRW)</th><th>平均 游玩</th><th>鲸鱼 수</th>' +
     '</tr></thead><tbody>';
 
   inspections.forEach((d,i) => {
@@ -1421,7 +1422,7 @@ function showCellTooltip(td, i, j){
       labels: labels,
       datasets: [
         {
-          label: '총 用户',
+          label: '总 用户',
           data: inspections.map(d => d.total_users),
           borderColor: '#00d4ff',
           backgroundColor: '#00d4ff20',
@@ -1478,7 +1479,7 @@ function showCellTooltip(td, i, j){
 
 // ========== SECTION A: UPDATE ROI PANEL ==========
 (function(){
-  // 1) G 倍열에서 日期→收入 映射
+  // 1) G 倍열 日期→收入 映射
   var revMap = {};
   G.forEach(function(row){ revMap[row[0]] = row[1]; });
   var dates = G.map(function(r){ return r[0]; }).sort();
@@ -1591,9 +1592,9 @@ function showCellTooltip(td, i, j){
   var CATS = ['全部','BM','运营','策划'];
   var CAT_COLORS = { BM:'#7c3aed', 运营:'#00d4ff', 策划:'#f59e0b' };
 
-  // 默认 课题 (actionItems에서 转换)
+  // 默认 课题 (actionItems 转换)
   var defaultItems = [
-    { id:1, text:'基准收入 下降 应对 — 每日 小额 付费 追加 · 免费 엘리프 倍급 提升 · 休眠 回归 活动', cat:'BM', done:false },
+    { id:1, text:'基准收入 下降 应对 — 每日 小额 付费 追加 · 免费 엘리프 免费补给 提升 · 休眠 回归 活动', cat:'BM', done:false },
     { id:2, text:'更新 间隔 收入 稳定화 — 2周次 回归 抽卡/复刻 卡牌卡池 复刻', cat:'BM', done:false },
     { id:3, text:'更新 缩放 标准化 — 抽卡 12种+ 礼包 35个+ 智能通行证 新增', cat:'策划', done:false },
     { id:4, text:'新增 流入 BM 激励 — 신입교주 礼包 重新设计 · 首 购买 礼物 价值 上调', cat:'BM', done:false },
@@ -1701,7 +1702,7 @@ function showCellTooltip(td, i, j){
   ];
 
   var h = '<h3>BM 渠道별 收益 构成 (推算)</h3>';
-  h += '<p style="color:#a0a0c0;font-size:.82rem;margin:0 0 14px">运营 路线图 基于 推算치 · 총 推算 월收入 $350K</p>';
+  h += '<p style="color:#a0a0c0;font-size:.82rem;margin:0 0 14px">运营 路线图 基于 推算치 · 总 推算 월收入 $350K</p>';
   h += '<div class="bm-mix-layout">';
   h += '<div class="bm-mix-chart"><canvas id="bmMixChart"></canvas></div>';
   h += '<div class="bm-ch-cards">';
@@ -1762,7 +1763,8 @@ function showCellTooltip(td, i, j){
     {date:"2026-06-04", total_users:275870, paid_users:107961},
     {date:"2026-06-18", total_users:255790, paid_users:104600},
     {date:"2026-07-02", total_users:247936, paid_users:105713},
-    {date:"2026-07-16", total_users:238110, paid_users:104187}
+    {date:"2026-07-16", total_users:238110, paid_users:104187},
+    {date:"2026-07-30", total_users:230683, paid_users:102627}
   ];
 
   // --- Summary cards ---
@@ -1787,7 +1789,7 @@ function showCellTooltip(td, i, j){
 
   // --- Cohort retention heatmap (table-based) ---
   html += '<h3 style="color:#00d4ff;font-size:.9rem;margin-bottom:8px">队列留存率 热力图 (留存率 %)</h3>';
-  html += '<p style="color:#94a3b8;font-size:.75rem;margin-bottom:8px">각 队列(时间点) 基准, 之后 时间点에서의 用户 수 比例. 时间点 间隔 ≈ 2周.</p>';
+  html += '<p style="color:#94a3b8;font-size:.75rem;margin-bottom:8px">各 队列(时间点) 基准, 之后 时间点的 用户 수 比例. 时间点 间隔 ≈ 2周.</p>';
 
   const labels = inspections.map(d => d.date.slice(5));
   const numPoints = inspections.length;
@@ -1831,7 +1833,7 @@ function showCellTooltip(td, i, j){
       labels: labels,
       datasets: [
         {
-          label: '총 用户',
+          label: '总 用户',
           data: inspections.map(d => d.total_users),
           borderColor: '#00d4ff',
           backgroundColor: 'rgba(0,212,255,0.1)',
@@ -1925,7 +1927,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-04","label":"06/04 리스티","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"免费":167909,"低付费":22173,"中等付费":19300,"高付费":22250,"超高付费":27773,"鲸鱼":16465}},
     {"date":"2026-06-18","label":"06/18 0.75周年 丽纽雅","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"免费":151190,"低付费":20704,"中等付费":18504,"高付费":21519,"超高付费":27224,"鲸鱼":16649}},
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
-    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}}
+    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
+    {"date":"2026-07-30","label":"07/30 丽纽雅 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}}
   ];
 
   var ltvData = inspections.map(function(d) {
@@ -2027,7 +2030,7 @@ function showCellTooltip(td, i, j){
 
   h += '<div style="background:#141432;border:1px solid #252555;border-radius:12px;padding:20px;margin-top:16px">';
   h += '<h3 style="color:#ef4444;font-size:14px;margin:0 0 12px 0">流失率 &amp; 流失 LTV 分析</h3>';
-  h += '<p style="color:#a0a0c0;font-size:10px;margin:0 0 12px 0">活跃=14日내 登录, 流失=2周 뒤 14日내 미登录 · 流失 LTV = 流失 支付자의 累计支付 合计(百万韩元)</p>';
+  h += '<p style="color:#a0a0c0;font-size:10px;margin:0 0 12px 0">活跃=14日内 登录, 流失=2周后 14日内 未登录 · 流失 LTV = 流失 支付的 累计支付 合计(百万韩元)</p>';
 
   h += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">';
   h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
@@ -2039,7 +2042,7 @@ function showCellTooltip(td, i, j){
   h += '<div style="color:#10b981;font-size:18px;font-weight:700">4.5%</div>';
   h += '<div style="color:#a0a0c0;font-size:10px">半周年 4.5% → 维持 稳定</div></div>';
   h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
-  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">총 流失 LTV</div>';
+  h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">总 流失 LTV</div>';
   h += '<div style="color:#ef4444;font-size:18px;font-weight:700">₩68.95亿</div>';
   h += '<div style="color:#a0a0c0;font-size:10px">7时间点 累计 流失 支付자 LTV</div></div>';
   h += '</div>';
@@ -2353,7 +2356,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-04","label":"06/04 리스티","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"免费":167909,"低付费":22173,"中等付费":19300,"高付费":22250,"超高付费":27773,"鲸鱼":16465}},
     {"date":"2026-06-18","label":"06/18 0.75周年 丽纽雅","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"免费":151190,"低付费":20704,"中等付费":18504,"高付费":21519,"超高付费":27224,"鲸鱼":16649}},
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
-    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}}
+    {"date":"2026-07-16","label":"07/16 丽纽雅 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
+    {"date":"2026-07-30","label":"07/30 丽纽雅 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}}
   ];
 
   var latest = inspections[inspections.length - 1];
@@ -2503,7 +2507,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-04","total_users":275870,"paid_users":107961,"pay_rate":39.13,"total_krw":34932254100,"arppu_krw":323564,"pay_tiers":{"免费":167909,"低付费":22173,"中等付费":19300,"高付费":22250,"超高付费":27773,"鲸鱼":16465}},
     {"date":"2026-06-18","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"免费":151190,"低付费":20704,"中等付费":18504,"高付费":21519,"超高付费":27224,"鲸鱼":16649}},
     {"date":"2026-07-02","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
-    {"date":"2026-07-16","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}}
+    {"date":"2026-07-16","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
+    {"date":"2026-07-30","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}}
   ];
 
   // 权重: 低付费=1x, 中等付费=5x, 高付费=15x, 超高付费=40x, 鲸鱼=100x
