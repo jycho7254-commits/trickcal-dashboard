@@ -364,7 +364,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 </div><div class="page" id="page-conversionFunnel"><div id="conversionFunnel"></div>
 </div><div class="page" id="page-whaleTracking"><div id="whaleTracking"></div>
 
-</div><div class="footer">데이터 기준일: 2026-07-30 (10차 점검) · 자동 생성됨 · 데이터 기반 계산 · BM 분석 연동 · Trickcal Revive Operations Dashboard</div>
+</div><div class="footer">데이터 기준일: 2026-08-13 (11차 점검) · 자동 생성됨 · 데이터 기반 계산 · BM 분석 연동 · Trickcal Revive Operations Dashboard</div>
 </div>
 
 <script>
@@ -1307,7 +1307,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-18","label":"06/18 0.75주년 리뉴아","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"total_usd":23718052,"arppu_krw":340125,"arppu_usd":226.75,"avg_cash":817,"avg_free_cash":15176,"total_hero_gacha":317356820,"total_card_gacha":94320635,"avg_playtime_hrs":527.1,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}},
     {"date":"2026-07-02","label":"07/02 리뉴아 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"total_usd":27759549,"arppu_krw":393890,"arppu_usd":262.59,"avg_cash":1252,"avg_free_cash":11988,"total_hero_gacha":364587597,"total_card_gacha":102232857,"avg_playtime_hrs":579.9,"pay_tiers":{"무과금":142223,"소과금":26314,"중과금":26511,"고과금":26450,"초고과금":15866,"고래":10572}},
     {"date":"2026-07-16","label":"07/16 리뉴아 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
-    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}}
+    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
+    {"date":"2026-08-13","label":"08/13 리뉴아 D+56","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"total_usd":29975624,"arppu_krw":442662,"arppu_usd":295.11,"avg_cash":706.7,"avg_free_cash":14837.0,"total_hero_gacha":379942239,"total_card_gacha":106120058,"avg_playtime_hrs":698.3,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}}
   ];
 
   const first = inspections[0];
@@ -1321,7 +1322,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="insp-section">' +
     '<h2>점검 데이터 트렌드 (DB Dump 기반)</h2>' +
-    '<p class="insp-subtitle">10회 점검 시점 DB 스냅샷 기반 추이 · 2026년 3/26 ~ 7/30</p>';
+    '<p class="insp-subtitle">11회 점검 시점 DB 스냅샷 기반 추이 · 2026년 3/26 ~ 8/13</p>';
 
   // Summary cards
   html += '<div class="insp-cards">' +
@@ -1764,7 +1765,8 @@ function showCellTooltip(td, i, j){
     {date:"2026-06-18", total_users:255790, paid_users:104600},
     {date:"2026-07-02", total_users:247936, paid_users:105713},
     {date:"2026-07-16", total_users:238110, paid_users:104187},
-    {date:"2026-07-30", total_users:230683, paid_users:102627}
+    {date:"2026-07-30", total_users:230683, paid_users:102627},
+    {date:"2026-08-13", total_users:226311, paid_users:101575}
   ];
 
   // --- Summary cards ---
@@ -1776,7 +1778,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="cohort-section">' +
     '<h2>코호트 리텐션 분석</h2>' +
-    '<p class="cohort-subtitle">점검 DB 10시점 데이터 기반 코호트 시뮬레이션 · 시점 간격 약 2주</p>';
+    '<p class="cohort-subtitle">점검 DB 11시점 데이터 기반 코호트 시뮬레이션 · 시점 간격 약 2주</p>';
 
   html += '<div class="cohort-cards">' +
     '<div class="cohort-card"><div class="lbl">초기 총유저</div><div class="num">'+first.total_users.toLocaleString()+'</div><div class="sub">'+first.date+'</div></div>' +
@@ -1928,7 +1930,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-18","label":"06/18 0.75주년 리뉴아","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}},
     {"date":"2026-07-02","label":"07/02 리뉴아 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"무과금":142223,"소과금":26314,"중과금":26511,"고과금":26450,"초고과금":15866,"고래":10572}},
     {"date":"2026-07-16","label":"07/16 리뉴아 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
-    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}}
+    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
+    {"date":"2026-08-13","label":"08/13 리뉴아 D+56","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}}
   ];
 
   var ltvData = inspections.map(function(d) {
@@ -2044,7 +2047,7 @@ function showCellTooltip(td, i, j){
   h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
   h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">총 걸어나간 LTV</div>';
   h += '<div style="color:#ef4444;font-size:18px;font-weight:700">₩68.95억</div>';
-  h += '<div style="color:#a0a0c0;font-size:10px">10시점 누적 이탈 결제자 LTV</div></div>';
+  h += '<div style="color:#a0a0c0;font-size:10px">11시점 누적 이탈 결제자 LTV</div></div>';
   h += '</div>';
 
   h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px">';
@@ -2122,7 +2125,7 @@ function showCellTooltip(td, i, j){
       responsive: true,
       plugins: {
         legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
-        title: { display: true, text: 'LTV 추이 (10시점)', color: '#00d4ff', font: { size: 11 } }
+        title: { display: true, text: 'LTV 추이 (11시점)', color: '#00d4ff', font: { size: 11 } }
       },
       scales: {
         x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
@@ -2357,7 +2360,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-18","label":"06/18 0.75주년 리뉴아","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}},
     {"date":"2026-07-02","label":"07/02 리뉴아 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"무과금":142223,"소과금":26314,"중과금":26511,"고과금":26450,"초고과금":15866,"고래":10572}},
     {"date":"2026-07-16","label":"07/16 리뉴아 D+28","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
-    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}}
+    {"date":"2026-07-30","label":"07/30 리뉴아 D+42","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
+    {"date":"2026-08-13","label":"08/13 리뉴아 D+56","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}}
   ];
 
   var latest = inspections[inspections.length - 1];
@@ -2407,8 +2411,8 @@ function showCellTooltip(td, i, j){
   });
   html += '</div>';
 
-  // MoM 전환율 변화 테이블 (10시점)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">MoM 전환율 변화 (10시점)</h3>';
+  // MoM 전환율 변화 테이블 (11시점)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">MoM 전환율 변화 (11시점)</h3>';
   html += '<div style="overflow-x:auto"><table class="funnel-mom-table"><thead><tr>' +
     '<th>날짜</th><th>전체→과금(PUR)</th><th>과금→중과금+</th><th>중과금+→고래</th><th>과금율(PUR)</th>' +
     '</tr></thead><tbody>';
@@ -2508,7 +2512,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-06-18","total_users":255790,"paid_users":104600,"pay_rate":40.89,"total_krw":35577078100,"arppu_krw":340125,"pay_tiers":{"무과금":151190,"소과금":20704,"중과금":18504,"고과금":21519,"초고과금":27224,"고래":16649}},
     {"date":"2026-07-02","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"무과금":142223,"소과금":26314,"중과금":26511,"고과금":26450,"초고과금":15866,"고래":10572}},
     {"date":"2026-07-16","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
-    {"date":"2026-07-30","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}}
+    {"date":"2026-07-30","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
+    {"date":"2026-08-13","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}}
   ];
 
   // 가중치: 소과금=1x, 중과금=5x, 고과금=15x, 초고과금=40x, 고래=100x
@@ -2554,12 +2559,12 @@ function showCellTooltip(td, i, j){
   html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">과금군별 유저 수 vs 추정 매출 기여도</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleContribChart" height="180"></canvas></div>';
 
-  // 고래 vs 비고래 매출기여 stacked bar (10시점)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 vs 비고래 매출 기여 추이 (10시점)</h3>';
+  // 고래 vs 비고래 매출기여 stacked bar (11시점)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 vs 비고래 매출 기여 추이 (11시점)</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleTrendChart" height="160"></canvas></div>';
 
   // 고래 비중 변화 추이 테이블
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 비중 변화 추이 (10시점)</h3>';
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">고래 비중 변화 추이 (11시점)</h3>';
   html += '<div style="overflow-x:auto"><table class="whale-table"><thead><tr>' +
     '<th>날짜</th><th>고래 수</th><th>초고수</th><th>고래 합계</th><th>과금 대비 %</th><th>추정 매출 기여</th><th>고래 MoM Δ</th>' +
     '</tr></thead><tbody>';
@@ -2644,7 +2649,7 @@ function showCellTooltip(td, i, j){
     }
   });
 
-  // Chart 2: 고래 vs 비고래 매출기여 stacked bar (10시점)
+  // Chart 2: 고래 vs 비고래 매출기여 stacked bar (11시점)
   var trendLabels = inspections.map(function(d){ return d.date.slice(5); });
   var whaleRevTrend = [];
   var nonWhaleRevTrend = [];
