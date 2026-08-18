@@ -1,0 +1,112 @@
+[
+ {
+  "date": "2026-04-09",
+  "label": "04/09 클로에+요미",
+  "gm": "GM16",
+  "new_users": 43653,
+  "new_paid": 7256,
+  "pay_rate": 16.6,
+  "rev_krw": 524942300,
+  "arppu_krw": 72345,
+  "share_pct": 6.5
+ },
+ {
+  "date": "2026-04-23",
+  "label": "04/23 스노키",
+  "gm": "GM16",
+  "new_users": 21622,
+  "new_paid": 3111,
+  "pay_rate": 14.4,
+  "rev_krw": 243886800,
+  "arppu_krw": 78394,
+  "share_pct": 2.8
+ },
+ {
+  "date": "2026-05-07",
+  "label": "05/07 캬롯",
+  "gm": "GM17",
+  "new_users": 16056,
+  "new_paid": 2099,
+  "pay_rate": 13.1,
+  "rev_krw": 149416400,
+  "arppu_krw": 71184,
+  "share_pct": 1.9
+ },
+ {
+  "date": "2026-05-21",
+  "label": "05/21 셀리네/우이",
+  "gm": "GM17",
+  "new_users": 11561,
+  "new_paid": 1555,
+  "pay_rate": 13.5,
+  "rev_krw": 116282600,
+  "arppu_krw": 74779,
+  "share_pct": 1.4
+ },
+ {
+  "date": "2026-06-04",
+  "label": "06/04 리스티",
+  "gm": "GM17",
+  "new_users": 10141,
+  "new_paid": 1396,
+  "pay_rate": 13.8,
+  "rev_krw": 94286500,
+  "arppu_krw": 67540,
+  "share_pct": 1.3
+ },
+ {
+  "date": "2026-06-18",
+  "label": "06/18 0.75주년 리뉴아",
+  "gm": "GM18",
+  "new_users": 10093,
+  "new_paid": 1618,
+  "pay_rate": 16.0,
+  "rev_krw": 117002600,
+  "arppu_krw": 72313,
+  "share_pct": 1.5
+ },
+ {
+  "date": "2026-07-02",
+  "label": "07/02 리뉴아 D+14",
+  "gm": "GM18",
+  "new_users": 18697,
+  "new_paid": 3902,
+  "pay_rate": 20.9,
+  "rev_krw": 405138500,
+  "arppu_krw": 103828,
+  "share_pct": 3.7
+ },
+ {
+  "date": "2026-07-16",
+  "label": "07/16 티그",
+  "gm": "GM19",
+  "new_users": 10903,
+  "new_paid": 1795,
+  "pay_rate": 16.5,
+  "rev_krw": 176639000,
+  "arppu_krw": 98406,
+  "share_pct": 1.7
+ },
+ {
+  "date": "2026-07-30",
+  "label": "07/30 롤렛",
+  "gm": "GM19",
+  "new_users": 8733,
+  "new_paid": 1376,
+  "pay_rate": 15.8,
+  "rev_krw": 107612000,
+  "arppu_krw": 78206,
+  "share_pct": 1.3
+ },
+ {
+  "date": "2026-08-13",
+  "label": "08/13 아야",
+  "gm": "GM19",
+  "new_users": 7858,
+  "new_paid": 1155,
+  "pay_rate": 14.7,
+  "rev_krw": 89940400,
+  "arppu_krw": 77870,
+  "share_pct": 1.1
+ }
+]
