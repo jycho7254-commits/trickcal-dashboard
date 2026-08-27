@@ -318,14 +318,14 @@ td:first-child{text-align:left;color:#e2e8f0}
 </nav>
 <div class="container">
 <h1>Trickcal Revive 实时仪表板</h1>
-<p class="subtitle">2026-01-01 ~ 2026-07-15 | 196日 Global 数据 · 194日 JP 数据 | 汇率 1 USD = 1,500 KRW</p>
+<p class="subtitle">2026-01-01 ~ 2026-07-15 | 276日 Global 数据 · 194日 JP 数据 | 汇率 1 USD = 1,500 KRW</p>
 
 <div class="krw-bar" id="krwBar"></div>
 
 <div class="cards" id="kpiCards"></div>
 
 
-<div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">每日 收入趋势 (Global, 196日)</h2>
+<div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">每日 收入趋势 (Global, 276日)</h2>
 <div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
 
 </div><div class="page" id="page-sec-jp"><h2 id="sec-jp">JP vs Global 周收入 (25周)</h2>
@@ -366,7 +366,7 @@ td:first-child{text-align:left;color:#e2e8f0}
 </div><div class="page" id="page-whaleTracking"><div id="whaleTracking"></div>
 </div><div class="page" id="page-newUserTracking"><div id="newUserTracking"></div>
 
-</div><div class="footer">数据基准日: 2026-08-13 (第11次检查) · 自动 生成 · 数据 基于 计算 · BM 分析 联动 · Trickcal Revive Operations Dashboard</div>
+</div><div class="footer">数据基准日: 2026-08-27 (第12次检查) · 自动 生成 · 数据 基于 计算 · BM 分析 联动 · Trickcal Revive Operations Dashboard</div>
 </div>
 
 <script>
@@ -671,7 +671,7 @@ document.getElementById('krwBar').innerHTML = `
 // ========== RENDER KPI CARDS ==========
 document.getElementById('kpiCards').innerHTML = `
   <div class="card">
-    <div class="lbl">总收入 (196日)</div>
+    <div class="lbl">总收入 (276日)</div>
     <div class="val" style="color:#00d4ff">$${fmtM(totalRevUSD)}</div>
     <div class="sub">₩${fmtM(totalRevKRW)} · 日均 $${fmtK(avgDailyRev)}</div>
   </div>
@@ -1322,7 +1322,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"total_usd":27759549,"arppu_krw":393890,"arppu_usd":262.59,"avg_cash":1252,"avg_free_cash":11988,"total_hero_gacha":364587597,"total_card_gacha":102232857,"avg_playtime_hrs":579.9,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
-    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"total_usd":29975624,"arppu_krw":442662,"arppu_usd":295.11,"avg_cash":706.7,"avg_free_cash":14837.0,"total_hero_gacha":379942239,"total_card_gacha":106120058,"avg_playtime_hrs":698.3,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}}
+    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"total_usd":29975624,"arppu_krw":442662,"arppu_usd":295.11,"avg_cash":706.7,"avg_free_cash":14837.0,"total_hero_gacha":379942239,"total_card_gacha":106120058,"avg_playtime_hrs":698.3,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
+    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"total_usd":31956192,"arppu_krw":483062,"arppu_usd":322.04,"avg_cash":797,"avg_free_cash":15271,"total_hero_gacha":388526588,"total_card_gacha":110365169,"avg_playtime_hrs":734.3,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   const first = inspections[0];
@@ -1336,7 +1337,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="insp-section">' +
     '<h2>维护 数据 趋势 (DB Dump 基于)</h2>' +
-    '<p class="insp-subtitle">11次 维护 时间点 DB 快照 基于 趋势 · 2026年 3/26 ~ 8/13</p>';
+    '<p class="insp-subtitle">12次 维护 时间点 DB 快照 基于 趋势 · 2026年 3/26 ~ 8/27</p>';
 
   // Summary cards
   html += '<div class="insp-cards">' +
@@ -1780,7 +1781,8 @@ function showCellTooltip(td, i, j){
     {date:"2026-07-02", total_users:247936, paid_users:105713},
     {date:"2026-07-16", total_users:238110, paid_users:104187},
     {date:"2026-07-30", total_users:230683, paid_users:102627},
-    {date:"2026-08-13", total_users:226311, paid_users:101575}
+    {date:"2026-08-13", total_users:226311, paid_users:101575},
+    {"date":"2026-08-27","total_users":213817,"paid_users":99230}
   ];
 
   // --- Summary cards ---
@@ -1792,7 +1794,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="cohort-section">' +
     '<h2>队列留存率 分析</h2>' +
-    '<p class="cohort-subtitle">维护 DB 11时间点 数据 基于 队列 模拟 · 时间点 间隔 约 2周</p>';
+    '<p class="cohort-subtitle">维护 DB 12时间点 数据 基于 队列 模拟 · 时间点 间隔 约 2周</p>';
 
   html += '<div class="cohort-cards">' +
     '<div class="cohort-card"><div class="lbl">初期 총用户</div><div class="num">'+first.total_users.toLocaleString()+'</div><div class="sub">'+first.date+'</div></div>' +
@@ -1945,7 +1947,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
-    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}}
+    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
+    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   var ltvData = inspections.map(function(d) {
@@ -2061,7 +2064,7 @@ function showCellTooltip(td, i, j){
   h += '<div style="background:#1a1a3e;border:1px solid #252555;border-radius:10px;padding:12px;text-align:center">';
   h += '<div style="color:#a0a0c0;font-size:11px;margin-bottom:4px">总 流失 LTV</div>';
   h += '<div style="color:#ef4444;font-size:18px;font-weight:700">₩68.95亿</div>';
-  h += '<div style="color:#a0a0c0;font-size:10px">11时间点 累计 流失 支付자 LTV</div></div>';
+  h += '<div style="color:#a0a0c0;font-size:10px">12时间点 累计 流失 支付자 LTV</div></div>';
   h += '</div>';
 
   h += '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px">';
@@ -2139,7 +2142,7 @@ function showCellTooltip(td, i, j){
       responsive: true,
       plugins: {
         legend: { labels: { color: '#a0a0c0', font: { size: 10 } } },
-        title: { display: true, text: 'LTV 趋势 (11时间点)', color: '#00d4ff', font: { size: 11 } }
+        title: { display: true, text: 'LTV 趋势 (12时间点)', color: '#00d4ff', font: { size: 11 } }
       },
       scales: {
         x: { ticks: { color: '#a0a0c0', font: { size: 9 } }, grid: { color: '#25255530' } },
@@ -2375,7 +2378,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-02","label":"07/02 丽纽雅 D+14","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
-    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}}
+    {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
+    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   var latest = inspections[inspections.length - 1];
@@ -2425,8 +2429,8 @@ function showCellTooltip(td, i, j){
   });
   html += '</div>';
 
-  // MoM 转化率 变化 表格 (11时间点)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">MoM 转化率 变化 (11时间点)</h3>';
+  // MoM 转化率 变化 表格 (12时间点)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">MoM 转化率 变化 (12时间点)</h3>';
   html += '<div style="overflow-x:auto"><table class="funnel-mom-table"><thead><tr>' +
     '<th>日期</th><th>全部→付费(PUR)</th><th>付费→中等付费+</th><th>中等付费+→鲸鱼</th><th>付费率(PUR)</th>' +
     '</tr></thead><tbody>';
@@ -2527,7 +2531,8 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-02","total_users":247936,"paid_users":105713,"pay_rate":42.64,"total_krw":41639323200,"arppu_krw":393890,"pay_tiers":{"免费":142223,"低付费":26314,"中等付费":26511,"高付费":26450,"超高付费":15866,"鲸鱼":10572}},
     {"date":"2026-07-16","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
-    {"date":"2026-08-13","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}}
+    {"date":"2026-08-13","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
+    {"date":"2026-08-27","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   // 权重: 低付费=1x, 中等付费=5x, 高付费=15x, 超高付费=40x, 鲸鱼=100x
@@ -2573,12 +2578,12 @@ function showCellTooltip(td, i, j){
   html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">付费分层별 用户 수 vs 推算 收入 贡献도</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleContribChart" height="180"></canvas></div>';
 
-  // 鲸鱼 vs 备注래 收入贡献 stacked bar (11时间点)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">鲸鱼 vs 备注래 收入 贡献 趋势 (11时间点)</h3>';
+  // 鲸鱼 vs 备注래 收入贡献 stacked bar (12时间点)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">鲸鱼 vs 备注래 收入 贡献 趋势 (12时间点)</h3>';
   html += '<div class="chart-wrap"><canvas id="whaleTrendChart" height="160"></canvas></div>';
 
-  // 鲸鱼 占比 变化 趋势 表格 (11时间点)
-  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">鲸鱼 占比 变化 趋势 (11时间点)</h3>';
+  // 鲸鱼 占比 变化 趋势 表格 (12时间点)
+  html += '<h3 style="color:#00d4ff;font-size:.9rem;margin:16px 0 8px">鲸鱼 占比 变化 趋势 (12时间点)</h3>';
   html += '<div style="overflow-x:auto"><table class="whale-table"><thead><tr>' +
     '<th>日期</th><th>鲸鱼 수</th><th>超高수</th><th>鲸鱼 合计</th><th>付费 对比 %</th><th>推算 收入 贡献</th><th>鲸鱼 MoM Δ</th>' +
     '</tr></thead><tbody>';
@@ -2663,7 +2668,7 @@ function showCellTooltip(td, i, j){
     }
   });
 
-  // Chart 2: 鲸鱼 vs 备注래 收入贡献 stacked bar (11时间点)
+  // Chart 2: 鲸鱼 vs 备注래 收入贡献 stacked bar (12时间点)
   var trendLabels = inspections.map(function(d){ return d.date.slice(5); });
   var whaleRevTrend = [];
   var nonWhaleRevTrend = [];
@@ -2717,7 +2722,7 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="whale-section">' +
     '<h2>版本别新用户流入 & 付费</h2>' +
-    '<p class="whale-subtitle">维护快照 user_id diff 基准 · 上次检查~本次检查之间新流入 · 含总付费用户中新用户占比 · 10个版本 (04/09~08/13)</p>';
+    '<p class="whale-subtitle">维护快照 user_id diff 基准 · 上次检查~本次检查之间新流入 · 含总付费用户中新用户占比 · 11个版本 (04/09~08/27)</p>';
 
   html += '<div class="whale-summary">' +
     '<div class="whale-sum-card"><div class="lbl">累计新流入 (10版本)</div><div class="num">' + total_new.toLocaleString() + '</div><div class="sub">GM16~GM19</div></div>' +
