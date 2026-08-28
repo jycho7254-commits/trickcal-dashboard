@@ -326,7 +326,8 @@ td:first-child{text-align:left;color:#e2e8f0}
 
 
 <div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">일별 매출 추이 (글로벌, 196일)</h2>
-<div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
+<div class="chart-wrap"><canvas id="revenueChart" height="300"></canvas></div>
+<div id="peakDetail" style="display:none"></div>
 
 </div><div class="page" id="page-sec-jp"><h2 id="sec-jp">JP vs 글로벌 주간 매출 (25주)</h2>
 <div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
@@ -739,6 +740,66 @@ const bmKeywords = {
   '06/18': '리뉴아 사도픽업 + 성격모집 7종 + 카드픽업 2종 + 한정패키지 29개'
 };
 
+// ========== PEAK CLICK DETAIL (roadmap-based) ==========
+const ROADMAP_EVENT = {
+  '01/01': {t:'신정 + 시즌초 100일 이벤트 + 월정액 갱신', main:'—', sub:'—', gm:'GM15', bm:'월정액 갱신 4종 · 트릭컬패스 · 엘리프 충전', note:'신규 14,593명 유입 · ARPPU $33.59'},
+  '01/15': {t:'에피카 메인 픽업', main:'에피카', sub:'—', gm:'GM15', bm:'사도픽업 + 에피카 사복패스 (2주 한정)', note:'활성 147K'},
+  '02/01': {t:'월정액 갱신 + 설날', main:'—', sub:'—', gm:'GM16', bm:'월정액 4종 + 신입교주 패키지 3종', note:'신규 4,257명'},
+  '02/12': {t:'xion 테마극장 오픈 + 피코라 픽업', main:'피코라', sub:'—', gm:'GM16', bm:'테마극장 전용재화 + 사도픽업 + 한정패키지 6종', note:'ARPPU $32.85~38.26'},
+  '02/14': {t:'발렌타인데이 본날', main:'—', sub:'—', gm:'GM16', bm:'발렌타인 한정패키지 직구', note:'ARPPU $26.02'},
+  '03/01': {t:'3.1절 + 월정액 갱신', main:'—', sub:'—', gm:'GM16', bm:'월정액 4종 + 절일 패키지', note:'—'},
+  '03/12': {t:'슈팡 메인 픽업', main:'슈팡', sub:'스페셜 선택 픽업', gm:'GM16', bm:'사도픽업 단독 (카드/패키지 없음)', note:'비교용 저피크 $97K'},
+  '03/26': {t:'반주년 이드 업데이트 (v1.6)', main:'이드', sub:'—', gm:'GM17', bm:'이드 테마극장 + 사도픽업 + 마일리지 + 한정패키지 20+개', note:'6일 누적 $1.82M · ARPPU $39.77'},
+  '04/01': {t:'BP 리셋 + 黄金周(황금주) 패키지', main:'—', sub:'—', gm:'GM17', bm:'월초 BP 리셋 + 황금주 한정패키지', note:'신규 3,840명'},
+  '04/09': {t:'클로에 메인 + 요미 서브 픽업 (점검 업데이트)', main:'클로에', sub:'요미', gm:'GM17', bm:'사도픽업 2종 + 클로에 사복패스', note:'—'},
+  '04/23': {t:'스노키 메인 픽업 + 버전업', main:'스노키', sub:'—', gm:'GM17', bm:'사도픽업 + 전설카드픽업 + 부띠끄 스킨', note:'ARPPU $37.34'},
+  '05/01': {t:'근로자의날 + 월정액 갱신', main:'—', sub:'—', gm:'GM17', bm:'월정액 4종 + 프로모션 패키지', note:'신규 13,755명'},
+  '05/07': {t:'캬롯 메인 픽업 + 테마극장 교체', main:'캬롯', sub:'—', gm:'GM17', bm:'사도픽업 단독', note:'—'},
+  '05/21': {t:'셀리네/우이 강제 업데이트', main:'셀리네', sub:'우이', gm:'GM17', bm:'사도픽업 2종 + 카드픽업 + 스텝업(3000엘리프)', note:'ARPPU $40.76'},
+  '06/01': {t:'월정액 갱신', main:'—', sub:'—', gm:'GM18', bm:'월정액 4종 + 트릭컬패스 6월', note:'—'},
+  '06/04': {t:'리스티 버전업', main:'리스티', sub:'—', gm:'GM18', bm:'사도픽업 + 레벨업 보상 + 부띠끄 스킨', note:'—'},
+  '06/11': {t:'0.75주년 예열 (프리히트)', main:'—', sub:'—', gm:'GM18', bm:'프리히트 한정패키지 + 접속보상', note:'—'},
+  '06/18': {t:'0.75주년 리뉴아 업데이트 — 역대 최고', main:'리뉴아(엘다인)', sub:'—', gm:'GM18', bm:'리뉴아 픽업 + 성격모집 7종 신규 + 카드픽업 2종 + 한정패키지 29개 + 사복패스', note:'ARPPU $51.25 · 전환율 15.14% · D+0'},
+  '06/19': {t:'0.75주년 리뉴아 2일차', main:'리뉴아(엘다인)', sub:'—', gm:'GM18', bm:'픽업 2일차 + 한정패키지 지속', note:'D+1 잔여 수요'},
+  '06/20': {t:'0.75주년 주말 효과', main:'리뉴아(엘다인)', sub:'—', gm:'GM18', bm:'주말 플레이타임 증가 + 픽업 지속', note:'—'},
+  '06/21': {t:'0.75주년 주말 효과', main:'리뉴아(엘다인)', sub:'—', gm:'GM18', bm:'픽업 종료 임박 수요', note:'—'},
+  '06/25': {t:'리뉴아 픽업 2주차 (로드맵 서브: 림/시온 엘다인)', main:'리뉴아 2차', sub:'림/시온', gm:'GM18', bm:'픽업 2주차 + 한정패키지 후반부', note:'활성 224K'},
+  '06/27': {t:'주말 + 픽업 후반', main:'—', sub:'—', gm:'GM18', bm:'주말 효과', note:'—'},
+  '07/01': {t:'월말 결제 + 리뉴아 픽업 최종일', main:'—', sub:'—', gm:'GM18', bm:'월정액 말일 몰아쓰기 + 픽업 종료 임박', note:'픽업 전날 효과'},
+  '07/02': {t:'점검 업데이트 (GM18 종료, 픽업 갭 주차)', main:'없음(갭)', sub:'—', gm:'GM18→19', bm:'픽업 종료 후 공백 — 로드맵 7/2 열 빈 값', note:'신규 18,697명'},
+  '07/03': {t:'월초 결제 + 픽업 공백 회복', main:'—', sub:'—', gm:'GM19', bm:'월정액 갱신', note:'—'},
+  '07/04': {t:'주말 + 월초', main:'—', sub:'—', gm:'GM19', bm:'—', note:'—'},
+  '07/16': {t:'티그 메인 픽업 (GM19 시작, 점검 업데이트)', main:'티그', sub:'다야', gm:'GM19', bm:'티그 픽업 + 다야 서브 + [전설] 티그의 불타는 검', note:'—'},
+  '07/23': {t:'롤렛 메인 픽업 (점검 업데이트)', main:'롤렛', sub:'—', gm:'GM19', bm:'롤렛 픽업 + [전설] 롤렛의 마술 모자', note:'—'},
+  '07/30': {t:'아야(엘다인) 메인 픽업 (점검 업데이트)', main:'아야(엘다인)', sub:'—', gm:'GM19', bm:'아야 픽업 + [전설] 아야의 눈꽃 마법', note:'—'},
+  '08/13': {t:'점검 업데이트 (GM19 지속)', main:'—', sub:'프리클/블랑셰(8/20 예정)', gm:'GM19', bm:'—', note:'—'},
+  '08/27': {t:'피라 메인 픽업 (점검 업데이트, 칠석 8/29)', main:'피라', sub:'—', gm:'GM19', bm:'피라 픽업 + [전설] 피라의 명함 뭉치', note:'칠석 이벤트 임박'}
+};
+function showPeakDetail(dateStr) {
+  const sd = dateStr.slice(5).replace('-','/');
+  const ev = ROADMAP_EVENT[sd];
+  const row = sortedG.find(r => r[0] === dateStr);
+  const el = document.getElementById('peakDetail');
+  if (!ev) { el.style.display = 'none'; return; }
+  const usd = row ? '$' + fmt(row[1]) : '';
+  const krw = row ? '(₩' + fmtKRW(row[1]) + ')' : '';
+  const mult = row ? (row[1]/avgDailyRev).toFixed(1) + '×' : '';
+  el.style.display = 'block';
+  el.innerHTML =
+    '<div style="background:#141432;border:1px solid #7c3aed60;border-radius:8px;padding:14px;margin:-6px 0 16px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">' +
+    '<b style="color:#7c3aed;font-size:.95rem">' + sd + ' ' + ev.t + '</b>' +
+    '<span style="color:#00d4ff;font-weight:bold">' + usd + ' ' + krw + ' · 일평균 ' + mult + '</span></div>' +
+    '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;margin-bottom:6px">' +
+    '<span style="color:#a0a0c0">메인 픽업: <b style="color:#ec4899">' + ev.main + '</b></span>' +
+    '<span style="color:#a0a0c0">서브: <b style="color:#e2e8f0">' + ev.sub + '</b></span>' +
+    '<span style="color:#a0a0c0">버전: <b style="color:#00d4ff">' + ev.gm + '</b></span></div>' +
+    '<div style="font-size:.8rem;color:#a0a0c0;margin-bottom:4px">BM: <b style="color:#06b6d4">' + ev.bm + '</b></div>' +
+    (ev.note !== '—' ? '<div style="font-size:.75rem;color:#94a3b8">' + ev.note + '</div>' : '') +
+    '<div style="font-size:.7rem;color:#64748b;margin-top:6px">출처: 글로벌 운영 로드맵.xlsx (메인 픽업 R8 · 카드 R16 · GM R3) · 차트 닫기는 다른 지점 클릭 or 재클릭</div>' +
+    '</div>';
+}
+
 // ========== REVENUE CHART (170 days) ==========
 const sortedG = [...G].sort((a, b) => a[0].localeCompare(b[0]));
 const revDates = sortedG.map(r => shortDate(r[0]));
@@ -755,15 +816,21 @@ new Chart(document.getElementById('revenueChart'), {
       backgroundColor: 'rgba(0,212,255,0.08)',
       fill: true,
       tension: 0.3,
-      pointRadius: 0,
-      pointHoverRadius: 4,
-      borderWidth: 1.5
+      pointRadius: (ctx) => (ctx.raw && ctx.raw >= avgDailyRev*2 ? 4 : 0),
+      pointBackgroundColor: (ctx) => (ctx.raw && ctx.raw >= avgDailyRev*3 ? '#f59e0b' : (ctx.raw && ctx.raw >= avgDailyRev*2 ? '#7c3aed' : '#00d4ff')),
+      pointHoverRadius: 7,
+      borderWidth: 2
     }]
   },
   options: {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
+    onClick: (evt, els) => {
+      if (!els.length) return;
+      const idx = els[0].index;
+      showPeakDetail(sortedG[idx][0]);
+    },
     plugins: {
       legend: { display: false },
       tooltip: {
@@ -886,7 +953,7 @@ function renderSpikeTable(list) {
   return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th style="width:58px">날짜</th><th style="width:68px">매출</th><th>원인 (운영 로드맵 기반)</th><th style="width:180px">BM 포인트</th><th style="width:150px">비고</th></tr></thead><tbody>' +
     list.map(function(s){
       var bg = s.m % 2 === 0 ? '' : 'background:#25255515';
-      return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td>'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
+      return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td style="cursor:pointer;color:#7dd3fc" onclick="showSpikeDetail(\''+s.d+'\')" title="클릭 시 로드맵 근거 상세">'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
     }).join('') + '</tbody></table></div>';
 }
 
@@ -918,9 +985,48 @@ function renderTrend() {
   '</ul>';
 }
 
+function renderCauseSummary() {
+  var counts = {픽업:0, 월결제:0, 이벤트:0, 갭:0};
+  spikes.forEach(function(s){
+    var t = s.t.replace(/<[^>]*>/g,'');
+    if (t.indexOf('픽업') >= 0 || t.indexOf('버전업') >= 0 || t.indexOf('강제업데이트') >= 0) counts.픽업++;
+    else if (t.indexOf('월결제') >= 0) counts.월결제++;
+    else if (t.indexOf('갭') >= 0) counts.갭++;
+    else counts.이벤트++;
+  });
+  var top = spikes.reduce(function(a,b){ return parseInt(a.r.replace(/[^0-9]/g,'')) >= parseInt(b.r.replace(/[^0-9]/g,'')) ? a : b; });
+  return '<div style="background:#141432;border:1px solid #00d4ff40;border-radius:8px;padding:12px;margin-bottom:12px">' +
+    '<h3 style="color:#00d4ff;font-size:.9rem;margin:0 0 8px">스파이크 원인 요약 (운영 로드맵 기반)</h3>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;margin-bottom:8px">' +
+    '<span class="tag tag-high">픽업/버전업 ' + counts.픽업 + '건</span>' +
+    '<span class="tag tag-event">월결제 ' + counts.월결제 + '건</span>' +
+    '<span class="tag tag-warn">픽업 갭 공백 ' + counts.갭 + '건</span>' +
+    '<span class="tag tag-high">기타 이벤트 ' + counts.이벤트 + '건</span></div>' +
+    '<p style="margin:0;font-size:.82rem;color:#a0a0c0">최대 스파이크: <b style="color:#7c3aed">' + top.d + ' ' + top.r + '</b> — ' + top.t.replace(/<[^>]*>/g,'') + ' · 각 행의 <b style="color:#00d4ff">원인 클릭 시 로드맵 근거 상세</b> 표시</p>' +
+    '<div id="spikeDrilldown" style="display:none;margin-top:10px"></div>' +
+    '</div>';
+}
+function showSpikeDetail(dstr) {
+  var s = spikes.find(function(x){ return x.d === dstr; });
+  var box = document.getElementById('spikeDrilldown');
+  if (!s) { box.style.display = 'none'; return; }
+  var t = s.t.replace(/<[^>]*>/g,'');
+  var roadmap = '';
+  if (t.indexOf('월결제') >= 0 || t.indexOf('월정액') >= 0) roadmap = '로드맵 근거: 월초/월말 정기 결제 사이클 — 월정액 4종(엘리프/패스/부띠끄/프리미엄) 갱신 집중. 명절·공휴일과 겹치면 신규 유입까지 가산.';
+  else if (t.indexOf('갭') >= 0) roadmap = '로드맵 근거: 해당 주 메인 픽업 열이 빈 값(픽업 갭) — 전주 픽업 종료 후 수요 공백. 다음 주 신규 픽업 전 홍보 공백기.';
+  else if (t.indexOf('주년') >= 0 || t.indexOf('이드') >= 0) roadmap = '로드맵 근거: 대형 버전업(테마극장+한정패키지+신규 가챠 채널) — GM 버전 경계에 배치된 메이저 업데이트. 업데이트 스케일이 클수록 유료전환율 2.7%→15%대 급등.';
+  else roadmap = '로드맵 근거: 메인 픽업(R8) + 카드 픽업(R16) 동시 운영 — 픽업 사도 한정패키지·사복패스가 결합되어 단일 픽업 대비 매출 2~3배.';
+  box.style.display = 'block';
+  box.innerHTML = '<div style="background:#0a0a1a;border:1px solid #00d4ff40;border-radius:6px;padding:10px">' +
+    '<b style="color:#00d4ff">' + s.d + ' ' + s.r + '</b> — ' + t +
+    '<div style="font-size:.8rem;color:#a0a0c0;margin-top:4px">BM: ' + (s.bm || '—') + '</div>' +
+    '<div style="font-size:.8rem;color:#a0a0c0">' + roadmap + '</div>' +
+    (s.desc ? '<div style="font-size:.75rem;color:#94a3b8">' + s.desc + '</div>' : '') + '</div>';
+}
 function renderTab(key) {
   var el = document.getElementById('spikeContent');
-  if (key === 'all') el.innerHTML = renderSpikeTable(spikes);
+  var sum = document.getElementById('spikeCauseSummary');
+  if (key === 'all') { el.innerHTML = renderCauseSummary() + renderSpikeTable(spikes); }
   else if (key === 'major') el.innerHTML = renderSpikeTable(spikes.filter(function(s){return parseInt(s.r.replace(/[^0-9]/g,''))>=200000}));
   else if (key === 'baseline') el.innerHTML = renderBaseline();
   else if (key === 'trend') el.innerHTML = renderTrend();
@@ -970,13 +1076,13 @@ var bmHTML = '' +
     '<div class="metric">전환율 <b>15.14%</b> (5.6×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">리뉴아 사도픽업</span>' +
-    '<span class="bm-tag bm-tag-gacha">성격모집 7종 신규</span>' +
-    '<span class="bm-tag bm-tag-gacha">카드픽업 2종</span>' +
-    '<span class="bm-tag bm-tag-package">한정패키지 29개</span>' +
-    '<span class="bm-tag bm-tag-pass">리뉴아 사복패스</span>' +
-    '<span class="bm-tag bm-tag-event">0.75주년 접속보상</span>' +
-    '<span class="bm-tag bm-tag-conversion">토끼가챠 + 슈뢰딩거</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;리뉴아 사도픽업&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">리뉴아 사도픽업</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;성격모집 7종 신규&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">성격모집 7종 신규</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;카드픽업 2종&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">카드픽업 2종</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;한정패키지 29개&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">한정패키지 29개</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;리뉴아 사복패스&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">리뉴아 사복패스</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;0.75주년 접속보상&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-event">0.75주년 접속보상</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;토끼가챠 + 슈뢰딩거&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-conversion">토끼가챠 + 슈뢰딩거</span>' +
   '</div>' +
   '<div class="bm-insight">BM 스케일링 핵심: 가챠 종류 <b>6→9종</b> 확대 + 한정패키지 <b>20→29개</b> 증가 + <b>성격모집 신규 채널</b> 추가. 유료전환율 2.7%→15.1%로 <b>5.6배</b> 폭증 → 무료→유료 전환 경로의 다변화가 스케일링의 핵심 동력</div>' +
 '</div>' +
@@ -991,11 +1097,11 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$39.77</b> (1.9×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">이드 사도픽업</span>' +
-    '<span class="bm-tag bm-tag-event">이드 테마극장</span>' +
-    '<span class="bm-tag bm-tag-package">한정패키지 20+개</span>' +
-    '<span class="bm-tag bm-tag-event">마일리지 이벤트</span>' +
-    '<span class="bm-tag bm-tag-gacha">사도면접 체험형</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;이드 사도픽업&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">이드 사도픽업</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;이드 테마극장&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-event">이드 테마극장</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;한정패키지 20+개&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">한정패키지 20+개</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;마일리지 이벤트&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-event">마일리지 이벤트</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;사도면접 체험형&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">사도면접 체험형</span>' +
   '</div>' +
   '<div class="bm-insight">최초 대형 업데이트 BM. 테마극장(일일 2,350재화/21.4일 완주) + 마일리지로 <b>복합 과금 유도</b>. 이드 특수 능력 "시간 정지"로 캐릭터 수요 극대화. 6일간 총 <b>$1.82M</b> 창출</div>' +
 '</div>' +
@@ -1010,10 +1116,10 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$33.59</b> (1.7×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-pass">트릭컬패스 갱신</span>' +
-    '<span class="bm-tag bm-tag-pass">레벨패스 5~50</span>' +
-    '<span class="bm-tag bm-tag-conversion">월정액 4종</span>' +
-    '<span class="bm-tag bm-tag-package">신규 유입 패키지</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;트릭컬패스 갱신&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">트릭컬패스 갱신</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;레벨패스 5~50&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">레벨패스 5~50</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;월정액 4종&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-conversion">월정액 4종</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;신규 유입 패키지&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">신규 유입 패키지</span>' +
   '</div>' +
   '<div class="bm-insight">신규 유입 폭증(14,593명)에 의한 매출. <b>월정액 갱신 + 패스 동시 구매</b>가 주요 BM 요인. 신규 5.5× 증가로 첫 구매 전환 파이프라인이 핵심</div>' +
 '</div>' +
@@ -1028,9 +1134,9 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$38.26</b> (1.9×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">피코라 사도픽업</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;피코라 사도픽업&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">피코라 사도픽업</span>' +
     '<span class="bm-tag bm-tag-gacha">카드픽업 동시</span>' +
-    '<span class="bm-tag bm-tag-package">피코라 한정패키지 6종</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;피코라 한정패키지 6종&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">피코라 한정패키지 6종</span>' +
   '</div>' +
   '<div class="bm-insight">시즌 이벤트 BM의 효과. <b>캐릭터 한정패키지 6종 + 사도/카드 픽업 동시</b>로 과금층 피로도 분산. ARPPU $38.26 달성으로 고액 과금층 수요 확인</div>' +
 '</div>' +
@@ -1045,9 +1151,9 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$31.95</b></div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-conversion">월정액 갱신 4종</span>' +
-    '<span class="bm-tag bm-tag-pass">트릭컬패스 5월</span>' +
-    '<span class="bm-tag bm-tag-package">특별 프로모션</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;월정액 갱신 4종&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-conversion">월정액 갱신 4종</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;트릭컬패스 5월&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">트릭컬패스 5월</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;특별 프로모션&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">특별 프로모션</span>' +
   '</div>' +
   '<div class="bm-insight"><b>월초 결제 BM</b>의 반복 패턴 (2/1 $237K, 3/1 $219K, 6/1 $268K). 월정액 갱신 + 명절 신규 유입이 결합하면 매출 3~4배 증가</div>' +
 '</div>' +
@@ -1067,6 +1173,56 @@ var bmHTML = '' +
   '<p style="margin-top:10px;font-size:.82rem;color:#a0a0c0"><span class="tag tag-event">인사이트</span> 스케일링의 핵심은 <b style="color:#e2e8f0">과금 채널 다변화</b> — 가챠 4→9종, 패키지 20→29개, 패스 신규 추가로 <b style="color:#e2e8f0">유료전환율 58%p 상승</b>이 매출 +92%를 견인</p>' +
 '</div>';
 
+
+// ========== PICKUP CHARACTER DRILLDOWN (roadmap-based) ==========
+const PICKUP_DETAIL = {
+  '리뉴아 사도픽업': {ch:'리뉴아', meta:'엘다인 · GM18 · 0.75주년 (6/18~7/1, 2주)', cause:'성격모집 7종 신규 채널 + 한정패키지 29개 + 사복패스 동시 운영. 유료전환율 2.7%→15.14% (5.6배), ARPPU $51.25 역대 최고. 업데이트 스케일링의 기준점.', effect:'당일 $988K (일평균 8.4배) · D+1 $509K · 2주차 $248K · 픽업 최종일 $391K (월말 결제 합산)'},
+  '성격모집 7종 신규': {ch:'성격모집(가챠)', meta:'신규 가챠 채널 · GM18 · 0.75주년 한정', cause:'기존 6종 가챠에 7종 위성 채널 추가 — 캐릭터별 성격 조합 수집 수요 창출. 가챠 단가 낮아 전환 진입용.', effect:'가챠 6→9종 확대의 핵심 구성 · 무료→유료 전환 진입 경로'},
+  '카드픽업 2종': {ch:'카드픽업', meta:'[전설] 카드 · GM18', cause:'사도픽업과 연동된 카드 수집 수요. 사도 획득 후 즉시 카드 과금으로 이어지는 2단 구조.', effect:'사도픽업 간접 증폭'},
+  '한정패키지 29개': {ch:'한정패키지', meta:'직구 패키지 · GM18 · 반주년 20개→29개', cause:'가격대별 다층 구성(소액~고액)으로 과금 피로도 분산 + 즉시 직구 전환.', effect:'+45% 패키지 수 증가 → 전체 매출 +92% 기여'},
+  '리뉴아 사복패스': {ch:'사복패스', meta:'패스 · GM18', cause:'한정 사복 진행형 패스 — 첫 도입 사례. 패스 완주 보상까지 수요 지속.', effect:'신규 BM 채널'},
+  '이드 사도픽업': {ch:'이드', meta:'반주년 (3/26~3/31, 6일) · GM17 · v1.6', cause:'이드 테마극장(일일 2,350재화/21.4일 완주) + 마일리지 이벤트 결합. "시간 정지" 능력으로 캐릭터 수요 극대화.', effect:'당일 $508K (4.3배) · 6일 누적 $1.82M · ARPPU $39.77'},
+  '피코라 사도픽업': {ch:'피코라', meta:'발렌타인 시즌 (2/12~) · GM16', cause:'시즌 이벤트(발렌타인)와 캐릭터 한정패키지 6종 결합. 사도/카드 픽업 동시로 과금층 피로도 분산.', effect:'당일 $374K (3.2배) · ARPPU $38.26'},
+  '클로에 메인픽업': {ch:'클로에', meta:'GM17 · 4/9 점검 업데이트', cause:'메인+서브(요미) 동시 픽업 + 사복패스. 점검일 배치로 확실히 트래픽 몰림.', effect:'당일 $237K'},
+  '스노키 메인픽업': {ch:'스노키', meta:'GM17 · 4/23 버전업', cause:'사도픽업 + 전설카드픽업 + 부띠끄 스킨 신규. 버전업 특수로 DAU 상승.', effect:'당일 $350K · ARPPU $37.34'},
+  '캬롯 메인픽업': {ch:'캬롯', meta:'GM17 · 5/7 점검 업데이트', cause:'사도픽업 단독 + 테마극장 교체. 카드/한정패키지 미동반 → 피크 제한.', effect:'당일 $179K (단독 픽업 기준선)'},
+  '셀리네 강업': {ch:'셀리네/우이', meta:'GM17 · 5/21 강제 업데이트', cause:'사도픽업 2종 + 카드픽업 + 스텝업 가챠(3000엘리프) — 고액 스텝업이 ARPPU 끌어올림.', effect:'당일 $313K · ARPPU $40.76'},
+  '리스티 버전업': {ch:'리스티', meta:'GM18 · 6/4', cause:'사도픽업 + 레벨업 보상 + 부띠끄 스킨 갱신. 0.75주년 전 예열기.', effect:'당일 $145K'},
+  '티그 사도픽업': {ch:'티그', meta:'활발/딜러/전열/물리/근거리 · GM19 · 7/16', cause:'GM19 첫 픽업. 다야 서브 + [전설] 티그의 불타는 검 카드 동시.', effect:'당일 $237K(클로에급) · 신규 유입 10,903명 · 과금율 16.5%'},
+  '롤렛 사도픽업': {ch:'롤렛', meta:'광기/딜러/후열/마법/원거리 · GM19 · 7/23', cause:'[전설] 롤렛의 마술 모자 카드 동시. 서브 픽업 없음.', effect:'당일 피크 · 신규 8,733명 · 과금율 15.8%'},
+  '아야(엘다인) 메인 픽업': {ch:'아야', meta:'냉정/딜러/중열/마법/근거리 · 엘다인 · GM19 · 7/30', cause:'[전설] 아야의 눈꽃 마법 카드 동시. 엘다인 희소성 프리미엄.', effect:'신규 7,858명 · 과금율 14.7% · ARPPU ₩77.9K'},
+  '피라 메인 픽업': {ch:'피라', meta:'광기/서포터/후열/물리/원거리 · GM19 · 8/27', cause:'[전설] 피라의 명함 뭉치 카드 + 칠석(8/29) 이벤트 직전 배치.', effect:'신규 9,252명 · 과금율 18.2% (신규 기준 역대 최고) · 신규 ARPPU ₩104.6K'},
+
+  '이드 테마극장': {ch:'이드 테마극장', meta:'반주년 한정 · GM17', cause:'전용 재화 경제 — 일일 2,350재화 × 21.4일 완주 구조로 재화 소진 후 재구매 유도. 상점 교단증명서·업적 보상($27.46/200회)이 과금 연동.', effect:'6일간 일평균 매출 4~5배 유지의 핵심 동력'},
+  '마일리지 이벤트': {ch:'마일리지', meta:'반주년 · GM17', cause:'픽업 마일리지 교환 + 출석보상 — 가챠 비용 실효 절감으로 추가 가챠 수요 유발.', effect:'3/31 마일리지 연속 스파이크 $180K'},
+  '사도면접 체험형': {ch:'사도면접', meta:'반주년 체험 가챠 · GM17', cause:'체험형 가챠로 신규 사도(이드) 성능 직접 확인 → 본 가챠 전환 파이프라인.', effect:'3/27 $436K 2일차 피크 기여'},
+  '한정패키지 20+개': {ch:'한정패키지', meta:'직구 · GM17 · 반주년', cause:'가격대별 다층 구성 (반주년 규모).', effect:'0.75주년 29개로 스케일업 (+45%)'},
+  '피코라 한정패키지 6종': {ch:'피코라 패키지', meta:'발렌타인 · GM16', cause:'시즌 한정 6종 직구 — 캐릭터 특화 구성.', effect:'ARPPU $38.26 달성'},
+  '월정액 갱신 4종': {ch:'월정액', meta:'엘리프/패스/부띠끄/프리미엄 · 상시', cause:'월초 갱신 사이클 — 명절과 겹치면 신규 유입 가산.', effect:'월초 피크 반복 패턴 ($219K~$490K)'},
+  '월정액 4종': {ch:'월정액', meta:'상시 · GM16', cause:'월초 갱신 사이클.', effect:'월초 피크'},
+  '트릭컬패스 갱신': {ch:'트릭컬패스', meta:'패스 · 상시', cause:'월간 패스 갱신 — 신년 시즌 대량 갱신.', effect:'1/1 $490K 구성 요소'},
+  '레벨패스 5~50': {ch:'레벨패스', meta:'패스 · 상시', cause:'레벨 진행 패스 — 신규 유입과 연동.', effect:'1/1 신규 14,593명 전환'},
+  '트릭컬패스 5월': {ch:'트릭컬패스', meta:'패스 · 5월', cause:'월간 패스 갱신.', effect:'5/1 $440K 구성'},
+  '신규 유입 패키지': {ch:'신규 패키지', meta:'신입교주 대상 · GM16', cause:'신규 유입 대상 첫 구매 패키지 — 전환 진입용.', effect:'1/1 신규 5.5배 전환'},
+  '특별 프로모션': {ch:'프로모션', meta:'근로자의날 · GM17', cause:'절일 프로모션 패키지.', effect:'5/1 $440K'},
+  '0.75주년 접속보상': {ch:'접속보상', meta:'0.75주년 · GM18', cause:'출석 보상 강화로 DAU 급등 → 간접 과금 기회 확대.', effect:'DAU 125,828 (+15.9%)'},
+  '토끼가챠 + 슈뢰딩거': {ch:'토끼가챠', meta:'0.75주년 · GM18', cause:'보조 가챠 채널 + 신규 시스템(슈뢰딩거).', effect:'전환율 15.14% 기여'}
+};
+function togglePickupDetail(key, anchorEl) {
+  const all = document.querySelectorAll('.pickup-drilldown');
+  let box = null;
+  // close existing
+  all.forEach(b => b.remove());
+  const d = PICKUP_DETAIL[key];
+  if (!d) return;
+  box = document.createElement('div');
+  box.className = 'pickup-drilldown';
+  box.style.cssText = 'background:#0a0a1a;border:1px solid #ec489960;border-radius:6px;padding:10px;margin:8px 0;font-size:.8rem';
+  box.innerHTML = '<b style="color:#ec4899">' + d.ch + '</b> <span style="color:#94a3b8;font-size:.72rem">(' + d.meta + ')</span>' +
+    '<div style="color:#a0a0c0;margin-top:4px"><b style="color:#06b6d4">원인:</b> ' + d.cause + '</div>' +
+    '<div style="color:#a0a0c0"><b style="color:#10b981">효과:</b> ' + d.effect + '</div>';
+  anchorEl.parentNode.insertBefore(box, anchorEl.nextSibling);
+}
 document.getElementById('bmAnalysis').innerHTML = bmHTML;
 
 // ========== RELATED TRENDS ==========
@@ -2229,7 +2385,7 @@ function showCellTooltip(td, i, j){
 
     // --- Radar chart + info grid ---
     html += '<div class="region-grid">';
-    html += '<div class="chart-wrap"><canvas id="regionRadarChart" height="200"></canvas></div>';
+    html += '<div class="chart-wrap" style="min-height:340px"><div style="position:relative;height:300px"><canvas id="regionRadarChart"></canvas></div></div>';
 
     // --- Region detail cards ---
     html += '<div>';
@@ -2289,6 +2445,7 @@ function showCellTooltip(td, i, j){
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { labels: { color: '#a0a0c0', font: { size: 9 } } },
           title: { display: true, text: '지역별 과금군 분포 (레이더)', color: '#00d4ff', font: { size: 11 } }

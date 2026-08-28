@@ -326,7 +326,8 @@ td:first-child{text-align:left;color:#e2e8f0}
 
 
 <div class="page active" id="page-sec-revenue"><h2 id="sec-revenue">每日 收入趋势 (Global, 196日)</h2>
-<div class="chart-wrap"><canvas id="revenueChart" height="110"></canvas></div>
+<div class="chart-wrap"><canvas id="revenueChart" height="300"></canvas></div>
+<div id="peakDetail" style="display:none"></div>
 
 </div><div class="page" id="page-sec-jp"><h2 id="sec-jp">JP vs Global 周收入 (25周)</h2>
 <div class="chart-wrap"><canvas id="jpChart" height="100"></canvas></div>
@@ -739,6 +740,66 @@ const bmKeywords = {
   '06/18': '丽纽雅 圣徒卡池 + 性格募集 7种 + 卡牌卡池 2种 + 限定礼包 29个'
 };
 
+// ========== PEAK CLICK DETAIL (roadmap-based) ==========
+const ROADMAP_EVENT = {
+  '01/01': {t:'신년 + 시즌초 100일 이벤트 + 月订阅 续期', main:'—', sub:'—', gm:'GM15', bm:'月订阅 续期 4种 · 트릭컬通行证 · 엘리프 充值', note:'新增 14,593名 · ARPPU $33.59'},
+  '01/15': {t:'에피카 主卡池', main:'에피카', sub:'—', gm:'GM15', bm:'圣徒卡池 + 에피카 便服通行证 (2周 限定)', note:'活跃 147K'},
+  '02/01': {t:'月订阅 续期 + 春节', main:'—', sub:'—', gm:'GM16', bm:'月订阅 4种 + 신입교주 礼包 3种', note:'新增 4,257名'},
+  '02/12': {t:'xion 主题剧场 开放 + 피코라 卡池', main:'피코라', sub:'—', gm:'GM16', bm:'主题剧场 专属 虚拟货币 + 圣徒卡池 + 限定礼包 6种', note:'ARPPU $32.85~38.26'},
+  '02/14': {t:'情人节 当天', main:'—', sub:'—', gm:'GM16', bm:'情人节 限定礼包 直购', note:'ARPPU $26.02'},
+  '03/01': {t:'三一节 + 月订阅 续期', main:'—', sub:'—', gm:'GM16', bm:'月订阅 4种 + 节日 礼包', note:'—'},
+  '03/12': {t:'슈팡 主卡池', main:'슈팡', sub:'特殊 选择 卡池', gm:'GM16', bm:'圣徒卡池 单独 (卡牌/礼包 无)', note:'对比用 低峰值 $97K'},
+  '03/26': {t:'半周年 이드 更新 (v1.6)', main:'이드', sub:'—', gm:'GM17', bm:'이드 主题剧场 + 圣徒卡池 + 里程 + 限定礼包 20+个', note:'6天 累计 $1.82M · ARPPU $39.77'},
+  '04/01': {t:'BP 重置 + 黄金周 礼包', main:'—', sub:'—', gm:'GM17', bm:'月初 BP 重置 + 黄金周 限定礼包', note:'新增 3,840名'},
+  '04/09': {t:'클로에 主 + 요미 副 卡池 (维护 更新)', main:'클로에', sub:'요미', gm:'GM17', bm:'圣徒卡池 2种 + 클로에 便服通行证', note:'—'},
+  '04/23': {t:'스노키 主卡池 + 版本升级', main:'스노키', sub:'—', gm:'GM17', bm:'圣徒卡池 + 传说卡牌卡池 + 부띠끄 皮肤', note:'ARPPU $37.34'},
+  '05/01': {t:'劳动节 + 月订阅 续期', main:'—', sub:'—', gm:'GM17', bm:'月订阅 4种 + 促销 礼包', note:'新增 13,755名'},
+  '05/07': {t:'캬롯 主卡池 + 主题剧场 更换', main:'캬롯', sub:'—', gm:'GM17', bm:'圣徒卡池 单独', note:'—'},
+  '05/21': {t:'셀리네/우이 强制更新', main:'셀리네', sub:'우이', gm:'GM17', bm:'圣徒卡池 2种 + 卡牌卡池 + 阶梯(3000엘리프)', note:'ARPPU $40.76'},
+  '06/01': {t:'月订阅 续期', main:'—', sub:'—', gm:'GM18', bm:'月订阅 4种 + 트릭컬通行证 6月', note:'—'},
+  '06/04': {t:'리스티 版本升级', main:'리스티', sub:'—', gm:'GM18', bm:'圣徒卡池 + 等级 提升 奖励 + 부띠끄 皮肤', note:'—'},
+  '06/11': {t:'0.75周年 预热 (预热)', main:'—', sub:'—', gm:'GM18', bm:'预热 限定礼包 + 登录奖励', note:'—'},
+  '06/18': {t:'0.75周年 丽纽雅 更新 — 历史 最高', main:'丽纽雅(엘다인)', sub:'—', gm:'GM18', bm:'丽纽雅 卡池 + 性格募集 7种 新增 + 卡牌卡池 2种 + 限定礼包 29个 + 便服通行证', note:'ARPPU $51.25 · 转化率 15.14% · D+0'},
+  '06/19': {t:'0.75周年 丽纽雅 第2天', main:'丽纽雅(엘다인)', sub:'—', gm:'GM18', bm:'卡池 第2天 + 限定礼包 持续', note:'D+1 剩余 需求'},
+  '06/20': {t:'0.75周年 周末 效果', main:'丽纽雅(엘다인)', sub:'—', gm:'GM18', bm:'周末 游戏时间 增加 + 卡池 持续', note:'—'},
+  '06/21': {t:'0.75周年 周末 效果', main:'丽纽雅(엘다인)', sub:'—', gm:'GM18', bm:'卡池 结束 邻近 需求', note:'—'},
+  '06/25': {t:'丽纽雅 卡池 第2周 (路线图 副: 림/시온 엘다인)', main:'丽纽雅 第2次', sub:'림/시온', gm:'GM18', bm:'卡池 第2周 + 限定礼包 后半', note:'活跃 224K'},
+  '06/27': {t:'周末 + 卡池 后半', main:'—', sub:'—', gm:'GM18', bm:'周末 效果', note:'—'},
+  '07/01': {t:'月末 支付 + 丽纽雅 卡池 最终日', main:'—', sub:'—', gm:'GM18', bm:'月订阅 月末 集中 + 卡池 结束 邻近', note:'卡池 前一天 效果'},
+  '07/02': {t:'维护 更新 (GM18 结束, 卡池 间隔 周)', main:'无(间隔)', sub:'—', gm:'GM18→19', bm:'卡池 结束 后 空白 — 路线图 7/2 列 空值', note:'新增 18,697名'},
+  '07/03': {t:'月初 支付 + 卡池 空白 恢复', main:'—', sub:'—', gm:'GM19', bm:'月订阅 续期', note:'—'},
+  '07/04': {t:'周末 + 月初', main:'—', sub:'—', gm:'GM19', bm:'—', note:'—'},
+  '07/16': {t:'티그 主卡池 (GM19 开始, 维护 更新)', main:'티그', sub:'다야', gm:'GM19', bm:'티그 卡池 + 다야 副 + [传说] 티그의 불타는 검', note:'—'},
+  '07/23': {t:'롤렛 主卡池 (维护 更新)', main:'롤렛', sub:'—', gm:'GM19', bm:'롤렛 卡池 + [传说] 롤렛의 마술 모자', note:'—'},
+  '07/30': {t:'아야(엘다인) 主卡池 (维护 更新)', main:'아야(엘다인)', sub:'—', gm:'GM19', bm:'아야 卡池 + [传说] 아야의 눈꽃 마법', note:'—'},
+  '08/13': {t:'维护 更新 (GM19 持续)', main:'—', sub:'프리클/블랑셰(8/20 预定)', gm:'GM19', bm:'—', note:'—'},
+  '08/27': {t:'피라 主卡池 (维护 更新, 七夕 8/29)', main:'피라', sub:'—', gm:'GM19', bm:'피라 卡池 + [传说] 피라의 명함 뭉치', note:'七夕 活动 邻近'}
+};
+function showPeakDetail(dateStr) {
+  const sd = dateStr.slice(5).replace('-','/');
+  const ev = ROADMAP_EVENT[sd];
+  const row = sortedG.find(r => r[0] === dateStr);
+  const el = document.getElementById('peakDetail');
+  if (!ev) { el.style.display = 'none'; return; }
+  const usd = row ? '$' + fmt(row[1]) : '';
+  const krw = row ? '(₩' + fmtKRW(row[1]) + ')' : '';
+  const mult = row ? (row[1]/avgDailyRev).toFixed(1) + '×' : '';
+  el.style.display = 'block';
+  el.innerHTML =
+    '<div style="background:#141432;border:1px solid #7c3aed60;border-radius:8px;padding:14px;margin:-6px 0 16px">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">' +
+    '<b style="color:#7c3aed;font-size:.95rem">' + sd + ' ' + ev.t + '</b>' +
+    '<span style="color:#00d4ff;font-weight:bold">' + usd + ' ' + krw + ' · 日均 ' + mult + '</span></div>' +
+    '<div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;margin-bottom:6px">' +
+    '<span style="color:#a0a0c0">主卡池: <b style="color:#ec4899">' + ev.main + '</b></span>' +
+    '<span style="color:#a0a0c0">副: <b style="color:#e2e8f0">' + ev.sub + '</b></span>' +
+    '<span style="color:#a0a0c0">版本: <b style="color:#00d4ff">' + ev.gm + '</b></span></div>' +
+    '<div style="font-size:.8rem;color:#a0a0c0;margin-bottom:4px">BM: <b style="color:#06b6d4">' + ev.bm + '</b></div>' +
+    (ev.note !== '—' ? '<div style="font-size:.75rem;color:#94a3b8">' + ev.note + '</div>' : '') +
+    '<div style="font-size:.7rem;color:#64748b;margin-top:6px">出处: 글로벌 운영 로드맵.xlsx (主卡池 R8 · 卡牌 R16 · GM R3) · 图表 关闭: 点击 其他 位置 或 再点击</div>' +
+    '</div>';
+}
+
 // ========== REVENUE CHART (170 days) ==========
 const sortedG = [...G].sort((a, b) => a[0].localeCompare(b[0]));
 const revDates = sortedG.map(r => shortDate(r[0]));
@@ -755,15 +816,21 @@ new Chart(document.getElementById('revenueChart'), {
       backgroundColor: 'rgba(0,212,255,0.08)',
       fill: true,
       tension: 0.3,
-      pointRadius: 0,
-      pointHoverRadius: 4,
-      borderWidth: 1.5
+      pointRadius: (ctx) => (ctx.raw && ctx.raw >= avgDailyRev*2 ? 4 : 0),
+      pointBackgroundColor: (ctx) => (ctx.raw && ctx.raw >= avgDailyRev*3 ? '#f59e0b' : (ctx.raw && ctx.raw >= avgDailyRev*2 ? '#7c3aed' : '#00d4ff')),
+      pointHoverRadius: 7,
+      borderWidth: 2
     }]
   },
   options: {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     interaction: { mode: 'index', intersect: false },
+    onClick: (evt, els) => {
+      if (!els.length) return;
+      const idx = els[0].index;
+      showPeakDetail(sortedG[idx][0]);
+    },
     plugins: {
       legend: { display: false },
       tooltip: {
@@ -886,7 +953,7 @@ function renderSpikeTable(list) {
   return '<div style="overflow-x:auto"><table class="spike-table"><thead><tr><th style="width:58px">日期</th><th style="width:68px">收入</th><th>原因 (运营 路线图 基于)</th><th style="width:180px">BM 要点</th><th style="width:150px">备注</th></tr></thead><tbody>' +
     list.map(function(s){
       var bg = s.m % 2 === 0 ? '' : 'background:#25255515';
-      return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td>'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
+      return '<tr style="'+bg+'"><td><b>'+s.d+'</b></td><td style="text-align:right;font-weight:bold;color:#00d4ff">'+s.r+'</td><td style="cursor:pointer;color:#7dd3fc" onclick="showSpikeDetail(\''+s.d+'\')" title="클릭 시 로드맵 근거 상세">'+s.t+'</td><td style="font-size:0.78rem;color:#06b6d4">'+(s.bm||'')+'</td><td style="font-size:0.8em;color:#a0a0c0">'+s.desc+'</td></tr>';
     }).join('') + '</tbody></table></div>';
 }
 
@@ -918,9 +985,48 @@ function renderTrend() {
   '</ul>';
 }
 
+function renderCauseSummary() {
+  var counts = {픽업:0, 월결제:0, 이벤트:0, 갭:0};
+  spikes.forEach(function(s){
+    var t = s.t.replace(/<[^>]*>/g,'');
+    if (t.indexOf('픽업') >= 0 || t.indexOf('버전업') >= 0 || t.indexOf('강제업데이트') >= 0) counts.픽업++;
+    else if (t.indexOf('월결제') >= 0) counts.월결제++;
+    else if (t.indexOf('갭') >= 0) counts.갭++;
+    else counts.이벤트++;
+  });
+  var top = spikes.reduce(function(a,b){ return parseInt(a.r.replace(/[^0-9]/g,'')) >= parseInt(b.r.replace(/[^0-9]/g,'')) ? a : b; });
+  return '<div style="background:#141432;border:1px solid #00d4ff40;border-radius:8px;padding:12px;margin-bottom:12px">' +
+    '<h3 style="color:#00d4ff;font-size:.9rem;margin:0 0 8px">스파이크 원인 요약 (운영 로드맵 기반)</h3>' +
+    '<div style="display:flex;gap:10px;flex-wrap:wrap;font-size:.8rem;margin-bottom:8px">' +
+    '<span class="tag tag-high">픽업/버전업 ' + counts.픽업 + '건</span>' +
+    '<span class="tag tag-event">월결제 ' + counts.월결제 + '건</span>' +
+    '<span class="tag tag-warn">픽업 갭 공백 ' + counts.갭 + '건</span>' +
+    '<span class="tag tag-high">기타 이벤트 ' + counts.이벤트 + '건</span></div>' +
+    '<p style="margin:0;font-size:.82rem;color:#a0a0c0">최대 스파이크: <b style="color:#7c3aed">' + top.d + ' ' + top.r + '</b> — ' + top.t.replace(/<[^>]*>/g,'') + ' · 각 행의 <b style="color:#00d4ff">원인 클릭 시 로드맵 근거 상세</b> 표시</p>' +
+    '<div id="spikeDrilldown" style="display:none;margin-top:10px"></div>' +
+    '</div>';
+}
+function showSpikeDetail(dstr) {
+  var s = spikes.find(function(x){ return x.d === dstr; });
+  var box = document.getElementById('spikeDrilldown');
+  if (!s) { box.style.display = 'none'; return; }
+  var t = s.t.replace(/<[^>]*>/g,'');
+  var roadmap = '';
+  if (t.indexOf('월결제') >= 0 || t.indexOf('월정액') >= 0) roadmap = '로드맵 근거: 월초/월말 정기 결제 사이클 — 월정액 4종(엘리프/패스/부띠끄/프리미엄) 갱신 집중. 명절·공휴일과 겹치면 신규 유입까지 가산.';
+  else if (t.indexOf('갭') >= 0) roadmap = '로드맵 근거: 해당 주 메인 픽업 열이 빈 값(픽업 갭) — 전주 픽업 종료 후 수요 공백. 다음 주 신규 픽업 전 홍보 공백기.';
+  else if (t.indexOf('주년') >= 0 || t.indexOf('이드') >= 0) roadmap = '로드맵 근거: 대형 버전업(테마극장+한정패키지+신규 가챠 채널) — GM 버전 경계에 배치된 메이저 업데이트. 업데이트 스케일이 클수록 유료전환율 2.7%→15%대 급등.';
+  else roadmap = '로드맵 근거: 메인 픽업(R8) + 카드 픽업(R16) 동시 운영 — 픽업 사도 한정패키지·사복패스가 결합되어 단일 픽업 대비 매출 2~3배.';
+  box.style.display = 'block';
+  box.innerHTML = '<div style="background:#0a0a1a;border:1px solid #00d4ff40;border-radius:6px;padding:10px">' +
+    '<b style="color:#00d4ff">' + s.d + ' ' + s.r + '</b> — ' + t +
+    '<div style="font-size:.8rem;color:#a0a0c0;margin-top:4px">BM: ' + (s.bm || '—') + '</div>' +
+    '<div style="font-size:.8rem;color:#a0a0c0">' + roadmap + '</div>' +
+    (s.desc ? '<div style="font-size:.75rem;color:#94a3b8">' + s.desc + '</div>' : '') + '</div>';
+}
 function renderTab(key) {
   var el = document.getElementById('spikeContent');
-  if (key === 'all') el.innerHTML = renderSpikeTable(spikes);
+  var sum = document.getElementById('spikeCauseSummary');
+  if (key === 'all') { el.innerHTML = renderCauseSummary() + renderSpikeTable(spikes); }
   else if (key === 'major') el.innerHTML = renderSpikeTable(spikes.filter(function(s){return parseInt(s.r.replace(/[^0-9]/g,''))>=200000}));
   else if (key === 'baseline') el.innerHTML = renderBaseline();
   else if (key === 'trend') el.innerHTML = renderTrend();
@@ -970,12 +1076,12 @@ var bmHTML = '' +
     '<div class="metric">转化率 <b>15.14%</b> (5.6×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">丽纽雅 圣徒卡池</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;丽纽雅 圣徒卡池&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">丽纽雅 圣徒卡池</span>' +
     '<span class="bm-tag bm-tag-gacha">性格募集 7种 新增</span>' +
-    '<span class="bm-tag bm-tag-gacha">卡牌卡池 2种</span>' +
-    '<span class="bm-tag bm-tag-package">限定礼包 29个</span>' +
-    '<span class="bm-tag bm-tag-pass">丽纽雅 便服通行证</span>' +
-    '<span class="bm-tag bm-tag-event">0.75周年 登录奖励</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;卡牌卡池 2种&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">卡牌卡池 2种</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;限定礼包 29个&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-package">限定礼包 29个</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;丽纽雅 便服通行证&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">丽纽雅 便服通行证</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;0.75周年 登录奖励&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-event">0.75周年 登录奖励</span>' +
     '<span class="bm-tag bm-tag-conversion">兔子抽卡 + 薛定谔</span>' +
   '</div>' +
   '<div class="bm-insight">BM 缩放 核心: 抽卡 种类 <b>6→9种</b> 扩大 + 限定礼包 <b>20→29个</b> 增加 + <b>性格募集 新增 渠道</b> 追加. 付费转化率 2.7%→15.1%로 <b>5.6倍</b> 激增 → 免费→付费 转化 路径의 多元化가 缩放의 核心 动力</div>' +
@@ -991,11 +1097,11 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$39.77</b> (1.9×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">이드 圣徒卡池</span>' +
-    '<span class="bm-tag bm-tag-event">이드 主题剧场</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;이드 圣徒卡池&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">이드 圣徒卡池</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;이드 主题剧场&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-event">이드 主题剧场</span>' +
     '<span class="bm-tag bm-tag-package">限定礼包 20+개</span>' +
     '<span class="bm-tag bm-tag-event">里程 活动</span>' +
-    '<span class="bm-tag bm-tag-gacha">圣徒面试 体验型</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;圣徒面试 体验型&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">圣徒面试 体验型</span>' +
   '</div>' +
   '<div class="bm-insight">首次 大型 更新 BM. 主题剧场(每日 2,350货币/21.4日 完走) + 里程로 <b>复合 付费 诱导</b>. 이드 特殊 能力 "时间 停止"로 角色 需求 最大化. 6日간 总 <b>$1.82M</b> 创造</div>' +
 '</div>' +
@@ -1010,7 +1116,7 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$33.59</b> (1.7×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-pass">트릭컬通行证 续期</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;트릭컬通行证 续期&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-pass">트릭컬通行证 续期</span>' +
     '<span class="bm-tag bm-tag-pass">等级通行证 5~50</span>' +
     '<span class="bm-tag bm-tag-conversion">月订阅 4种</span>' +
     '<span class="bm-tag bm-tag-package">新增 流入 礼包</span>' +
@@ -1028,7 +1134,7 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$38.26</b> (1.9×)</div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-gacha">피코라 圣徒卡池</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;피코라 圣徒卡池&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-gacha">피코라 圣徒卡池</span>' +
     '<span class="bm-tag bm-tag-gacha">卡牌卡池 同时</span>' +
     '<span class="bm-tag bm-tag-package">피코라 限定礼包 6种</span>' +
   '</div>' +
@@ -1045,7 +1151,7 @@ var bmHTML = '' +
     '<div class="metric">ARPPU <b>$31.95</b></div>' +
   '</div>' +
   '<div class="bm-tags">' +
-    '<span class="bm-tag bm-tag-conversion">月订阅 续期 4种</span>' +
+    '<span style="cursor:pointer" onclick=&quot;togglePickupDetail(&#39;月订阅 续期 4种&#39;, this)&quot; title="클릭 시 상세" class="bm-tag bm-tag-conversion">月订阅 续期 4种</span>' +
     '<span class="bm-tag bm-tag-pass">트릭컬通行证 5月</span>' +
     '<span class="bm-tag bm-tag-package">特别 促销</span>' +
   '</div>' +
@@ -1067,6 +1173,42 @@ var bmHTML = '' +
   '<p style="margin-top:10px;font-size:.82rem;color:#a0a0c0"><span class="tag tag-event">洞察</span> 缩放의 核心은 <b style="color:#e2e8f0">付费 渠道 多元化</b> — 抽卡 4→9种, 礼包 20→29个, 通行证 新增 追加로 <b style="color:#e2e8f0">付费转化率 58%p 上升</b>이 收入 +92%를 牵引</p>' +
 '</div>';
 
+
+// ========== PICKUP CHARACTER DRILLDOWN (roadmap-based) ==========
+const PICKUP_DETAIL = {
+  '丽纽雅 圣徒卡池': {ch:'丽纽雅', meta:'엘다인 · GM18 · 0.75주년 (6/18~7/1)', cause:'性格募集 7种 新增 + 限定礼包 29个 + 便服通行证 同时 运营. 付费转化率 2.7%→15.14% (5.6倍), ARPPU $51.25 历史 最高.', effect:'当天 $988K (日均 8.4倍) · D+1 $509K · 第2周 $248K · 卡池 最终日 $391K'},
+  '성격모집 7종 신규': {ch:'성격모집(가챠)', meta:'新卡池 渠道 · GM18 · 0.75주년 한정', cause:'기존 6种 卡池에 7种 卫星 渠道 추가 — 캐릭터별 성격 조합 수집 需求 창출.', effect:'卡池 6→9种 확대의 核心'},
+  '卡牌卡池 2种': {ch:'카드픽업', meta:'[传说] 卡牌 · GM18', cause:'圣徒卡池 联动 卡牌 수집 需求. 2단 과금 구조.', effect:'圣徒卡池 间接 增幅'},
+  '限定礼包 29个': {ch:'限定礼包', meta:'直购 · GM18 · 반주년 20个→29个', cause:'가격대별 多层 구성으로 과금 疲劳度 분산 + 즉시 直购 转化.', effect:'+45% → 总收入 +92% 寄与'},
+  '丽纽雅 便服通行证': {ch:'사복패스', meta:'通行证 · GM18', cause:'한정 사복 진행형 패스 — 첫 도입.', effect:'新 BM 渠道'},
+  '이드 圣徒卡池': {ch:'이드', meta:'반주년 (3/26~3/31) · GM17 · v1.6', cause:'이드 主题剧场 + 里程 结合. "时间 停止" 能力으로 캐릭터 需求 极大化.', effect:'当天 $508K (4.3倍) · 6天 累计 $1.82M'},
+  '피코라 圣徒卡池': {ch:'피코라', meta:'情人节 시즌 (2/12~) · GM16', cause:'시즌 이벤트 + 캐릭터 限定礼包 6种 结合.', effect:'当天 $374K (3.2倍) · ARPPU $38.26'},
+  '티그 圣徒卡池': {ch:'티그', meta:'활발/딜러 · GM19 · 7/16', cause:'GM19 첫 卡池. 다야 副 + [传说] 카드 同时.', effect:'新流入 10,903名 · 付费率 16.5%'},
+  '롤렛 圣徒卡池': {ch:'롤렛', meta:'광기/딜러 · GM19 · 7/23', cause:'[传说] 卡牌 同时. 副 卡池 无.', effect:'新流入 8,733名 · 付费率 15.8%'},
+
+  '이드 主题剧场': {ch:'이드 主题剧场', meta:'반주년 한정 · GM17', cause:'专属 虚拟货币 経済 — 일일 2,350재화 × 21.4日 完走 구조.', effect:'6日間 日均 매출 4~5倍 유지'},
+  '里程 兑换': {ch:'마일리지', meta:'반주년 · GM17', cause:'가챠 마일리지 交换 + 출석 보상.', effect:'3/31 $180K'},
+  '圣徒面试 体验型': {ch:'사도면접', meta:'반주year 体验 가챠 · GM17', cause:'体验型 가챠 → 本 가챠 전환.', effect:'3/27 $436K'},
+  '限定礼包 20+个': {ch:'限定礼包', meta:'直购 · GM17', cause:'가격대별 多层 구성.', effect:'0.75주년 29个로 확대'},
+  '情人节 限定礼包 直购': {ch:'발렌타인 패키지', meta:'GM16', cause:'시즌 한정 直购.', effect:'2/14 $285K'},
+  '月订阅 续期 4种': {ch:'月订阅', meta:'상시', cause:'월초 갱신 사이클.', effect:'월초 피크 반복'},
+  '트릭컬通行证 续期': {ch:'트릭컬通行证', meta:'通行证 · 상시', cause:'월간 通行证 갱신.', effect:'1/1 $490K'},
+  '新流入 诱导 礼包': {ch:'新流入 礼包', meta:'신입교주 · GM15', cause:'신규 需求 첫 決濟 패키지.', effect:'1/2 $216K'},
+  '0.75周年 登录奖励': {ch:'접속보상', meta:'0.75주년 · GM18', cause:'출석 보상 강화 → DAU 급등.', effect:'DAU +15.9%'}
+};
+function togglePickupDetail(key, anchorEl) {
+  const all = document.querySelectorAll('.pickup-drilldown');
+  all.forEach(b => b.remove());
+  const d = PICKUP_DETAIL[key];
+  if (!d) return;
+  const box = document.createElement('div');
+  box.className = 'pickup-drilldown';
+  box.style.cssText = 'background:#0a0a1a;border:1px solid #ec489960;border-radius:6px;padding:10px;margin:8px 0;font-size:.8rem';
+  box.innerHTML = '<b style="color:#ec4899">' + d.ch + '</b> <span style="color:#94a3b8;font-size:.72rem">(' + d.meta + ')</span>' +
+    '<div style="color:#a0a0c0;margin-top:4px"><b style="color:#06b6d4">원인:</b> ' + d.cause + '</div>' +
+    '<div style="color:#a0a0c0"><b style="color:#10b981">효과:</b> ' + d.effect + '</div>';
+  anchorEl.parentNode.insertBefore(box, anchorEl.nextSibling);
+}
 document.getElementById('bmAnalysis').innerHTML = bmHTML;
 
 // ========== RELATED TRENDS ==========
@@ -2229,7 +2371,7 @@ function showCellTooltip(td, i, j){
 
     // --- Radar chart + info grid ---
     html += '<div class="region-grid">';
-    html += '<div class="chart-wrap"><canvas id="regionRadarChart" height="200"></canvas></div>';
+    html += '<div class="chart-wrap" style="min-height:340px"><div style="position:relative;height:300px"><canvas id="regionRadarChart"></canvas></div></div>';
 
     // --- Region detail cards ---
     html += '<div>';
@@ -2289,6 +2431,7 @@ function showCellTooltip(td, i, j){
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { labels: { color: '#a0a0c0', font: { size: 9 } } },
           title: { display: true, text: '各区域 付费分层 分布 (雷达)', color: '#00d4ff', font: { size: 11 } }
