@@ -1,46 +1,49 @@
 # 🎲 Trickcal Revive 대시보드
 
-> 트릭컬 글로벌/일본 실매출·지표 통합 대시보드
+> 트릭컬 글로벌/일본 실매출·지표 통합 대시보드 (한국어/중국어)
 
 🔗 **한국어**: https://jycho7254-commits.github.io/trickcal-dashboard/
-🔗 **중국어**: https://jycho7254-commits.github.io/trickcal-dashboard-zh/
+🔗 **중국어**: https://jycho7254-commits.github.io/trickcal-dashboard/index_zh.html
 
 ---
 
-## 📊 주요 기능
+## 📊 대시보드 구성 (18탭)
 
-### 핵심 지표
-| 항목 | 내용 |
-|------|------|
-| 글로벌 매출 | 일별 USD 매출, ARPU, ARPPU, 결제율 |
-| 일본 매출 | iOS/Android 플랫폼별 일매출 |
-| 활성 유저 | DAU, 신규 가입자, 결제 계정 수 |
-| 이벤트 마킹 | 업데이트/콜라보 기간 마킹 |
-| 지역 전환 | 글로벌↔일본 매출 비교 |
-
-### 차트 (Chart.js 4.4)
-- **일별 매출 추이** — 글로벌/일본 라인차트
-- **ARPU/ARPPU 추이** — 결제 단가 분석
-- **결제율 추이** — 페이레이션 전환율
-- **이벤트 마킹** — 업데이트/콜라보 기간 배경 하이라이트
-
----
+| 탭 | 내용 |
+|----|------|
+| 매출 추이 | 글로벌 일별 매출 (G[] 배열, 196일: 2026-01-01~07-15) |
+| JP 비교 | 일본 vs 글로벌 주간 매출 |
+| 월별 요약 | 월간 매출/ARPPU/JP 비중 |
+| 스파이크 분석 | 일 매출 급등 원인 (운영 로드맵 기반) + 기저 매출 비교 |
+| 매출 피크 BM 분석 | 피크 시점별 과금 모델 동인 |
+| 트렌드 / 실행 과제 | 마케팅 문서 연계 인사이트 |
+| ROI / 체크리스트 | 업데이트별 투자효과 |
+| BM 채널 | 8개 수익 채널 구조 |
+| 이동 매트릭스 | 과금군 전환 (스냅샷 간) |
+| 점검 트렌드 | 12시점 DB 스냅샷 추이 (03/26~08/27) |
+| 코호트 / LTV | 리텐션·생애가치 |
+| 지역 비교 | JP/SGP/VA 과금구조 |
+| 전환 퍼널 / 고래 추적 | 과금 전환·고액 유저 |
+| 신규 유저 | 버전별 신규 유입·과금율 (11버전, 04/09~08/27) |
 
 ## 🏗 아키텍처
 
-### 구조
+상세 기술 문서는 **[ARCHITECTURE.md](ARCHITECTURE.md)** 참고.
+
 ```
 trickcal-dashboard/
-├── index.html          # 한국어 대시보드 (166KB, 인라인)
-├── index_zh.html       # 중국어 대시보드
-├── index_ko.html       # 한국어 백업
+├── index.html              # 한국어 대시보드 (18탭, 단일 파일)
+├── index_zh.html           # 중국어 대시보드 (KO와 동기화)
+├── index_ko.html           # 레거시 백업
 ├── data/
-│   ├── global_revenue.csv   # 글로벌 일별 매출 (date, revenue_usd, arpu, arppu, pay_rate)
-│   ├── jp_revenue.csv       # 일본 일별 매출 (iOS/GP별)
-│   ├── inspection_metrics.json  # 검수 데이터
-│   └── region_transition.json   # 지역 전환 데이터
-├── scripts/
-│   └── auto_update.py   # 매출 데이터 자동 수집
+│   ├── inspection_metrics.json   # 점검 12시점 지표
+│   ├── newuser_metrics.json      # 버전별 신규 유저 (11버전)
+│   ├── newuser_cache/            # 스냅샷 user_id 캐시
+│   ├── global_revenue.csv        # 글로벌 일별 매출
+│   ├── jp_revenue.csv            # 일본 일별 매출 (iOS/Android)
+│   └── region_transition.json    # 지역 전환
+├── scripts/auto_update.py  # 매출 CSV 갱신
+├── ARCHITECTURE.md         # 기술 아키텍처 문서
 └── README.md
 ```
 
@@ -49,30 +52,28 @@ trickcal-dashboard/
 |------|------|
 | 프론트엔드 | 순수 HTML/CSS/JS (프레임워크 없음) |
 | 차트 | Chart.js 4.4.7 (CDN) |
-| 데이터 | CSV 인라인 (fetch 불필요) |
-| 배포 | GitHub Pages (KR/ZH 2개 repo) |
-| 자동화 | Python 스크립트 (매출 CSV 갱신) |
+| 데이터 | HTML 인라인 배열 (fetch 불필요) + JSON |
+| 배포 | GitHub Pages (단일 repo, push 시 자동) |
+| 환율 | 1 USD = 1,500 KRW 고정 |
 
-### 디자인
-- **다크 테마** (#0a0a1a 배경, #00d4ff 시안 액센트)
-- KRW 바 (원화 환산 매출 상단 표시)
-- 카드 레이아웃 (background: #141432)
-- 모바일 반응형 (flex-wrap)
+## 📈 데이터 기준
 
----
+- **점검 데이터**: 12시점 (2026-03-26 ~ 2026-08-27, 2주 간격) — 대시보드 기준 데이터
+- **일별 매출 (G[])**: 2026-01-01 ~ 2026-07-15 (196일)
+- **점검 라벨**: 운영 로드맵의 메인 픽업 사도명 (픽업 없는 주만 D+N 갭 표기)
+  - 예: 07/16 티그 · 07/30 롤렛 · 08/13 아야 · 08/27 피라 · 07/02 리뉴아 D+14
+- 갱신 주기: 점검 데이터 전달 시 (2주)
 
-## 📈 데이터 소스
+## 📉 핵심 지표 요약 (08/27 점검 기준)
 
-| 항목 | 소스 |
-|------|------|
-| 글로벌 매출 | 에피드 내부 데이터 (daily revenue) |
-| 일본 매출 | 에피드 내부 데이터 (iOS/GP별) |
-| 환율 | 1,500원/USD 기준 |
-| 갱신 주기 | 수동 (데이터 전달 시) |
-
----
+| 지표 | 값 |
+|------|-----|
+| 총 유저 | 213,817 |
+| 유료 유저 | 99,230 |
+| 과금률 | 46.41% (역대 최고) |
+| ARPPU | ₩483,062 ($322.04) |
 
 ## 👥 기여자
 
 - **명훈 조** — 기획, 데이터 분석, QA
-- **Hermes Agent (2호)** — 개발, 빌드, 자동화
+- **Hermes Agent (3호)** — 데이터 분석, 대시보드 유지보수, 자동화

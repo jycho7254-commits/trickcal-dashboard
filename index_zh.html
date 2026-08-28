@@ -382,7 +382,8 @@ const NEWUSER = [
 {"date": "2026-07-02", "label": "07/02 丽纽雅 D+14", "gm": "GM18", "new_users": 18697, "new_paid": 3902, "pay_rate": 20.9, "rev_krw": 405138500, "arppu_krw": 103828, "share_pct": 3.7},
 {"date": "2026-07-16", "label": "07/16 提格", "gm": "GM19", "new_users": 10903, "new_paid": 1795, "pay_rate": 16.5, "rev_krw": 176639000, "arppu_krw": 98406, "share_pct": 1.7},
 {"date": "2026-07-30", "label": "07/30 罗利特", "gm": "GM19", "new_users": 8733, "new_paid": 1376, "pay_rate": 15.8, "rev_krw": 107612000, "arppu_krw": 78206, "share_pct": 1.3},
-{"date": "2026-08-13", "label": "08/13 绫", "gm": "GM19", "new_users": 7858, "new_paid": 1155, "pay_rate": 14.7, "rev_krw": 89940400, "arppu_krw": 77870, "share_pct": 1.1}
+{"date": "2026-08-13", "label": "08/13 绫", "gm": "GM19", "new_users": 7858, "new_paid": 1155, "pay_rate": 14.7, "rev_krw": 89940400, "arppu_krw": 77870, "share_pct": 1.1},
+{"date": "2026-08-27", "label": "08/27 皮拉", "gm": "GM19", "new_users": 9252, "new_paid": 1686, "pay_rate": 18.2, "rev_krw": 176343200, "arppu_krw": 104593, "share_pct": 1.7}
 ];
 const G=[["2026-07-15",103862,126223,68190,4277,3.39],
 ["2026-07-14",74790,102613,55435,3477,3.39],
@@ -875,7 +876,10 @@ var spikes = [
   {d:'06/01',r:'$268K',t:'月度订阅',m:6,bm:'月订阅 续期 4种 + 트릭컬通行证 6月',desc:'活跃 106K · ARPPU $28.19'},
   {d:'06/04',r:'$145K',t:'<b>리스티 版本升级</b>',m:6,bm:'圣徒卡池 + 等级提升 奖励 + 부띠끄 皮肤',desc:'ARPPU $29.58'},
   {d:'06/11',r:'$116K',t:'0.75周年 预热',m:6,bm:'预热 限定礼包 + 登录奖励',desc:'ARPPU $22.76 · 活跃 100K'},
-  {d:'06/18',r:'$988K',t:'<b style="color:#7c3aed">0.75周年 丽纽雅 — 历史 最高</b>',m:6,bm:'丽纽雅 卡池 + 性格募集 7种 + 卡牌卡池 2种 + 限定 29个 + 便服通行证',desc:'ARPPU $51.25 · 活跃 126K · 付费转化率 15.14%'}
+  {d:'06/18',r:'$988K',t:'<b style="color:#7c3aed">0.75周年 丽纽雅 — 历史 最高</b>',m:6,bm:'丽纽雅 卡池 + 性格募集 7种 + 卡牌卡池 2种 + 限定 29个 + 便服通行证',desc:'ARPPU $51.25 · 活跃 126K · 付费转化率 15.14%'},
+  {d:'06/25',r:'$248K',t:'<b>丽纽雅 第2次 卡池 (路线图 6/25 副卡池: 림/시온)</b>',m:6,bm:'丽纽雅 卡池 第2周 + 限定礼包 后半 + 主题剧场 进行',desc:'丽纽雅 剩余 需求 · 活跃 224K'},
+  {d:'07/01',r:'$391K',t:'<b>月末 支付 + 丽纽雅 卡池 最后一天</b>',m:7,bm:'月订阅 月末 集中 + 卡池 结束 邻近 需求',desc:'卡池 结束 前一天 效果'},
+  {d:'07/02',r:'$231K',t:'<b>维护 更新 (GM18 结束)</b>',m:7,bm:'卡池 间隔 周 — 主卡池 无 (路线图 7/2 列: 空值)',desc:'丽纽雅 结束 后 空白 · 新增 18,697名'}
 ];
 
 function renderSpikeTable(list) {
@@ -1323,7 +1327,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
     {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"total_usd":29975624,"arppu_krw":442662,"arppu_usd":295.11,"avg_cash":706.7,"avg_free_cash":14837.0,"total_hero_gacha":379942239,"total_card_gacha":106120058,"avg_playtime_hrs":698.3,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
-    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"total_usd":31956192,"arppu_krw":483062,"arppu_usd":322.04,"avg_cash":797,"avg_free_cash":15271,"total_hero_gacha":388526588,"total_card_gacha":110365169,"avg_playtime_hrs":734.3,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
+    {"date":"2026-08-27","label":"08/27 皮拉","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"total_usd":31956192,"arppu_krw":483062,"arppu_usd":322.04,"avg_cash":797,"avg_free_cash":15271,"total_hero_gacha":388526588,"total_card_gacha":110365169,"avg_playtime_hrs":734.3,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   const first = inspections[0];
@@ -1948,7 +1952,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
     {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
-    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
+    {"date":"2026-08-27","label":"08/27 皮拉","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   var ltvData = inspections.map(function(d) {
@@ -2379,7 +2383,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 提格","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"免费":133923,"低付费":25281,"中等付费":25728,"高付费":26078,"超高付费":16034,"鲸鱼":11066}},
     {"date":"2026-07-30","label":"07/30 罗利特","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"免费":128056,"低付费":24600,"中等付费":25211,"高付费":25634,"超高付费":15956,"鲸鱼":11226}},
     {"date":"2026-08-13","label":"08/13 绫","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"免费":124736,"低付费":23981,"中等付费":24876,"高付费":25397,"超高付费":15815,"鲸鱼":11506}},
-    {"date":"2026-08-27","label":"08/27 丽纽雅 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
+    {"date":"2026-08-27","label":"08/27 皮拉","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"免费":114587, "低付费":16346, "中等付费":15230, "高付费":19625, "超高付费":26937, "鲸鱼":21092}}
   ];
 
   var latest = inspections[inspections.length - 1];
@@ -2722,10 +2726,10 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="whale-section">' +
     '<h2>版本别新用户流入 & 付费</h2>' +
-    '<p class="whale-subtitle">维护快照 user_id diff 基准 · 上次检查~本次检查之间新流入 · 含总付费用户中新用户占比 · 11个版本 (04/09~08/27)</p>';
+    '<p class="whale-subtitle">维护快照 user_id diff 基准 · 上次检查~本次检查之间新流入 · 含总付费用户中新用户占比 · 12个版本 (04/09~08/27)</p>';
 
   html += '<div class="whale-summary">' +
-    '<div class="whale-sum-card"><div class="lbl">累计新流入 (10版本)</div><div class="num">' + total_new.toLocaleString() + '</div><div class="sub">GM16~GM19</div></div>' +
+    '<div class="whale-sum-card"><div class="lbl">累计新流入 (11版本)</div><div class="num">' + total_new.toLocaleString() + '</div><div class="sub">GM16~GM19</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">新用户付费率 (全期间)</div><div class="num" style="color:#10b981">' + (total_paid/total_new*100).toFixed(1) + '%</div><div class="sub">' + total_paid.toLocaleString() + ' / ' + total_new.toLocaleString() + '</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">新用户累计付费额</div><div class="num" style="color:#f59e0b">' + (total_rev/1e8).toFixed(1) + '亿</div><div class="sub">₩' + (total_rev/1e8).toFixed(1) + '亿 KRW</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">最大流入版本</div><div class="num" style="color:#ec4899;font-size:1.1rem">' + best.label + '</div><div class="sub">' + best.new_users.toLocaleString() + '名 · 付费率 ' + best.pay_rate + '%</div></div>' +
@@ -2761,7 +2765,7 @@ function showCellTooltip(td, i, j){
     '<b>洞察:</b> 新流入 ' + firstN.new_users.toLocaleString() + ' → ' + lastN.new_users.toLocaleString() + '名 (' +
     '<span style="color:#ef4444;font-weight:600">' + (((lastN.new_users-firstN.new_users)/firstN.new_users)*100).toFixed(0) + '%</span>) 减少. ' +
     '0.75周年(06/18)后的 07/02 区间为新流入 ' + best.new_users.toLocaleString() + '名 · 付费率 ' + best.pay_rate + '% · ARPPU ₩' + Math.round(best.arppu_krw/1000) + 'K 最强区间. ' +
-    '提格(07/16)·罗利特(07/30)·绫(08/13) GM19 新PickUp维持付费率 14.7~16.5%, 但流入规模持续减少 — 新流入确保课题.' +
+    '提格(07/16)·罗利特(07/30)·绫(08/13)·皮拉(08/27) GM19 新PickUp维持付费率 14.7~18.2%, 但流入规模持续减少 — 新流入确保课题.' +
   '</div>';
 
   html += '</div>';

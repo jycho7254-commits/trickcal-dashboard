@@ -108,5 +108,16 @@
   "rev_krw": 89940400,
   "arppu_krw": 77870,
   "share_pct": 1.1
+ },
+ {
+  "date": "2026-08-27",
+  "label": "08/27 피라",
+  "gm": "GM19",
+  "new_users": 9252,
+  "new_paid": 1686,
+  "pay_rate": 18.2,
+  "rev_krw": 176343200,
+  "arppu_krw": 104593,
+  "share_pct": 1.7
  }
 ]

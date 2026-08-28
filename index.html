@@ -382,7 +382,8 @@ const NEWUSER = [
 {"date": "2026-07-02", "label": "07/02 리뉴아 D+14", "gm": "GM18", "new_users": 18697, "new_paid": 3902, "pay_rate": 20.9, "rev_krw": 405138500, "arppu_krw": 103828, "share_pct": 3.7},
 {"date": "2026-07-16", "label": "07/16 티그", "gm": "GM19", "new_users": 10903, "new_paid": 1795, "pay_rate": 16.5, "rev_krw": 176639000, "arppu_krw": 98406, "share_pct": 1.7},
 {"date": "2026-07-30", "label": "07/30 롤렛", "gm": "GM19", "new_users": 8733, "new_paid": 1376, "pay_rate": 15.8, "rev_krw": 107612000, "arppu_krw": 78206, "share_pct": 1.3},
-{"date": "2026-08-13", "label": "08/13 아야", "gm": "GM19", "new_users": 7858, "new_paid": 1155, "pay_rate": 14.7, "rev_krw": 89940400, "arppu_krw": 77870, "share_pct": 1.1}
+{"date": "2026-08-13", "label": "08/13 아야", "gm": "GM19", "new_users": 7858, "new_paid": 1155, "pay_rate": 14.7, "rev_krw": 89940400, "arppu_krw": 77870, "share_pct": 1.1},
+{"date": "2026-08-27", "label": "08/27 피라", "gm": "GM19", "new_users": 9252, "new_paid": 1686, "pay_rate": 18.2, "rev_krw": 176343200, "arppu_krw": 104593, "share_pct": 1.7}
 ];
 const G=[["2026-07-15",103862,126223,68190,4277,3.39],
 ["2026-07-14",74790,102613,55435,3477,3.39],
@@ -875,7 +876,10 @@ var spikes = [
   {d:'06/01',r:'$268K',t:'월결제',m:6,bm:'월정액 갱신 4종 + 트릭컬패스 6월',desc:'활성 106K · ARPPU $28.19'},
   {d:'06/04',r:'$145K',t:'<b>리스티 버전업</b>',m:6,bm:'사도픽업 + 레벨업 보상 + 부띠끄 스킨',desc:'ARPPU $29.58'},
   {d:'06/11',r:'$116K',t:'0.75주년 예열',m:6,bm:'프리히트 한정패키지 + 접속보상',desc:'ARPPU $22.76 · 활성 100K'},
-  {d:'06/18',r:'$988K',t:'<b style="color:#7c3aed">0.75주년 리뉴아 — 역대 최고</b>',m:6,bm:'리뉴아 픽업 + 성격모집 7종 + 카드픽업 2종 + 한정 29개 + 사복패스',desc:'ARPPU $51.25 · 활성 126K · 유료전환율 15.14%'}
+  {d:'06/18',r:'$988K',t:'<b style="color:#7c3aed">0.75주년 리뉴아 — 역대 최고</b>',m:6,bm:'리뉴아 픽업 + 성격모집 7종 + 카드픽업 2종 + 한정 29개 + 사복패스',desc:'ARPPU $51.25 · 활성 126K · 유료전환율 15.14%'},
+  {d:'06/25',r:'$248K',t:'<b>리뉴아 2차 픽업 (로드맵 6/25 서브: 림/시온)</b>',m:6,bm:'리뉴아 픽업 2주차 + 한정패키지 후반부 + 테마극장 진행',desc:'리뉴아 잔여 수요 · 활성 224K'},
+  {d:'07/01',r:'$391K',t:'<b>월말 결제 + 리뉴아 픽업 마지막날</b>',m:7,bm:'월정액 말일 몰아쓰기 + 픽업 종료 임박 수요',desc:'픽업 종료 전날 효과'},
+  {d:'07/02',r:'$231K',t:'<b>점검 업데이트 (GM18 종료)</b>',m:7,bm:'픽업 갭 주차 — 메인 픽업 없음 (로드맵 7/2 열: 빈 값)',desc:'리뉴아 종료 후 공백 · 신규 18,697명'}
 ];
 
 function renderSpikeTable(list) {
@@ -1323,7 +1327,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 티그","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"total_usd":28818220,"arppu_krw":414928,"arppu_usd":276.60,"avg_cash":1111,"avg_free_cash":15741,"total_hero_gacha":373076633,"total_card_gacha":102999072,"avg_playtime_hrs":609.7,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
     {"date":"2026-07-30","label":"07/30 롤렛","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"total_usd":29313228,"arppu_krw":428443,"arppu_usd":285.63,"avg_cash":635,"avg_free_cash":13885,"total_hero_gacha":379695243,"total_card_gacha":105250661,"avg_playtime_hrs":661.5,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
     {"date":"2026-08-13","label":"08/13 아야","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"total_usd":29975624,"arppu_krw":442662,"arppu_usd":295.11,"avg_cash":706.7,"avg_free_cash":14837.0,"total_hero_gacha":379942239,"total_card_gacha":106120058,"avg_playtime_hrs":698.3,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}},
-    {"date":"2026-08-27","label":"08/27 리뉴아 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"total_usd":31956192,"arppu_krw":483062,"arppu_usd":322.04,"avg_cash":797,"avg_free_cash":15271,"total_hero_gacha":388526588,"total_card_gacha":110365169,"avg_playtime_hrs":734.3,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
+    {"date":"2026-08-27","label":"08/27 피라","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"total_usd":31956192,"arppu_krw":483062,"arppu_usd":322.04,"avg_cash":797,"avg_free_cash":15271,"total_hero_gacha":388526588,"total_card_gacha":110365169,"avg_playtime_hrs":734.3,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
   ];
 
   const first = inspections[0];
@@ -1948,7 +1952,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 티그","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
     {"date":"2026-07-30","label":"07/30 롤렛","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
     {"date":"2026-08-13","label":"08/13 아야","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}},
-    {"date":"2026-08-27","label":"08/27 리뉴아 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
+    {"date":"2026-08-27","label":"08/27 피라","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
   ];
 
   var ltvData = inspections.map(function(d) {
@@ -2379,7 +2383,7 @@ function showCellTooltip(td, i, j){
     {"date":"2026-07-16","label":"07/16 티그","total_users":238110,"paid_users":104187,"pay_rate":43.76,"total_krw":43227330000,"arppu_krw":414928,"pay_tiers":{"무과금":133923,"소과금":25281,"중과금":25728,"고과금":26078,"초고과금":16034,"고래":11066}},
     {"date":"2026-07-30","label":"07/30 롤렛","total_users":230683,"paid_users":102627,"pay_rate":44.49,"total_krw":43969841800,"arppu_krw":428443,"pay_tiers":{"무과금":128056,"소과금":24600,"중과금":25211,"고과금":25634,"초고과금":15956,"고래":11226}},
     {"date":"2026-08-13","label":"08/13 아야","total_users":226311,"paid_users":101575,"pay_rate":44.88,"total_krw":44963436000,"arppu_krw":442662,"pay_tiers":{"무과금":124736,"소과금":23981,"중과금":24876,"고과금":25397,"초고과금":15815,"고래":11506}},
-    {"date":"2026-08-27","label":"08/27 리뉴아 D+70","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
+    {"date":"2026-08-27","label":"08/27 피라","total_users":213817,"paid_users":99230,"pay_rate":46.41,"total_krw":47934288000,"arppu_krw":483062,"pay_tiers":{"무과금":114587, "소과금":16346, "중과금":15230, "고과금":19625, "초고과금":26937, "고래":21092}}
   ];
 
   var latest = inspections[inspections.length - 1];
@@ -2722,10 +2726,10 @@ function showCellTooltip(td, i, j){
 
   let html = '<div class="whale-section">' +
     '<h2>버전별 신규 유저 유입 & 과금</h2>' +
-    '<p class="whale-subtitle">점검 스냅샷 user_id diff 기반 · 직전 점검~해당 점검 사이 신규 유입 · 총 유료유저 중 신규 비중 포함 · 11 버전 (04/09~08/27)</p>';
+    '<p class="whale-subtitle">점검 스냅샷 user_id diff 기반 · 직전 점검~해당 점검 사이 신규 유입 · 총 유료유저 중 신규 비중 포함 · 12 버전 (04/09~08/27)</p>';
 
   html += '<div class="whale-summary">' +
-    '<div class="whale-sum-card"><div class="lbl">누적 신규 유입 (10버전)</div><div class="num">' + total_new.toLocaleString() + '</div><div class="sub">GM16~GM19</div></div>' +
+    '<div class="whale-sum-card"><div class="lbl">누적 신규 유입 (11버전)</div><div class="num">' + total_new.toLocaleString() + '</div><div class="sub">GM16~GM19</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">신규 과금율 (전체 기간)</div><div class="num" style="color:#10b981">' + (total_paid/total_new*100).toFixed(1) + '%</div><div class="sub">' + total_paid.toLocaleString() + ' / ' + total_new.toLocaleString() + '</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">신규 누적 과금액</div><div class="num" style="color:#f59e0b">' + (total_rev/1e8).toFixed(1) + '억</div><div class="sub">$' + (total_rev/1500/1e4).toFixed(1) + '만</div></div>' +
     '<div class="whale-sum-card"><div class="lbl">최대 유입 버전</div><div class="num" style="color:#ec4899;font-size:1.1rem">' + best.label + '</div><div class="sub">' + best.new_users.toLocaleString() + '명 · 과금율 ' + best.pay_rate + '%</div></div>' +
@@ -2761,7 +2765,7 @@ function showCellTooltip(td, i, j){
     '<b>인사이트:</b> 신규 유입은 ' + firstN.new_users.toLocaleString() + ' → ' + lastN.new_users.toLocaleString() + '명 (' +
     '<span style="color:#ef4444;font-weight:600">' + (((lastN.new_users-firstN.new_users)/firstN.new_users)*100).toFixed(0) + '%</span>) 감소. ' +
     '0.75주년(06/18) 직후 07/02 구간이 신규 유입 ' + best.new_users.toLocaleString() + '명 · 과금율 ' + best.pay_rate + '% · ARPPU ₩' + Math.round(best.arppu_krw/1000) + 'K로 최강 구간. ' +
-    '티그(07/16)·롤렛(07/30)·아야(08/13)로 이어지는 GM19 신규 픽업은 과금율 14.7~16.5%를 유지했으나 유입 규모는 지속 감소 — 신규 유입 확보 과제.' +
+    '티그(07/16)·롤렛(07/30)·아야(08/13)·피라(08/27)로 이어지는 GM19 신규 픽업은 과금율 14.7~18.2%를 유지했으나 유입 규모는 지속 감소 — 신규 유입 확보 과제.' +
   '</div>';
 
   html += '</div>';
